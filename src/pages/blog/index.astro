@@ -1,0 +1,52 @@
+﻿---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => p.data.published)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Insights" description="Artikel und Einblicke.">
+  <Header />
+  <main class="blog-page">
+    <div class="container">
+      <div class="blog-header">
+        <div class="section-label">Insights</div>
+        <h1>Blog</h1>
+        <p class="section-subtitle">Praxiswissen aus unseren Projekten.</p>
+      </div>
+      <div class="posts-list">
+        {posts.map((post) => (
+          <a href={`/blog/${post.id.replace(/\.md$/, '')}`} class="post-card card">
+            <div class="post-meta">
+              <time>{post.data.date.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+              <span>von {post.data.author}</span>
+            </div>
+            <h2 class="post-title">{post.data.title}</h2>
+            <p class="post-excerpt">{post.data.excerpt}</p>
+            <div class="post-tags">
+              {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .blog-page { padding-top: calc(72px + 4rem); padding-bottom: 4rem; }
+  .blog-header { margin-bottom: 3rem; }
+  .blog-header h1 { margin-bottom: 1rem; }
+  .posts-list { display: flex; flex-direction: column; gap: 1.25rem; max-width: 780px; }
+  .post-card { text-decoration: none; color: inherit; display: block; }
+  .post-meta { display: flex; gap: 1rem; font-size: 0.825rem; color: var(--c-text-muted); margin-bottom: 0.75rem; }
+  .post-title { font-size: 1.35rem; font-weight: 700; color: var(--c-text); margin-bottom: 0.5rem; transition: color var(--t-fast); }
+  .post-card:hover .post-title { color: var(--c-accent); }
+  .post-excerpt { font-size: 0.95rem; color: var(--c-text-secondary); line-height: 1.7; margin-bottom: 1rem; }
+  .post-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+</style>

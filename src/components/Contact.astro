@@ -1,0 +1,47 @@
+﻿---
+---
+<section id="kontakt" class="section contact-section">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-label">Kontakt</div>
+        <h2 class="section-title">Lassen Sie uns sprechen.</h2>
+        <p class="contact-desc">Egal ob konkretes Projekt oder erste Orientierung &ndash; wir nehmen uns Zeit.</p>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-item-label">E-Mail</div>
+            <a href="mailto:info@asightconsulting.com" class="contact-item-value">info@asightconsulting.com</a>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-label">Standort DE</div>
+            <div class="contact-item-value">Stuttgart, Deutschland</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-label">Standort US</div>
+            <div class="contact-item-value">Detroit, Michigan, USA</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-cta">
+        <div class="cta-card">
+          <h3 class="cta-title">Erstgespraech buchen</h3>
+          <p class="cta-desc">30 Minuten, kostenlos, unverbindlich.</p>
+          <a href="https://tidycal.com/asight" class="btn btn-primary" target="_blank">Termin waehlen &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-section { background: var(--c-surface); border-top: 1px solid var(--c-border); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-desc { font-size: 1.05rem; color: var(--c-text-secondary); line-height: 1.7; margin-bottom: 2.5rem; max-width: 440px; }
+  .contact-details { display: flex; flex-direction: column; gap: 1.5rem; }
+  .contact-item-label { font-family: var(--f-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--c-text-muted); margin-bottom: 0.3rem; }
+  .contact-item-value { font-size: 1rem; color: var(--c-text); font-weight: 500; }
+  .cta-card { background: var(--c-surface-elevated); border: 1px solid var(--c-border); border-radius: 16px; padding: 2.5rem; }
+  .cta-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
+  .cta-desc { color: var(--c-text-secondary); line-height: 1.7; margin-bottom: 2rem; }
+  @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
+</style>

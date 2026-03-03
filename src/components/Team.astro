@@ -1,0 +1,43 @@
+﻿---
+import { getCollection } from 'astro:content';
+const team = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="team" class="section">
+  <div class="container">
+    <div class="section-label">Team</div>
+    <h2 class="section-title">Die Koepfe hinter ASIGHT</h2>
+    <p class="section-subtitle">Zwei Standorte, ein Team. Amerikanische Innovationskraft trifft deutsche Ingenieurskunst.</p>
+    <div class="team-grid">
+      {team.map(async (member) => {
+        const { Content } = await member.render();
+        return (
+          <div class="team-card card">
+            <div class="member-photo"><span class="photo-placeholder">{member.data.name.charAt(0)}</span></div>
+            <div class="member-info">
+              <h3 class="member-name">{member.data.name}</h3>
+              <div class="member-role">{member.data.role}</div>
+              <div class="member-location">{member.data.location}</div>
+              <div class="member-bio"><Content /></div>
+              {member.data.linkedin && <a href={member.data.linkedin} class="member-linkedin" target="_blank">LinkedIn &rarr;</a>}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .team-card { display: flex; gap: 2rem; align-items: flex-start; }
+  .member-photo { flex-shrink: 0; width: 96px; height: 96px; border-radius: 12px; background: var(--c-surface-elevated); border: 1px solid var(--c-border-light); display: flex; align-items: center; justify-content: center; }
+  .photo-placeholder { font-size: 2rem; font-weight: 800; color: var(--c-text-muted); }
+  .member-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .member-role { font-size: 0.9rem; color: var(--c-accent); font-weight: 600; margin-bottom: 0.5rem; }
+  .member-location { font-size: 0.825rem; color: var(--c-text-muted); margin-bottom: 1rem; }
+  .member-bio { font-size: 0.9rem; color: var(--c-text-secondary); line-height: 1.7; margin-bottom: 1rem; }
+  .member-bio :global(p) { margin: 0; }
+  .member-linkedin { font-size: 0.85rem; font-weight: 600; color: var(--c-accent); }
+  @media (max-width: 768px) { .team-grid { grid-template-columns: 1fr; } .team-card { flex-direction: column; } }
+</style>

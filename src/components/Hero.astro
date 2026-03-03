@@ -1,0 +1,53 @@
+﻿---
+---
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
+    <div class="hero-label">Automotive Â· Manufacturing Â· Digital</div>
+    <h1 class="hero-title">
+      Wenn Ihr Projekt steht,<br />
+      <span class="hero-accent">bringen wir es zurueck auf Kurs.</span>
+    </h1>
+    <p class="hero-subtitle">
+      ASIGHT Consulting: Projektmanagement, Prozessoptimierung und digitale Loesungen
+      fuer die Automobil- und Fertigungsindustrie. Detroit &amp; Stuttgart.
+    </p>
+    <div class="hero-actions">
+      <a href="/#kontakt" class="btn btn-primary">Erstgespraech vereinbaren <span>&rarr;</span></a>
+      <a href="/#ergebnisse" class="btn btn-outline">Ergebnisse ansehen</a>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-item">
+        <span class="proof-number">15+</span>
+        <span class="proof-label">Jahre Erfahrung</span>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <span class="proof-number">2.06x</span>
+        <span class="proof-label">Cycle Time Reduction</span>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <span class="proof-number">2</span>
+        <span class="proof-label">Kontinente</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding-top: 72px; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(34,211,238,0.06) 0%, transparent 60%); pointer-events: none; }
+  .hero-content { position: relative; padding: 6rem 0 4rem; }
+  .hero-label { font-family: var(--f-mono); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--c-accent); margin-bottom: 1.5rem; }
+  .hero-title { font-size: clamp(2.75rem, 5.5vw, 4.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem; max-width: 800px; }
+  .hero-accent { color: var(--c-accent); }
+  .hero-subtitle { font-size: 1.15rem; line-height: 1.8; color: var(--c-text-secondary); max-width: 580px; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; margin-bottom: 4rem; }
+  .hero-proof { display: flex; align-items: center; gap: 2rem; padding-top: 2rem; border-top: 1px solid var(--c-border); max-width: 540px; }
+  .proof-item { display: flex; flex-direction: column; gap: 0.25rem; }
+  .proof-number { font-size: 1.5rem; font-weight: 800; color: var(--c-text); }
+  .proof-label { font-size: 0.8rem; color: var(--c-text-muted); }
+  .proof-divider { width: 1px; height: 40px; background: var(--c-border); }
+  @media (max-width: 768px) { .hero-actions { flex-direction: column; } .hero-proof { flex-direction: column; align-items: flex-start; gap: 1rem; } .proof-divider { width: 40px; height: 1px; } }
+</style>

@@ -1,0 +1,41 @@
+﻿---
+import { getCollection } from 'astro:content';
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const icons = {
+  clipboard: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>`,
+  settings: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+  monitor: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+};
+---
+
+<section id="services" class="section">
+  <div class="container">
+    <div class="section-label">Was wir tun</div>
+    <h2 class="section-title">Services</h2>
+    <p class="section-subtitle">Drei Kompetenzfelder, ein Ziel: Ihre Projekte erfolgreich machen.</p>
+    <div class="services-grid">
+      {services.map(async (service) => {
+        const { Content } = await service.render();
+        return (
+          <div class="service-card card">
+            <div class="service-icon" set:html={icons[service.data.icon] || ''} />
+            <h3>{service.data.title}</h3>
+            <div class="service-body"><Content /></div>
+            <div class="service-highlights">
+              {service.data.highlights.map((h) => <span class="tag">{h}</span>)}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .service-card { display: flex; flex-direction: column; gap: 1.25rem; }
+  .service-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--c-accent-glow); border-radius: 10px; color: var(--c-accent); }
+  .service-body { color: var(--c-text-secondary); font-size: 0.95rem; line-height: 1.75; flex: 1; }
+  .service-body :global(p) { margin-bottom: 0.75rem; }
+  .service-highlights { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 1rem; border-top: 1px solid var(--c-border); }
+</style>
