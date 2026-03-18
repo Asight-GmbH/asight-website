@@ -1,41 +1,363 @@
-﻿---
-import { getCollection } from 'astro:content';
-const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
-const icons = {
-  clipboard: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>`,
-  settings: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-  monitor: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
-};
+---
+const steps = [
+  {
+    number: "01",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
+    title: "Prozesse verstehen",
+    subtitle: "Wir finden das echte Problem – nicht das offensichtliche.",
+    color: "cyan",
+    points: [
+      "Prozessanalyse und Schwachstellen-Identifikation",
+      "Audit-Vorbereitung und Compliance-Checks",
+      "Qualitätsmanagement und Fehlerursachen-Analyse",
+      "Ist-Aufnahme ohne 80-Seiten-Konzept",
+      "VDA 6.3 Audit-Vorbereitung",
+      "Verlagerungsprojekte und Standort-Qualifizierung"
+    ]
+  },
+  {
+    number: "02",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
+    title: "Daten ernten",
+    subtitle: "Wir holen die Daten dort, wo sie entstehen – direkt an der Maschine.",
+    color: "amber",
+    points: [
+      "SPS-Anbindung und Maschinendaten-Erfassung",
+      "Shopfloor-Datenintegration",
+      "Schnittstellen zwischen Steuerung und IT-Systemen",
+      "Saubere Datenbasis statt Excel-Export"
+    ]
+  },
+  {
+    number: "03",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>`,
+    title: "Systeme bauen",
+    subtitle: "Dashboards, KPI-Systeme, Automatisierung – wir bleiben bis es läuft.",
+    color: "green",
+    points: [
+      "Echtzeit-Dashboards und KPI-Systeme",
+      "Automatisiertes Reporting (kein Freitagnachmittag mehr)",
+      "Power BI, SharePoint, PowerApps Integration",
+      "Go-Live-Begleitung und Nachbetreuung",
+      "Entscheidungsvorlagen für Investitionen",
+      "Kapazitäts- und Produktionsplanung"
+    ]
+  }
+];
 ---
 
-<section id="services" class="section">
+<section id="services" class="services-section">
   <div class="container">
-    <div class="section-label">Was wir tun</div>
-    <h2 class="section-title">Services</h2>
-    <p class="section-subtitle">Drei Kompetenzfelder, ein Ziel: Ihre Projekte erfolgreich machen.</p>
-    <div class="services-grid">
-      {services.map(async (service) => {
-        const { Content } = await service.render();
-        return (
-          <div class="service-card card">
-            <div class="service-icon" set:html={icons[service.data.icon] || ''} />
-            <h3>{service.data.title}</h3>
-            <div class="service-body"><Content /></div>
-            <div class="service-highlights">
-              {service.data.highlights.map((h) => <span class="tag">{h}</span>)}
-            </div>
+    <div class="services-header">
+      <h2 class="services-headline">Von der Maschine bis zum<br /><span class="highlight">Management-Cockpit.</span> Alles aus einer Hand.</h2>
+      <p class="services-subline">Andere Berater liefern Konzepte oder Tools. Wir liefern die gesamte Kette – von der Datenquelle bis zur Entscheidungsgrundlage.</p>
+    </div>
+
+    <div class="chain-wrapper">
+      <div class="chain-numbers">
+        {steps.map((step, i) => (
+          <div class={`number-bubble number-bubble--${step.color}`}>
+            <span>{step.number}</span>
+            {i < steps.length - 1 && <div class="connector"></div>}
           </div>
-        );
-      })}
+        ))}
+      </div>
+
+      <div class="chain-steps">
+        {steps.map((step) => (
+          <div class={`step-card step-card--${step.color}`}>
+            <div class="watermark">{step.number}</div>
+            <div class="step-header">
+              <div class="step-icon" set:html={step.icon} />
+              <h3 class="step-title">{step.title}</h3>
+            </div>
+            <p class="step-subtitle">{step.subtitle}</p>
+            <ul class="step-points">
+              {step.points.map((point) => (
+                <li><span class="point-dash">—</span> {point}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="services-summary">
+      <p class="summary-line">Kein Wechsel vom Berater zum Systemhaus. Kein Gründer der im Vertrieb verschwindet. Kein Briefing das verloren geht.</p>
+      <p class="summary-bold">Eine Mannschaft, eine Kette, ein Ergebnis.</p>
     </div>
   </div>
 </section>
 
 <style>
-  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-  .service-card { display: flex; flex-direction: column; gap: 1.25rem; }
-  .service-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--c-accent-glow); border-radius: 10px; color: var(--c-accent); }
-  .service-body { color: var(--c-text-secondary); font-size: 0.95rem; line-height: 1.75; flex: 1; }
-  .service-body :global(p) { margin-bottom: 0.75rem; }
-  .service-highlights { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 1rem; border-top: 1px solid var(--c-border); }
+  .services-section {
+    background: #f1f5f9;
+    padding: 5rem 0;
+  }
+
+  .services-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .services-headline {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .services-headline .highlight {
+    color: #0ea5e9;
+  }
+
+  .services-subline {
+    font-size: 1rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .chain-wrapper {
+    position: relative;
+  }
+
+  .chain-numbers {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 0.5rem;
+    padding: 0 4rem;
+  }
+
+  .number-bubble {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .number-bubble span {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    background: #fff;
+    border: 2px solid;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    position: relative;
+    z-index: 2;
+  }
+
+  .number-bubble--cyan span {
+    border-color: #0ea5e9;
+    color: #0ea5e9;
+  }
+
+  .number-bubble--amber span {
+    border-color: #f59e0b;
+    color: #f59e0b;
+  }
+
+  .number-bubble--green span {
+    border-color: #22c55e;
+    color: #22c55e;
+  }
+
+  .connector {
+    position: absolute;
+    left: calc(50% + 24px);
+    top: 50%;
+    width: calc(100% + 8rem);
+    height: 2px;
+    background: linear-gradient(90deg, currentColor 0%, #e2e8f0 100%);
+    opacity: 0.3;
+    z-index: 1;
+  }
+
+  .number-bubble--cyan .connector {
+    color: #0ea5e9;
+  }
+
+  .number-bubble--amber .connector {
+    color: #f59e0b;
+  }
+
+  .chain-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .step-card {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.75rem;
+    border-left: 4px solid;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .step-card--cyan {
+    border-left-color: #0ea5e9;
+  }
+
+  .step-card--amber {
+    border-left-color: #f59e0b;
+  }
+
+  .step-card--green {
+    border-left-color: #22c55e;
+  }
+
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .watermark {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 5rem;
+    font-weight: 800;
+    color: rgba(0,0,0,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-card--cyan .step-icon {
+    background: rgba(14,165,233,0.1);
+    color: #0ea5e9;
+  }
+
+  .step-card--amber .step-icon {
+    background: rgba(245,158,11,0.1);
+    color: #f59e0b;
+  }
+
+  .step-card--green .step-icon {
+    background: rgba(34,197,94,0.1);
+    color: #22c55e;
+  }
+
+  .step-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .step-subtitle {
+    font-size: 0.875rem;
+    font-style: italic;
+    color: #64748b;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .step-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .step-points li {
+    font-size: 0.8rem;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .point-dash {
+    flex-shrink: 0;
+  }
+
+  .step-card--cyan .point-dash {
+    color: #0ea5e9;
+  }
+
+  .step-card--amber .point-dash {
+    color: #f59e0b;
+  }
+
+  .step-card--green .point-dash {
+    color: #22c55e;
+  }
+
+  .services-summary {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .summary-line {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-bold {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .chain-numbers {
+      display: none;
+    }
+
+    .chain-steps {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .services-section {
+      padding: 3rem 0;
+    }
+
+    .services-header {
+      margin-bottom: 2rem;
+    }
+
+    .step-card {
+      padding: 1.25rem;
+    }
+
+    .watermark {
+      font-size: 4rem;
+    }
+  }
 </style>

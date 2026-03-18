@@ -1,0 +1,484 @@
+---
+---
+<div class="cockpit-wrapper">
+  <div class="cockpit-panel">
+    <!-- Glass reflections -->
+    <div class="glass-reflection-top"></div>
+    <div class="glass-reflection-diagonal"></div>
+    <div class="ambient-glow-tr"></div>
+    <div class="ambient-glow-bl"></div>
+
+    <!-- Logo Watermark -->
+    <img
+      src="/assets/logos/ASIGHT Logo neu.svg"
+      alt=""
+      aria-hidden="true"
+      class="cockpit-watermark"
+    />
+
+    <!-- Header bar -->
+    <div class="cockpit-header">
+      <div class="cockpit-header-left">
+        <div class="status-dot"></div>
+        <span class="cockpit-title">MANAGEMENT COCKPIT</span>
+      </div>
+      <div class="cockpit-header-right">
+        <span class="cockpit-meta">Live · KW 16/2026</span>
+        <span class="audit-badge">Audit-ready</span>
+      </div>
+    </div>
+
+    <!-- KPI Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-1">
+        <div class="kpi-header">
+          <span class="kpi-title">OEE</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value">82.4</span>
+          <span class="kpi-unit">%</span>
+        </div>
+        <div class="kpi-previous">
+          <span class="trend-arrow up">↑</span>
+          <span>Vorher: 47.2%</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-2">
+        <div class="kpi-header">
+          <span class="kpi-title">Zykluszeit</span>
+          <span class="kpi-badge blue">2.06x</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value">19.3</span>
+          <span class="kpi-unit">s</span>
+        </div>
+        <div class="kpi-previous">
+          <span class="trend-arrow down">↓</span>
+          <span>Vorher: 39.8s</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-3">
+        <div class="kpi-header">
+          <span class="kpi-title">Ausschussrate</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value">2.1</span>
+          <span class="kpi-unit">%</span>
+        </div>
+        <div class="kpi-previous">
+          <span class="trend-arrow down">↓</span>
+          <span>Vorher: 8.3%</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-4">
+        <div class="kpi-header">
+          <span class="kpi-title">Reporting</span>
+          <span class="kpi-badge green">−75%</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value">2</span>
+          <span class="kpi-unit">h/Wo</span>
+        </div>
+        <div class="kpi-previous">
+          <span class="trend-arrow down">↓</span>
+          <span>Vorher: 8h/Wo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trend Chart -->
+    <div class="trend-chart">
+      <div class="trend-header">
+        <span class="trend-title">OEE-Entwicklung (12 Wochen)</span>
+        <div class="trend-stats">
+          <span class="trend-start">Start: 47%</span>
+          <span class="trend-arrow-icon">→</span>
+          <span class="trend-now">Jetzt: 82%</span>
+          <span class="trend-badge">+35 PP</span>
+        </div>
+      </div>
+      <svg class="sparkline" viewBox="0 0 280 48" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.15" />
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <polygon points="0,45 25.5,43.2 51,44.1 76.4,39.6 101.8,35.1 127.3,28.8 152.7,21.6 178.2,13.5 203.6,7.2 229.1,3.6 254.5,1.8 280,0.9 280,48 0,48" fill="url(#sparkFill)" />
+        <polyline points="0,45 25.5,43.2 51,44.1 76.4,39.6 101.8,35.1 127.3,28.8 152.7,21.6 178.2,13.5 203.6,7.2 229.1,3.6 254.5,1.8 280,0.9" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="x-axis">
+        <span>KW 05</span>
+        <span>KW 08</span>
+        <span>KW 11</span>
+        <span>KW 14</span>
+        <span>KW 16</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating shadow -->
+  <div class="cockpit-shadow"></div>
+</div>
+
+<style>
+  .cockpit-wrapper {
+    perspective: 1200px;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .cockpit-panel {
+    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 100%);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 22px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform: rotateX(2deg) rotateY(-30deg);
+    transform-style: preserve-3d;
+    animation: panelFadeIn 1s cubic-bezier(0.16,1,0.3,1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes panelFadeIn {
+    from {
+      opacity: 0;
+      transform: rotateX(4deg) rotateY(-35deg) scale(0.95) translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: rotateX(2deg) rotateY(-30deg) scale(1) translateY(0);
+    }
+  }
+
+  .glass-reflection-top {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    pointer-events: none;
+  }
+
+  .glass-reflection-diagonal {
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 60%;
+    height: 120%;
+    background: linear-gradient(125deg, rgba(255,255,255,0.03) 0%, transparent 40%);
+    pointer-events: none;
+    transform: skewX(-15deg);
+  }
+
+  .ambient-glow-tr {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .ambient-glow-bl {
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, rgba(34,197,94,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cockpit-watermark {
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: auto;
+    opacity: 0.085;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+
+  .cockpit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .cockpit-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34,197,94,0.5);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+    50% { opacity: 0.6; box-shadow: 0 0 4px rgba(34,197,94,0.3); }
+  }
+
+  .cockpit-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e2e8f0;
+    letter-spacing: 0.05em;
+  }
+
+  .cockpit-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cockpit-meta {
+    font-size: 10px;
+    color: #475569;
+    font-family: var(--f-mono);
+  }
+
+  .audit-badge {
+    font-size: 9px;
+    color: #22c55e;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.15);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .kpi-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: kpiFadeIn 0.6s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+
+  .kpi-1 { animation-delay: 0.5s; }
+  .kpi-2 { animation-delay: 0.65s; }
+  .kpi-3 { animation-delay: 0.8s; }
+  .kpi-4 { animation-delay: 0.95s; }
+
+  @keyframes kpiFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .kpi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .kpi-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: #94a3b8;
+    letter-spacing: 0.02em;
+  }
+
+  .kpi-badge {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+  }
+
+  .kpi-badge.blue {
+    color: #38bdf8;
+    background: rgba(56,189,248,0.1);
+    border: 1px solid rgba(56,189,248,0.2);
+  }
+
+  .kpi-badge.green {
+    color: #22c55e;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.15);
+  }
+
+  .kpi-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #f1f5f9;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .kpi-unit {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+  }
+
+  .kpi-previous {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+  }
+
+  .trend-arrow {
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .trend-arrow.up { color: #22c55e; }
+  .trend-arrow.down { color: #22c55e; }
+
+  .kpi-previous span:last-child {
+    font-size: 10px;
+    color: #64748b;
+  }
+
+  .trend-chart {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px 16px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: kpiFadeIn 0.6s cubic-bezier(0.4,0,0.2,1) 1.1s forwards;
+  }
+
+  .trend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .trend-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: #94a3b8;
+  }
+
+  .trend-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .trend-start {
+    font-size: 10px;
+    color: #64748b;
+    font-family: var(--f-mono);
+  }
+
+  .trend-arrow-icon {
+    font-size: 10px;
+    color: #38bdf8;
+    font-weight: 600;
+  }
+
+  .trend-now {
+    font-size: 10px;
+    color: #22c55e;
+    font-weight: 600;
+    font-family: var(--f-mono);
+  }
+
+  .trend-badge {
+    font-size: 9px;
+    font-weight: 600;
+    color: #22c55e;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.15);
+    padding: 2px 6px;
+    border-radius: 20px;
+  }
+
+  .sparkline {
+    display: block;
+    width: 100%;
+    height: 40px;
+  }
+
+  .x-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 9px;
+    color: #334155;
+    font-family: var(--f-mono);
+  }
+
+  .cockpit-shadow {
+    width: 85%;
+    height: 20px;
+    margin: -8px auto 0;
+    background: radial-gradient(ellipse, rgba(56,189,248,0.08) 0%, transparent 70%);
+    filter: blur(12px);
+  }
+
+  @media (max-width: 1024px) {
+    .cockpit-panel {
+      transform: none;
+      animation: none;
+      opacity: 1;
+    }
+
+    .kpi-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .cockpit-wrapper {
+      max-width: 100%;
+    }
+
+    .trend-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

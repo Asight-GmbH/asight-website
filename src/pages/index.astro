@@ -1,22 +1,24 @@
-﻿---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import Results from '../components/Results.astro';
-import Testimonials from '../components/Testimonials.astro';
-import Team from '../components/Team.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import ImpactStrip from "../components/ImpactStrip.astro";
+import SocialProof from "../components/SocialProof.astro";
+import Services from "../components/Services.astro";
+import Founders from "../components/Founders.astro";
+import Testimonials from "../components/Testimonials.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
 ---
 
-<BaseLayout title="ASIGHT Consulting" description="Projektmanagement, Prozessoptimierung und digitale Loesungen.">
+<BaseLayout title="ASIGHT Consulting | Projektmanagement, Prozessoptimierung & Digitale Loesungen">
   <Header />
   <Hero />
+  <ImpactStrip />
+  <SocialProof />
   <Services />
-  <Results />
+  <Founders />
   <Testimonials />
-  <Team />
   <Contact />
   <Footer />
 </BaseLayout>

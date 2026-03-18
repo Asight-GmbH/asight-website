@@ -1,0 +1,181 @@
+---
+---
+<section class="social-proof">
+  <div class="container">
+    <!-- Headline -->
+    <h2 class="social-proof-headline">Vorzeigbare Produktion mit ASIGHT.</h2>
+
+    <!-- Kunden-Sektion -->
+    <p class="section-label">UNSERE KUNDEN</p>
+
+    <div class="client-grid">
+      <div class="client-card">
+        <img src="/assets/logos/Brusa_ci.avif" alt="Brusa" class="client-logo" />
+      </div>
+      <div class="client-card">
+        <img src="/assets/logos/Fischer_ci.avif" alt="Fischer" class="client-logo" />
+      </div>
+      <div class="client-card">
+        <img src="/assets/logos/JR_Automation_ci.avif" alt="JR Automation" class="client-logo" />
+      </div>
+      <div class="client-card">
+        <img src="/assets/logos/MTU_Solutions_ci.avif" alt="MTU Solutions" class="client-logo" />
+      </div>
+    </div>
+
+    <!-- Überleitung -->
+    <p class="transition-text">
+      OEMs beauftragen uns, ihre Zulieferer auditfähig zu machen.<br />
+      <em>Zulieferer beauftragen uns, bevor es soweit kommt.</em>
+    </p>
+
+    <!-- OEM-Auftraggeber -->
+    <p class="section-label">BEAUFTRAGT VON</p>
+
+    <div class="oem-row">
+      <img src="/assets/logos/Mercedes_Benz_ci.avif" alt="Mercedes-Benz" class="oem-logo" />
+      <span class="divider"></span>
+      <img src="/assets/logos/Porsche_ci.webp" alt="Porsche" class="oem-logo" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .social-proof {
+    background: #0f172a;
+    padding: 5rem 0;
+    position: relative;
+  }
+
+  .social-proof-headline {
+    text-align: center;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 800;
+    color: #e2e8f0;
+    margin-bottom: 3rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #64748b;
+    margin-bottom: 2rem;
+  }
+
+  .section-label::before,
+  .section-label::after {
+    content: '—';
+    margin: 0 1rem;
+    color: #334155;
+  }
+
+  .client-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+  }
+
+  .client-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .client-card:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .client-logo {
+    max-width: 120px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(1.5);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+  }
+
+  .client-card:hover .client-logo {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+
+  .transition-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin: 3rem 0;
+    line-height: 1.6;
+  }
+
+  .transition-text em {
+    color: #e2e8f0;
+    font-style: italic;
+  }
+
+  .oem-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .oem-logo {
+    max-width: 140px;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(1.5);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+  }
+
+  .oem-logo:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+
+  .divider {
+    width: 1px;
+    height: 30px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  @media (max-width: 768px) {
+    .client-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .oem-row {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .divider {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .client-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .client-logo {
+      max-width: 100px;
+    }
+  }
+</style>

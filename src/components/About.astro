@@ -1,0 +1,54 @@
+---
+---
+<section id="about" class="section about-section">
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-content">
+        <div class="section-label">Ueber uns</div>
+        <h2 class="section-title">Das ist unsere Geschichte</h2>
+        <p class="about-text">
+          Die Idee zu <strong>ASIGHT</strong> entstand aus einer gemeinsamen Leidenschaft: Beratung mit Naehe zum Kunden und unsere Erfahrung aus der Praxis so einzubringen, dass sie echten Mehrwert bringt.
+        </p>
+        <p class="about-text">
+          Wir &ndash; <strong>Alexander Eyb</strong> und <strong>Florian Bartsch</strong> &ndash; haben uns 2013 als Berater kennengelernt. Unsere Wege waren gepraegt von internationaler Projekterfahrung, operativer Exzellenz und dem staendigen Anspruch, echten Mehrwert zu schaffen.
+        </p>
+        <p class="about-text">
+          2024 war der richtige Zeitpunkt, gemeinsam <strong>ASIGHT</strong> zu gruenden &ndash; eine neue Plattform fuer Consulting, Solutions und Innovation mit Leidenschaft.
+        </p>
+      </div>
+      <div class="about-team">
+        <div class="team-member">
+          <div class="member-avatar">AE</div>
+          <div class="member-info">
+            <div class="member-name">Alexander Eyb</div>
+            <div class="member-role">Founder &amp; Managing Director</div>
+            <div class="member-location">Detroit, Michigan, USA</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">FB</div>
+          <div class="member-info">
+            <div class="member-name">Florian Bartsch</div>
+            <div class="member-role">Founder &amp; Managing Director</div>
+            <div class="member-location">Stuttgart, Deutschland</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section { background: var(--c-surface); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
+  .about-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 5rem; align-items: start; }
+  .about-text { font-size: 1.05rem; color: var(--c-text-secondary); line-height: 1.85; margin-bottom: 1.25rem; }
+  .about-text strong { color: var(--c-text); }
+  .about-team { display: flex; flex-direction: column; gap: 1.25rem; }
+  .team-member { display: flex; align-items: center; gap: 1.25rem; background: var(--c-surface-elevated); border: 1px solid var(--c-border); border-radius: 16px; padding: 1.5rem; transition: all var(--t-med); }
+  .team-member:hover { border-color: var(--c-accent); box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+  .member-avatar { width: 64px; height: 64px; border-radius: 14px; background: linear-gradient(135deg, var(--c-accent), var(--c-accent-dim)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; flex-shrink: 0; }
+  .member-name { font-weight: 700; font-size: 1.05rem; color: var(--c-text); }
+  .member-role { font-size: 0.875rem; color: var(--c-accent); font-weight: 600; margin-top: 0.15rem; }
+  .member-location { font-size: 0.8rem; color: var(--c-text-muted); margin-top: 0.25rem; }
+  @media (max-width: 768px) { .about-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
+</style>

@@ -1,18 +1,17 @@
-﻿---
+---
 const navItems = [
-  { label: 'Services', href: '/#services' },
-  { label: 'Ergebnisse', href: '/#ergebnisse' },
-  { label: 'Insights', href: '/blog' },
-  { label: 'Team', href: '/#team' },
-  { label: 'Kontakt', href: '/#kontakt' },
+  { label: "Ihre Vorteile", href: "/#vorteile" },
+  { label: "Services", href: "/#services" },
+  { label: "Ueber ASIGHT", href: "/#about" },
+  { label: "Referenzen", href: "/#referenzen" },
+  { label: "Kontakt", href: "/#kontakt" },
 ];
 ---
 
 <header class="header">
   <div class="container header-inner">
     <a href="/" class="logo">
-      <span class="logo-text">ASIGHT</span>
-      <span class="logo-sub">Consulting</span>
+      <img src="/assets/logos/ASIGHT Wortmarke neu.svg" alt="ASIGHT Consulting" class="logo-img" />
     </a>
     <nav class="nav">
       {navItems.map((item) => (
@@ -24,14 +23,13 @@ const navItems = [
 </header>
 
 <style>
-  .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,15,26,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--c-border); }
+  .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--c-border); }
   .header-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-  .logo { display: flex; align-items: baseline; gap: 0.4rem; text-decoration: none; }
-  .logo-text { font-size: 1.25rem; font-weight: 800; letter-spacing: 0.08em; color: var(--c-text); }
-  .logo-sub { font-size: 0.8rem; font-weight: 500; color: var(--c-text-muted); }
+  .logo { display: flex; align-items: center; text-decoration: none; }
+  .logo-img { height: 32px; width: auto; }
   .nav { display: flex; gap: 2rem; }
   .nav-link { font-size: 0.875rem; font-weight: 500; color: var(--c-text-secondary); text-decoration: none; transition: color var(--t-fast); }
-  .nav-link:hover { color: var(--c-text); }
+  .nav-link:hover { color: var(--c-accent); }
   .btn-sm { padding: 0.55rem 1.25rem; font-size: 0.825rem; }
   @media (max-width: 768px) { .nav { display: none; } }
 </style>
