@@ -1,5 +1,7 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
+const isLocal = import.meta.env.DEV;
+
 // Helper: creates a singleton for a given locale
 function localeSingleton(label: string, basePath: string, locale: string, schema: any) {
   return singleton({
@@ -116,9 +118,12 @@ const testimonialsHeadlineSchema = {
 };
 
 export default config({
-  storage: {
-    kind: 'local',
-  },
+  storage: isLocal
+    ? { kind: 'local' as const }
+    : {
+        kind: 'github' as const,
+        repo: 'Asight-GmbH/asight-website',
+      },
   ui: {
     brand: { name: 'ASIGHT CMS' },
     navigation: {
