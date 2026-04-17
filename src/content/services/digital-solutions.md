@@ -9,4 +9,4 @@ highlights:
   - "KPI-Systeme"
 ---
 
-Massgeschneiderte digitale Loesungen fuer Ihre Geschaeftsprozesse. Von KPI-Dashboards ueber Dokumentenmanagementsysteme bis hin zu vollintegrierten Digitalisierungsstrategien.
+Maßgeschneiderte digitale Lösungen für Ihre Geschäftsprozesse. Von KPI-Dashboards über Dokumentenmanagementsysteme bis hin zu vollintegrierten Digitalisierungsstrategien.

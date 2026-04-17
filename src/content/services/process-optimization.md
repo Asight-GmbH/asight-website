@@ -9,6 +9,6 @@ highlights:
   - "Wertstromanalyse"
 ---
 
-Analyse und Optimierung Ihrer Produktionsprozesse. Wir identifizieren Engpaesse, implementieren Lean-Methoden und steigern Ihre OEE messbar.
+Analyse und Optimierung Ihrer Produktionsprozesse. Wir identifizieren Engpässe, implementieren Lean-Methoden und steigern Ihre OEE messbar.
 
-Unsere Ergebnisse sprechen fuer sich: In einem aktuellen Projekt konnten wir die Cycle Time um den Faktor 2.06 reduzieren.
+Unsere Ergebnisse sprechen für sich: In einem aktuellen Projekt konnten wir die Cycle Time um den Faktor 2.06 reduzieren.

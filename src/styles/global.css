@@ -1,20 +1,27 @@
 :root {
+  /* Corporate Colors */
+  --c-brand-dark: #454F5E;
+  --c-brand-blue: #4B5F78;
+  --c-brand-teal: #3AA6B9;
+  --c-brand-light: #AFDDE9;
+
+  /* Abgeleitete UI-Farben */
   --c-bg: #ffffff;
-  --c-surface: #f8fafc;
+  --c-surface: #f6f7f8;
   --c-surface-elevated: #ffffff;
-  --c-border: #e2e8f0;
-  --c-border-light: #cbd5e1;
-  --c-text: #0f172a;
-  --c-text-secondary: #475569;
-  --c-text-muted: #94a3b8;
-  --c-accent: #0284c7;
-  --c-accent-dim: #0369a1;
-  --c-accent-light: #e0f2fe;
-  --c-accent-glow: rgba(2, 132, 199, 0.08);
-  --c-warm: #f59e0b;
-  --c-dark: #0f172a;
-  --c-hero-bg: #0f172a;
-  --c-hero-text: #f1f5f9;
+  --c-border: #d6dae0;
+  --c-border-light: #eaedf0;
+  --c-text: #1b222c;
+  --c-text-secondary: #4B5F78;
+  --c-text-muted: #8791a1;
+  --c-accent: #3AA6B9;
+  --c-accent-dim: #2E8A9A;
+  --c-accent-light: #e6f4f7;
+  --c-accent-glow: rgba(58, 166, 185, 0.08);
+  --c-warm: #d99726;
+  --c-dark: #11161d;
+  --c-hero-bg: #11161d;
+  --c-hero-text: #f6f7f8;
   --f-display: "Inter", system-ui, sans-serif;
   --f-body: "Inter", system-ui, sans-serif;
   --f-mono: "JetBrains Mono", "Fira Code", monospace;
@@ -41,7 +48,7 @@ h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); }
 .section-subtitle { font-size: 1.125rem; color: var(--c-text-secondary); max-width: 640px; line-height: 1.8; }
 .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; font-family: var(--f-body); cursor: pointer; transition: all var(--t-med); border: none; text-decoration: none; }
 .btn-primary { background: var(--c-accent); color: #fff; }
-.btn-primary:hover { background: var(--c-accent-dim); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(2,132,199,0.3); }
+.btn-primary:hover { background: var(--c-accent-dim); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(58,166,185,0.3); }
 .btn-outline { background: transparent; color: var(--c-text); border: 1.5px solid var(--c-border-light); }
 .btn-outline:hover { border-color: var(--c-accent); color: var(--c-accent); }
 .btn-white { background: #fff; color: var(--c-dark); }

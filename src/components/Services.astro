@@ -3,44 +3,47 @@ const steps = [
   {
     number: "01",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
-    title: "Prozesse verstehen",
-    subtitle: "Wir finden das echte Problem – nicht das offensichtliche.",
+    title: "Diagnose",
+    subtitle: "Identifikation von Verschwendung und Compliance-Status.",
     color: "cyan",
     points: [
-      "Prozessanalyse und Schwachstellen-Identifikation",
-      "Audit-Vorbereitung und Compliance-Checks",
-      "Qualitätsmanagement und Fehlerursachen-Analyse",
-      "Ist-Aufnahme ohne 80-Seiten-Konzept",
-      "VDA 6.3 Audit-Vorbereitung",
-      "Verlagerungsprojekte und Standort-Qualifizierung"
+      "VDA 6.3 Audit & Reifegradbewertung",
+      "Lean Management Methoden",
+      "Engpass-Analyse",
+      "OEE-Potenzialanalyse",
+      "Ist-Aufnahme",
+      "Prozess-Risikobewertung"
     ]
   },
   {
     number: "02",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
-    title: "Daten ernten",
-    subtitle: "Wir holen die Daten dort, wo sie entstehen – direkt an der Maschine.",
-    color: "amber",
+    title: "Infrastruktur",
+    subtitle: "Fundament für Transparenz, Datendurchgängigkeit und 'Single Source of Truth'.",
+    color: "blue",
     points: [
-      "SPS-Anbindung und Maschinendaten-Erfassung",
-      "Shopfloor-Datenintegration",
-      "Schnittstellen zwischen Steuerung und IT-Systemen",
-      "Saubere Datenbasis statt Excel-Export"
+      "Einführung von Shopfloor Management",
+      "Strukturierte Datenerfassung",
+      "Industrial IoT & SPS-Anbindung",
+      "Eliminierung redundanter Excel-Listen",
+      "Visualisierung der Performance",
+      "Sicherstellung der Datenintegrität",
+      "Schnittstellen-Harmonisierung"
     ]
   },
   {
     number: "03",
     icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>`,
-    title: "Systeme bauen",
-    subtitle: "Dashboards, KPI-Systeme, Automatisierung – wir bleiben bis es läuft.",
-    color: "green",
+    title: "Skalierung",
+    subtitle: "Aktive Wertschöpfungssteigerung und Zukunftsfähigkeit.",
+    color: "dark",
     points: [
-      "Echtzeit-Dashboards und KPI-Systeme",
-      "Automatisiertes Reporting (kein Freitagnachmittag mehr)",
-      "Power BI, SharePoint, PowerApps Integration",
-      "Go-Live-Begleitung und Nachbetreuung",
-      "Entscheidungsvorlagen für Investitionen",
-      "Kapazitäts- und Produktionsplanung"
+      "Aktive Prozessoptimierung",
+      "Reduktion von Durchlaufzeiten",
+      "Prädiktive Kapazitätsplanung",
+      "Automatisierte OEM-Compliance",
+      "Investitions-Validierung (ROI)",
+      "Nachhaltige Performance-Sicherung"
     ]
   }
 ];
@@ -82,16 +85,12 @@ const steps = [
       </div>
     </div>
 
-    <div class="services-summary">
-      <p class="summary-line">Kein Wechsel vom Berater zum Systemhaus. Kein Gründer der im Vertrieb verschwindet. Kein Briefing das verloren geht.</p>
-      <p class="summary-bold">Eine Mannschaft, eine Kette, ein Ergebnis.</p>
-    </div>
   </div>
 </section>
 
 <style>
   .services-section {
-    background: #f1f5f9;
+    background: #f6f7f8;
     padding: 5rem 0;
   }
 
@@ -103,19 +102,19 @@ const steps = [
   .services-headline {
     font-size: clamp(1.75rem, 3vw, 2.25rem);
     font-weight: 700;
-    color: #0f172a;
+    color: #1b222c;
     letter-spacing: -0.02em;
     line-height: 1.3;
     margin-bottom: 1rem;
   }
 
   .services-headline .highlight {
-    color: #0ea5e9;
+    color: #3AA6B9;
   }
 
   .services-subline {
     font-size: 1rem;
-    color: #64748b;
+    color: #4B5F78;
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
@@ -156,18 +155,18 @@ const steps = [
   }
 
   .number-bubble--cyan span {
-    border-color: #0ea5e9;
-    color: #0ea5e9;
+    border-color: #3AA6B9;
+    color: #3AA6B9;
   }
 
-  .number-bubble--amber span {
-    border-color: #f59e0b;
-    color: #f59e0b;
+  .number-bubble--blue span {
+    border-color: #4B5F78;
+    color: #4B5F78;
   }
 
-  .number-bubble--green span {
-    border-color: #22c55e;
-    color: #22c55e;
+  .number-bubble--dark span {
+    border-color: #454F5E;
+    color: #454F5E;
   }
 
   .connector {
@@ -176,17 +175,17 @@ const steps = [
     top: 50%;
     width: calc(100% + 8rem);
     height: 2px;
-    background: linear-gradient(90deg, currentColor 0%, #e2e8f0 100%);
+    background: linear-gradient(90deg, currentColor 0%, #d6dae0 100%);
     opacity: 0.3;
     z-index: 1;
   }
 
   .number-bubble--cyan .connector {
-    color: #0ea5e9;
+    color: #3AA6B9;
   }
 
-  .number-bubble--amber .connector {
-    color: #f59e0b;
+  .number-bubble--blue .connector {
+    color: #4B5F78;
   }
 
   .chain-steps {
@@ -207,15 +206,15 @@ const steps = [
   }
 
   .step-card--cyan {
-    border-left-color: #0ea5e9;
+    border-left-color: #3AA6B9;
   }
 
-  .step-card--amber {
-    border-left-color: #f59e0b;
+  .step-card--blue {
+    border-left-color: #4B5F78;
   }
 
-  .step-card--green {
-    border-left-color: #22c55e;
+  .step-card--dark {
+    border-left-color: #454F5E;
   }
 
   .step-card:hover {
@@ -252,31 +251,31 @@ const steps = [
   }
 
   .step-card--cyan .step-icon {
-    background: rgba(14,165,233,0.1);
-    color: #0ea5e9;
+    background: rgba(58,166,185,0.1);
+    color: #3AA6B9;
   }
 
-  .step-card--amber .step-icon {
-    background: rgba(245,158,11,0.1);
-    color: #f59e0b;
+  .step-card--blue .step-icon {
+    background: rgba(75,95,120,0.1);
+    color: #4B5F78;
   }
 
-  .step-card--green .step-icon {
-    background: rgba(34,197,94,0.1);
-    color: #22c55e;
+  .step-card--dark .step-icon {
+    background: rgba(69,79,94,0.1);
+    color: #454F5E;
   }
 
   .step-title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #1b222c;
     margin: 0;
   }
 
   .step-subtitle {
     font-size: 0.875rem;
     font-style: italic;
-    color: #64748b;
+    color: #4B5F78;
     margin-bottom: 1rem;
     line-height: 1.5;
   }
@@ -289,7 +288,7 @@ const steps = [
 
   .step-points li {
     font-size: 0.8rem;
-    color: #475569;
+    color: #4B5F78;
     line-height: 1.6;
     margin-bottom: 0.4rem;
     display: flex;
@@ -301,15 +300,15 @@ const steps = [
   }
 
   .step-card--cyan .point-dash {
-    color: #0ea5e9;
+    color: #3AA6B9;
   }
 
-  .step-card--amber .point-dash {
-    color: #f59e0b;
+  .step-card--blue .point-dash {
+    color: #4B5F78;
   }
 
-  .step-card--green .point-dash {
-    color: #22c55e;
+  .step-card--dark .point-dash {
+    color: #454F5E;
   }
 
   .services-summary {
@@ -321,14 +320,14 @@ const steps = [
 
   .summary-line {
     font-size: 0.95rem;
-    color: #64748b;
+    color: #4B5F78;
     margin-bottom: 0.5rem;
   }
 
   .summary-bold {
     font-size: 1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #1b222c;
     margin: 0;
   }
 

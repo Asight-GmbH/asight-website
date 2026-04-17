@@ -1,8 +1,6 @@
 ---
 const navItems = [
-  { label: "Ihre Vorteile", href: "/#vorteile" },
   { label: "Services", href: "/#services" },
-  { label: "Ueber ASIGHT", href: "/#about" },
   { label: "Referenzen", href: "/#referenzen" },
   { label: "Kontakt", href: "/#kontakt" },
 ];
@@ -11,7 +9,7 @@ const navItems = [
 <header class="header">
   <div class="container header-inner">
     <a href="/" class="logo">
-      <img src="/assets/logos/ASIGHT Wortmarke neu.svg" alt="ASIGHT Consulting" class="logo-img" />
+      <img src="/assets/logos/ASIGHT Wordmark final.svg" alt="ASIGHT Consulting" class="logo-img" />
     </a>
     <nav class="nav">
       {navItems.map((item) => (
@@ -26,7 +24,7 @@ const navItems = [
   .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--c-border); }
   .header-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
   .logo { display: flex; align-items: center; text-decoration: none; }
-  .logo-img { height: 32px; width: auto; }
+  .logo-img { height: 28px; width: auto; margin-left: -2px; }
   .nav { display: flex; gap: 2rem; }
   .nav-link { font-size: 0.875rem; font-weight: 500; color: var(--c-text-secondary); text-decoration: none; transition: color var(--t-fast); }
   .nav-link:hover { color: var(--c-accent); }

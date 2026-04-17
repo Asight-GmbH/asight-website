@@ -6,4 +6,4 @@ linkedin: "https://linkedin.com/in/florian"
 order: 2
 ---
 
-Florian ist Experte fuer Digitalisierung und Prozessoptimierung. Er entwickelt massgeschneiderte digitale Loesungen und KPI-Systeme.
+Florian ist Experte für Digitalisierung und Prozessoptimierung. Er entwickelt maßgeschneiderte digitale Lösungen und KPI-Systeme.

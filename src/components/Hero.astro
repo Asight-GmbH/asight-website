@@ -9,16 +9,15 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   <div class="container hero-split">
     <div class="hero-text">
       <h1 class="hero-title">
-        Ihr Kunde will die Zahlen wieder mal bis Freitag?<br />
-        <span class="hero-accent">Sie haben sie am<br />Mittwoch.</span>
+        <span class="hero-headline-top">Termintreu. Qualitätssicher. Lieferfähig.</span>
+        <span class="hero-accent">Wir wissen, was Ihr Kunde erwartet<br />und wie Sie es liefern.</span>
       </h1>
-      <p class="hero-subtitle"><strong>ASIGHT</strong> macht produzierende Unternehmen entscheidungs- und auditfähig – vom Shopfloor bis zur Geschäftsführung.</p>
+      <p class="hero-subtitle">ASIGHT transformiert Shopfloor Daten in echte Entscheidungsgrundlagen. Wir verbessern Prozesse und sichern Ihre Lieferfähigkeit und die Ihrer Lieferanten – für messbare Wertschöpfung ab Tag eins.</p>
       <div class="hero-ctas">
         <a href="https://tidycal.com/asight/beratungstermin-30min" target="_blank" rel="noopener" class="btn btn-primary-gradient">
-          Jetzt Zeit gewinnen <span>&rarr;</span>
+          Jetzt Potenziale erkennen <span>&rarr;</span>
         </a>
       </div>
-      <p class="hero-trust-signal">Taskforce-Einsatz? Lieferantenstatus in Gefahr? Wir kennen die Situation.</p>
     </div>
     <div class="hero-visual">
       <ManagementCockpit />
@@ -49,7 +48,7 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   .hero-gradient {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 70% 50% at 70% 50%, rgba(2,132,199,0.12) 0%, transparent 60%);
+    background: radial-gradient(ellipse 70% 50% at 70% 50%, rgba(58,166,185,0.12) 0%, transparent 60%);
   }
 
   .hero-grid-pattern {
@@ -62,8 +61,8 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   .hero-split {
     position: relative;
     display: grid;
-    grid-template-columns: 45% 55%;
-    gap: 0;
+    grid-template-columns: 38% 62%;
+    gap: 2rem;
     align-items: center;
     padding: 5rem 0 2rem;
   }
@@ -71,7 +70,7 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   .hero-text {
     position: relative;
     z-index: 200;
-    margin-right: -100px;
+    margin-right: 0;
   }
 
   .hero-title {
@@ -83,8 +82,13 @@ import ManagementCockpit from "./ManagementCockpit.astro";
     color: #fff;
   }
 
+  .hero-headline-top {
+    display: block;
+    white-space: nowrap;
+  }
+
   .hero-accent {
-    background: linear-gradient(135deg, #38bdf8, #0ea5e9, #06b6d4);
+    background: linear-gradient(135deg, #AFDDE9, #3AA6B9, #2E8A9A);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -94,12 +98,12 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   .hero-subtitle {
     font-size: 1.1rem;
     line-height: 1.7;
-    color: #94a3b8;
+    color: #8791a1;
     margin-bottom: 2rem;
   }
 
   .hero-subtitle strong {
-    color: #e2e8f0;
+    color: #d6dae0;
   }
 
   .hero-ctas {
@@ -111,7 +115,7 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   .hero-trust-signal {
     font-size: 0.85rem;
     font-style: italic;
-    color: #64748b;
+    color: #4B5F78;
     margin-top: 1.25rem;
     font-weight: 400;
   }
@@ -121,19 +125,19 @@ import ManagementCockpit from "./ManagementCockpit.astro";
     align-items: center;
     gap: 0.5rem;
     padding: 0.9rem 1.8rem;
-    background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+    background: linear-gradient(135deg, #3AA6B9, #2E8A9A);
     color: #fff;
     border-radius: 8px;
     font-size: 0.95rem;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(14,165,233,0.3);
+    box-shadow: 0 4px 20px rgba(58,166,185,0.3);
   }
 
   .btn-primary-gradient:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 30px rgba(14,165,233,0.4);
+    box-shadow: 0 6px 30px rgba(58,166,185,0.4);
     color: #fff;
   }
 
@@ -141,7 +145,7 @@ import ManagementCockpit from "./ManagementCockpit.astro";
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    color: #94a3b8;
+    color: #8791a1;
     font-size: 0.95rem;
     font-weight: 500;
     text-decoration: none;
@@ -149,7 +153,7 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   }
 
   .cta-link:hover {
-    color: #38bdf8;
+    color: #AFDDE9;
   }
 
   .hero-visual {
@@ -158,8 +162,8 @@ import ManagementCockpit from "./ManagementCockpit.astro";
     align-items: center;
     position: relative;
     z-index: 100;
-    transform: translateY(35px) scale(1.15);
-    margin-left: -100px;
+    transform: translateY(20px) scale(1.25);
+    margin-left: 0;
   }
 
   @media (max-width: 1024px) {

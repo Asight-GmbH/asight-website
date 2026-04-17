@@ -4,4 +4,4 @@ position: "VP Operations, Yanfeng"
 order: 2
 ---
 
-Das OEE-Dashboard von ASIGHT gibt uns erstmals echte Transparenz ueber unsere Fertigungslinien.
+Das OEE-Dashboard von ASIGHT gibt uns erstmals echte Transparenz über unsere Fertigungslinien.

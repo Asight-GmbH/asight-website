@@ -4,13 +4,14 @@ const year = new Date().getFullYear();
 <footer class="footer">
   <div class="container footer-inner">
     <div class="footer-brand">
-      <span class="footer-logo-a">A</span><span class="footer-logo">SIGHT</span>
-      <span class="footer-tagline">Consulting</span>
+      <a href="/">
+        <img src="/assets/logos/ASIGHT Logo + Wordmark long final.svg" alt="ASIGHT Consulting" class="footer-logo-img" />
+      </a>
     </div>
     <div class="footer-links">
       <a href="/#vorteile">Vorteile</a>
       <a href="/#services">Services</a>
-      <a href="/#about">Ueber uns</a>
+      <a href="/#about">Über uns</a>
       <a href="/#kontakt">Kontakt</a>
     </div>
     <div class="footer-copy">&copy; {year} ASIGHT GmbH &middot; Stuttgart</div>
@@ -20,9 +21,7 @@ const year = new Date().getFullYear();
 <style>
   .footer { padding: 3rem 0; border-top: 1px solid var(--c-border); background: var(--c-surface); }
   .footer-inner { display: flex; align-items: center; justify-content: space-between; }
-  .footer-logo-a { font-weight: 800; font-size: 1rem; color: var(--c-accent); }
-  .footer-logo { font-weight: 800; font-size: 1rem; letter-spacing: 0.06em; color: var(--c-text); }
-  .footer-tagline { font-size: 0.8rem; color: var(--c-text-muted); margin-left: 0.4rem; }
+  .footer-logo-img { height: 108px; width: auto; }
   .footer-links { display: flex; gap: 2rem; }
   .footer-links a { font-size: 0.85rem; color: var(--c-text-muted); }
   .footer-links a:hover { color: var(--c-accent); }

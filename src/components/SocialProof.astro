@@ -10,16 +10,22 @@
 
     <div class="client-grid">
       <div class="client-card">
-        <img src="/assets/logos/Brusa_ci.avif" alt="Brusa" class="client-logo" />
+        <img src="/assets/logos/Brusa_ci.avif" alt="Brusa" class="client-logo cl--brusa" />
       </div>
       <div class="client-card">
-        <img src="/assets/logos/Fischer_ci.avif" alt="Fischer" class="client-logo" />
+        <img src="/assets/logos/JR_Automation_Logo.png" alt="JR Automation" class="client-logo cl--jr" />
       </div>
       <div class="client-card">
-        <img src="/assets/logos/JR_Automation_ci.avif" alt="JR Automation" class="client-logo" />
+        <img src="/assets/logos/weber-group_Logo.svg" alt="Weber Gruppe" class="client-logo cl--weber" />
       </div>
       <div class="client-card">
-        <img src="/assets/logos/MTU_Solutions_ci.avif" alt="MTU Solutions" class="client-logo" />
+        <img src="/assets/logos/Trend_Technologies_International_logo.png" alt="Trend Technologies" class="client-logo cl--trend" />
+      </div>
+      <div class="client-card">
+        <img src="/assets/logos/IAC_Logo.png" alt="IAC" class="client-logo cl--iac" />
+      </div>
+      <div class="client-card">
+        <img src="/assets/logos/Yangfeg_Logo.png" alt="Yanfeng" class="client-logo cl--yanfeng" />
       </div>
     </div>
 
@@ -33,16 +39,22 @@
     <p class="section-label">BEAUFTRAGT VON</p>
 
     <div class="oem-row">
-      <img src="/assets/logos/Mercedes_Benz_ci.avif" alt="Mercedes-Benz" class="oem-logo" />
+      <img src="/assets/logos/Mercedes_Benz_ci.avif" alt="Mercedes-Benz" class="oem-logo oem-logo--mercedes" />
       <span class="divider"></span>
-      <img src="/assets/logos/Porsche_ci.webp" alt="Porsche" class="oem-logo" />
+      <img src="/assets/logos/Porsche_ci.webp" alt="Porsche" class="oem-logo oem-logo--porsche" />
+      <span class="divider"></span>
+      <img src="/assets/logos/Fischer_ci.avif" alt="Fischer" class="oem-logo oem-logo--fischer" />
+      <span class="divider"></span>
+      <img src="/assets/logos/Festool_Logo.svg" alt="Festool" class="oem-logo oem-logo--festool" />
+      <span class="divider"></span>
+      <img src="/assets/logos/BMW_Group_Grey.png" alt="BMW Group" class="oem-logo oem-logo--bmw" />
     </div>
   </div>
 </section>
 
 <style>
   .social-proof {
-    background: #0f172a;
+    background: #11161d;
     padding: 5rem 0;
     position: relative;
   }
@@ -51,7 +63,7 @@
     text-align: center;
     font-size: clamp(1.75rem, 3vw, 2.5rem);
     font-weight: 800;
-    color: #e2e8f0;
+    color: #d6dae0;
     margin-bottom: 3rem;
     letter-spacing: -0.02em;
   }
@@ -61,7 +73,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.15em;
-    color: #64748b;
+    color: #4B5F78;
     margin-bottom: 2rem;
   }
 
@@ -73,18 +85,20 @@
   }
 
   .client-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
     margin: 0 auto 3rem;
   }
 
   .client-card {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 2rem 1.5rem;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    height: 70px;
+    width: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,8 +111,8 @@
   }
 
   .client-logo {
-    max-width: 120px;
-    max-height: 50px;
+    max-width: 122px;
+    max-height: 45px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -107,21 +121,27 @@
     transition: all 0.3s ease;
   }
 
+  .cl--brusa { max-width: 95px; }
+  .cl--jr { max-width: 150px; }
+  .cl--weber { max-width: 105px; }
+  .cl--trend { max-width: 115px; }
+  .cl--iac { max-width: 105px; }
+  .cl--yanfeng { max-width: 200px; max-height: 100px; }
+
   .client-card:hover .client-logo {
-    filter: grayscale(0%);
-    opacity: 1;
+    opacity: 0.9;
   }
 
   .transition-text {
     text-align: center;
     font-size: 1.1rem;
-    color: #94a3b8;
+    color: #8791a1;
     margin: 3rem 0;
     line-height: 1.6;
   }
 
   .transition-text em {
-    color: #e2e8f0;
+    color: #d6dae0;
     font-style: italic;
   }
 
@@ -133,19 +153,22 @@
   }
 
   .oem-logo {
-    max-width: 140px;
-    max-height: 40px;
     width: auto;
-    height: auto;
+    height: 28px;
     object-fit: contain;
     filter: grayscale(100%) brightness(1.5);
     opacity: 0.5;
     transition: all 0.3s ease;
   }
 
+  .oem-logo--mercedes { height: 46px; }
+  .oem-logo--porsche { height: 22px; }
+  .oem-logo--fischer { height: 30px; }
+  .oem-logo--festool { height: 20px; }
+  .oem-logo--bmw { height: 38px; }
+
   .oem-logo:hover {
-    filter: grayscale(0%);
-    opacity: 1;
+    opacity: 0.8;
   }
 
   .divider {

@@ -3,16 +3,19 @@ const testimonials = [
   {
     name: "Tin-Duc Nguyen",
     position: "Manager / Projektleiter EEDoc, Daimler Truck North America",
+    photo: "/assets/pics/Tin-Duc_Nguyen_Referenz.png",
     quote: "Alexander hat mich während meiner Zeit bei Daimler Truck im Rahmen eines softwaredefinierten Fahrzeugprojekts projektmanagementseitig unterstützt – technisch anspruchsvoll und strategisch relevant für den Wandel hin zu einer softwarebasierten Fahrzeugarchitektur. Durch seine strukturierte Herangehensweise hat er konkrete nächste Schritte sichergestellt – das gab dem Projekt erkennbares Momentum. Auch im Konzernumfeld hat er sich professionell und verbindlich auf allen Ebenen eingebracht. Ich habe die Zusammenarbeit mit Alexander als äußerst positiv erlebt – engagiert, strukturiert und verlässlich in der Umsetzung."
   },
   {
     name: "Nicolai Dittrich",
     position: "Vertriebsleiter, njvision",
+    photo: "/assets/pics/Nicolai_Dittrich_Referenz.png",
     quote: "Die Zusammenarbeit mit Alexander und Florian im Rahmen einer Analyse unserer Vertriebsprozesse war für uns äußerst gewinnbringend. Beide traten vom ersten Tag an sehr strukturiert, professionell und gleichzeitig nahbar auf. Durch ihre analytische Stärke und methodische Klarheit gelang es ihnen, auch verborgene Schwachstellen in unseren Abläufen sichtbar zu machen und konkrete Handlungsempfehlungen zu formulieren. Was ich besonders geschätzt habe, war ihre Fähigkeit, komplexe Themen verständlich aufzubereiten und dabei unser Team aktiv einzubinden. So entstand nicht nur eine belastbare Analyse, sondern auch eine gemeinsame Grundlage für nachhaltige Verbesserungen."
   },
   {
     name: "Tobias Zimmermann",
     position: "Projektleiter Batterie Nacharbeit, Mercedes-Benz U.S. International",
+    photo: "/assets/pics/Tobias_Zimmermann_Referenz.png",
     quote: "Mit Alexander habe ich in einer herausfordernden Phase eng zusammengearbeitet. Er übernahm die Führung im Projektmanagement und legte wichtige Grundsteine, um das Projekt auf Kurs zu bringen. Besonders beeindruckte mich seine strukturierte Herangehensweise und seine Fähigkeit, ideenreiche Lösungen zu entwickeln. Auch bei unterschiedlichen Meinungen stand für Alexander stets der Projekterfolg im Mittelpunkt. Er förderte eine konstruktive Zusammenarbeit, die zu starken Ergebnissen führte."
   }
 ];
@@ -33,7 +36,7 @@ const testimonials = [
           </div>
           <p class="quote-text">"{t.quote}"</p>
           <div class="quote-author">
-            <div class="author-avatar">{t.name.split(' ').map(n => n[0]).join('')}</div>
+            <img src={t.photo} alt={t.name} class="author-avatar" />
             <div class="author-info">
               <div class="author-name">{t.name}</div>
               <div class="author-position">{t.position}</div>
@@ -47,7 +50,7 @@ const testimonials = [
 
 <style>
   .testimonials-section {
-    background: #f1f5f9;
+    background: #f6f7f8;
     padding: 5rem 0;
   }
 
@@ -55,7 +58,7 @@ const testimonials = [
     text-align: center;
     font-size: clamp(1.75rem, 3vw, 2rem);
     font-weight: 700;
-    color: #0f172a;
+    color: #1b222c;
     margin-bottom: 3rem;
     letter-spacing: -0.02em;
   }
@@ -96,15 +99,15 @@ const testimonials = [
   }
 
   .testimonial-card--cyan::before {
-    background: radial-gradient(circle, #0ea5e9 0%, transparent 70%);
+    background: radial-gradient(circle, #3AA6B9 0%, transparent 70%);
   }
 
   .testimonial-card--purple::before {
-    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    background: radial-gradient(circle, #4B5F78 0%, transparent 70%);
   }
 
   .testimonial-card--orange::before {
-    background: radial-gradient(circle, #f97316 0%, transparent 70%);
+    background: radial-gradient(circle, #d99726 0%, transparent 70%);
   }
 
   .testimonial-card:hover {
@@ -122,14 +125,14 @@ const testimonials = [
     display: flex;
     gap: 0.2rem;
     margin-bottom: 1.25rem;
-    color: #38bdf8;
+    color: #AFDDE9;
   }
 
   .quote-text {
     position: relative;
     font-size: 0.95rem;
     line-height: 1.7;
-    color: #475569;
+    color: #4B5F78;
     flex-grow: 1;
     margin-bottom: 1.5rem;
   }
@@ -144,28 +147,22 @@ const testimonials = [
   }
 
   .author-avatar {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: rgba(14,165,233,0.1);
-    color: #0ea5e9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.8rem;
+    object-fit: cover;
     flex-shrink: 0;
   }
 
   .author-name {
     font-weight: 700;
     font-size: 0.9rem;
-    color: #0f172a;
+    color: #1b222c;
   }
 
   .author-position {
     font-size: 0.75rem;
-    color: #64748b;
+    color: #4B5F78;
     line-height: 1.4;
   }
 
