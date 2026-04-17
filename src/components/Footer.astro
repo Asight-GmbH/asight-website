@@ -1,4 +1,7 @@
 ---
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
 const year = new Date().getFullYear();
 ---
 <footer class="footer">

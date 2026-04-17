@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Hero from "../../components/Hero.astro";
+import ImpactStrip from "../../components/ImpactStrip.astro";
+import SocialProof from "../../components/SocialProof.astro";
+import Services from "../../components/Services.astro";
+import Founders from "../../components/Founders.astro";
+import Testimonials from "../../components/Testimonials.astro";
+import Contact from "../../components/Contact.astro";
+import Footer from "../../components/Footer.astro";
+
+const locale = "en";
+---
+
+<BaseLayout title="ASIGHT Consulting | Project Management, Process Optimization & Digital Solutions" lang={locale}>
+  <Header locale={locale} />
+  <Hero locale={locale} />
+  <ImpactStrip locale={locale} />
+  <SocialProof locale={locale} />
+  <Services locale={locale} />
+  <Founders locale={locale} />
+  <Testimonials locale={locale} />
+  <Contact locale={locale} />
+  <Footer locale={locale} />
+</BaseLayout>

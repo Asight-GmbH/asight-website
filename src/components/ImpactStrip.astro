@@ -1,52 +1,35 @@
 ---
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const impact = await getEntry('pages', `${locale}/impact`);
+const { headline, subline, cards } = impact?.data ?? {};
+
+const colorClasses = ['teal', 'light', 'blue', 'dark'];
+const icons = [
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
+];
 ---
 <section class="impact-strip">
   <div class="container">
     <div class="impact-header">
-      <h2 class="impact-headline">Was sich in 8–12 Wochen ändert.</h2>
-      <p class="impact-subline">Vom intransparenten Kennzahlen zur Prozessoptimierung und Wertschöpfungssteigerung.</p>
+      <h2 class="impact-headline">{headline}</h2>
+      <p class="impact-subline">{subline}</p>
     </div>
     <div class="impact-cards">
-      <div class="impact-card impact-card--teal">
-        <div class="impact-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-          </svg>
+      {(cards ?? []).map((card: any, i: number) => (
+        <div class={`impact-card impact-card--${colorClasses[i]}`}>
+          <div class="impact-icon" set:html={icons[i]} />
+          <h3 class="impact-title">{card.title}</h3>
+          <p class="impact-subtitle">{card.subtitle}</p>
+          <p class="impact-text">{card.description}</p>
         </div>
-        <h3 class="impact-title">Zykluszeit-Optimierung</h3>
-        <p class="impact-subtitle">Effizienz durch Taktzeit-Analyse.</p>
-        <p class="impact-text">Wir identifizieren datengestützte Engpässe und reduzieren Durchlaufzeiten messbar. Nutzen Sie Ihre Kapazitäten durch präzise Prozess-Steuerung voll aus.</p>
-      </div>
-      <div class="impact-card impact-card--light">
-        <div class="impact-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/>
-          </svg>
-        </div>
-        <h3 class="impact-title">Lean-Implementierung</h3>
-        <p class="impact-subtitle">Verschwendung konsequent eliminieren.</p>
-        <p class="impact-text">Wir verankern Lean-Management-Prinzipien direkt in Ihren operativen Abläufen. Daten dienen hierbei als Hebel für eine dauerhafte Wertschöpfungssteigerung.</p>
-      </div>
-      <div class="impact-card impact-card--blue">
-        <div class="impact-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
-          </svg>
-        </div>
-        <h3 class="impact-title">Datenbasierte Steuerung</h3>
-        <p class="impact-subtitle">Präzision statt Bauchgefühl.</p>
-        <p class="impact-text">Etablieren Sie valide Echtzeit-KPIs als objektives Führungsinstrument. Treffen Sie Management-Entscheidungen auf Basis gesicherter Fakten.</p>
-      </div>
-      <div class="impact-card impact-card--dark">
-        <div class="impact-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>
-          </svg>
-        </div>
-        <h3 class="impact-title">Permanente Audit-Fähigkeit</h3>
-        <p class="impact-subtitle">Revisionssicherheit als Standard.</p>
-        <p class="impact-text">Wir strukturieren Ihre Prozesse so, dass Sie jederzeit prüfungsbereit sind. Sichern Sie Ihren Lieferstatus proaktiv gegenüber jedem OEM ab.</p>
-      </div>
+      ))}
     </div>
   </div>
 </section>

@@ -1,0 +1,26 @@
+{
+  "headline": "What changes in 8–12 weeks.",
+  "subline": "From opaque KPIs to process optimization and value creation.",
+  "cards": [
+    {
+      "title": "Cycle Time Optimization",
+      "subtitle": "Efficiency through takt time analysis.",
+      "description": "We identify data-driven bottlenecks and measurably reduce lead times. Fully utilize your capacity through precise process control."
+    },
+    {
+      "title": "Lean Implementation",
+      "subtitle": "Consistently eliminate waste.",
+      "description": "We embed lean management principles directly into your operational workflows. Data serves as the lever for lasting value creation."
+    },
+    {
+      "title": "Data-Driven Control",
+      "subtitle": "Precision over gut feeling.",
+      "description": "Establish valid real-time KPIs as an objective management tool. Make decisions based on verified facts."
+    },
+    {
+      "title": "Permanent Audit Readiness",
+      "subtitle": "Compliance as standard.",
+      "description": "We structure your processes so you are audit-ready at all times. Proactively secure your supplier status with every OEM."
+    }
+  ]
+}

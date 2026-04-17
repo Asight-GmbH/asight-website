@@ -1,4 +1,11 @@
-﻿import { defineCollection, z } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+
+// Page singletons (JSON data files for each section, per locale)
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: 'src/content/pages' }),
+  schema: z.any(),
+});
 
 const services = defineCollection({
   type: 'content',
@@ -20,6 +27,7 @@ const blog = defineCollection({
     tags: z.array(z.string()),
     published: z.boolean().default(true),
     image: z.string().optional(),
+    locale: z.string().default('de'),
   }),
 });
 
@@ -30,6 +38,8 @@ const testimonials = defineCollection({
     position: z.string(),
     order: z.number().default(0),
     image: z.string().optional(),
+    locale: z.string().default('de'),
+    photo: z.string().optional(),
   }),
 });
 
@@ -42,7 +52,8 @@ const team = defineCollection({
     linkedin: z.string().optional(),
     image: z.string().optional(),
     order: z.number(),
+    locale: z.string().default('de'),
   }),
 });
 
-export const collections = { services, blog, testimonials, team };
+export const collections = { pages, services, blog, testimonials, team };

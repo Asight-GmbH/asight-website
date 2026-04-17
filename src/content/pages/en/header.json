@@ -1,0 +1,9 @@
+{
+  "nav_items": [
+    { "label": "Services", "href": "/en/#services" },
+    { "label": "References", "href": "/en/#referenzen" },
+    { "label": "Contact", "href": "/en/#kontakt" }
+  ],
+  "cta_text": "Book a call",
+  "cta_href": "/en/#kontakt"
+}

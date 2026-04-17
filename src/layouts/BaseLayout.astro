@@ -4,15 +4,17 @@ import Preloader from "../components/Preloader.astro";
 interface Props {
   title?: string;
   description?: string;
+  lang?: string;
 }
 const {
   title = "ASIGHT Consulting",
   description = "Projektmanagement, Prozessoptimierung & digitale Lösungen für die Industrie.",
+  lang = 'de',
 } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="de">
+<html lang={lang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

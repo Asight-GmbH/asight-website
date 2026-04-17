@@ -1,0 +1,23 @@
+{
+  "headline": "What our clients say",
+  "testimonials": [
+    {
+      "name": "Tin-Duc Nguyen",
+      "position": "Manager / Project Lead EEDoc, Daimler Truck North America",
+      "photo": "/assets/pics/Tin-Duc_Nguyen_Referenz.png",
+      "quote": "Alexander supported me during my time at Daimler Truck in the context of a software-defined vehicle project on the project management side – technically demanding and strategically relevant for the transition to a software-based vehicle architecture. Through his structured approach, he ensured concrete next steps – giving the project recognizable momentum. Even in a corporate environment, he contributed professionally and reliably at all levels. I experienced the collaboration with Alexander as extremely positive – committed, structured, and dependable in execution."
+    },
+    {
+      "name": "Nicolai Dittrich",
+      "position": "Head of Sales, njvision",
+      "photo": "/assets/pics/Nicolai_Dittrich_Referenz.png",
+      "quote": "The collaboration with Alexander and Florian in analyzing our sales processes was extremely valuable for us. Both were very structured, professional, and approachable from day one. Through their analytical strength and methodical clarity, they were able to uncover hidden weaknesses in our workflows and formulate concrete recommendations. What I particularly appreciated was their ability to make complex topics understandable while actively involving our team. The result was not just a solid analysis, but a shared foundation for sustainable improvements."
+    },
+    {
+      "name": "Tobias Zimmermann",
+      "position": "Project Lead Battery Rework, Mercedes-Benz U.S. International",
+      "photo": "/assets/pics/Tobias_Zimmermann_Referenz.png",
+      "quote": "I worked closely with Alexander during a challenging phase. He took the lead in project management and laid important foundations to get the project on track. I was particularly impressed by his structured approach and his ability to develop creative solutions. Even with differing opinions, the project's success was always at the forefront for Alexander. He fostered constructive collaboration that led to strong results."
+    }
+  ]
+}

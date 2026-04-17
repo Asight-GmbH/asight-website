@@ -1,0 +1,46 @@
+{
+  "headline": "Von der Maschine bis zum<br /><span class=\"highlight\">Management-Cockpit.</span> Alles aus einer Hand.",
+  "subline": "Andere Berater liefern Konzepte oder Tools. Wir liefern die gesamte Kette – von der Datenquelle bis zur Entscheidungsgrundlage.",
+  "steps": [
+    {
+      "number": "01",
+      "title": "Diagnose",
+      "subtitle": "Identifikation von Verschwendung und Compliance-Status.",
+      "points": [
+        "VDA 6.3 Audit & Reifegradbewertung",
+        "Lean Management Methoden",
+        "Engpass-Analyse",
+        "OEE-Potenzialanalyse",
+        "Ist-Aufnahme",
+        "Prozess-Risikobewertung"
+      ]
+    },
+    {
+      "number": "02",
+      "title": "Infrastruktur",
+      "subtitle": "Fundament für Transparenz, Datendurchgängigkeit und 'Single Source of Truth'.",
+      "points": [
+        "Einführung von Shopfloor Management",
+        "Strukturierte Datenerfassung",
+        "Industrial IoT & SPS-Anbindung",
+        "Eliminierung redundanter Excel-Listen",
+        "Visualisierung der Performance",
+        "Sicherstellung der Datenintegrität",
+        "Schnittstellen-Harmonisierung"
+      ]
+    },
+    {
+      "number": "03",
+      "title": "Skalierung",
+      "subtitle": "Aktive Wertschöpfungssteigerung und Zukunftsfähigkeit.",
+      "points": [
+        "Aktive Prozessoptimierung",
+        "Reduktion von Durchlaufzeiten",
+        "Prädiktive Kapazitätsplanung",
+        "Automatisierte OEM-Compliance",
+        "Investitions-Validierung (ROI)",
+        "Nachhaltige Performance-Sicherung"
+      ]
+    }
+  ]
+}

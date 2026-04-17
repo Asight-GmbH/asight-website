@@ -1,5 +1,12 @@
 ---
 import ManagementCockpit from "./ManagementCockpit.astro";
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const hero = await getEntry('pages', `${locale}/hero`);
+const { headline_top, accent_line1, accent_line2, subtitle, cta_text, cta_url } = hero?.data ?? {};
 ---
 <section class="hero">
   <div class="hero-bg">
@@ -9,13 +16,13 @@ import ManagementCockpit from "./ManagementCockpit.astro";
   <div class="container hero-split">
     <div class="hero-text">
       <h1 class="hero-title">
-        <span class="hero-headline-top">Termintreu. Qualitätssicher. Lieferfähig.</span>
-        <span class="hero-accent">Wir wissen, was Ihr Kunde erwartet<br />und wie Sie es liefern.</span>
+        <span class="hero-headline-top">{headline_top}</span>
+        <span class="hero-accent">{accent_line1}<br />{accent_line2}</span>
       </h1>
-      <p class="hero-subtitle">ASIGHT transformiert Shopfloor Daten in echte Entscheidungsgrundlagen. Wir verbessern Prozesse und sichern Ihre Lieferfähigkeit und die Ihrer Lieferanten – für messbare Wertschöpfung ab Tag eins.</p>
+      <p class="hero-subtitle">{subtitle}</p>
       <div class="hero-ctas">
-        <a href="https://tidycal.com/asight/beratungstermin-30min" target="_blank" rel="noopener" class="btn btn-primary-gradient">
-          Jetzt Potenziale erkennen <span>&rarr;</span>
+        <a href={cta_url} target="_blank" rel="noopener" class="btn btn-primary-gradient">
+          {cta_text} <span>&rarr;</span>
         </a>
       </div>
     </div>

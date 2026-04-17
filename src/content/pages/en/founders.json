@@ -1,0 +1,37 @@
+{
+  "headline_highlight": "No overhead. No juniors. Only experts.",
+  "headline_plain": "Senior expertise directly on your site.",
+  "subline": "At ASIGHT there is no handover. You work directly with the minds who drive your project to success – from the first analysis to the final implementation on the shopfloor.",
+  "founders": [
+    {
+      "name": "Alexander Eyb",
+      "role": "Co-Founder & Expert in Process Excellence",
+      "photo": "/assets/pics/Alex_Placeholder.jpeg",
+      "manifesto": [
+        "Real process optimization doesn't happen in meeting rooms, but where value creation takes place. My expertise is based on years of quality and process management at OEMs and Tier-1 suppliers. I know the pain of unstable processes and missing data integrity from firsthand experience.",
+        "My approach: method implementation at eye level. I'm the sparring partner who stands with your team on the shopfloor at seven in the morning. I don't just find the problem – I enable your team to sustainably live the solution. For me, acceptance within the workforce is the decisive lever for measurable efficiency gains."
+      ],
+      "tags": [
+        "Process Optimization (Lean/Six Sigma)",
+        "Capacity Planning",
+        "VDA 6.3 & Compliance",
+        "Production Ramp-ups",
+        "Interim Management"
+      ]
+    },
+    {
+      "name": "Florian Bartsch",
+      "role": "Co-Founder, ASIGHT Consulting",
+      "photo": "/assets/pics/Flo_Placeholder.jpeg",
+      "manifesto": [
+        "I build the solution. I come from project and process management and have experienced firsthand what it's like to spend Friday afternoons copying Excel spreadsheets instead of making decisions. Today I build the systems that make this obsolete – from the PLC on the machine to the dashboard for the plant manager. I harvest data where it originates and turn it into decision templates – for the production manager as well as for the board. And I stay until it works in daily operations."
+      ],
+      "tags": [
+        "Project Management",
+        "Digitalization & Dashboards",
+        "Data Analytics & KPI Systems",
+        "Automation"
+      ]
+    }
+  ]
+}

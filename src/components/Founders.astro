@@ -1,58 +1,41 @@
 ---
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const foundersData = await getEntry('pages', `${locale}/founders`);
+const { headline_highlight, headline_plain, subline, founders } = foundersData?.data ?? {};
 ---
 <section class="founders-section">
   <div class="container">
     <div class="founders-header">
       <h2 class="founders-headline">
-        <span class="highlight">Kein Overhead. Keine Junioren. Nur Experten.</span><br />
-        Senior-Expertise direkt bei Ihnen vor Ort.
+        <span class="highlight">{headline_highlight}</span><br />
+        {headline_plain}
       </h2>
-      <p class="founders-subline">Bei ASIGHT gibt es kein „Handover". Sie arbeiten direkt mit den Köpfen, die Ihr Projekt zum Erfolg führen – von der ersten Analyse bis zur finalen Implementierung auf dem Shopfloor.</p>
+      <p class="founders-subline">{subline}</p>
     </div>
 
-    <!-- Alex Section -->
-    <div class="founder-row">
-      <div class="founder-photo">
-        <img src="/assets/pics/Alex_Placeholder.jpeg" alt="Alexander Eyb" class="founder-img" />
-      </div>
-      <div class="founder-content">
-        <div class="founder-name">Alexander Eyb</div>
-        <div class="founder-role">Co-Founder & Experte für Prozess-Exzellenz</div>
-        <p class="founder-manifesto">
-          Echte Prozessoptimierung entsteht nicht im Besprechungsraum, sondern dort, wo die Wertschöpfung stattfindet. Meine Expertise basiert auf jahrelangem Qualitäts- und Prozessmanagement bei OEMs und Tier-1-Zulieferern. Ich kenne den Schmerz instabiler Prozesse und fehlender Datenintegrität aus der Praxis.
-        </p>
-        <p class="founder-manifesto">
-          Mein Ansatz: Methoden-Implementierung auf Augenhöhe. Ich bin der Sparringspartner, der morgens um sieben mit Ihren Mitarbeitern auf dem Shopfloor steht. Ich finde nicht nur das Problem, sondern befähige Ihr Team, die Lösung nachhaltig zu leben. Für mich ist Akzeptanz in der Belegschaft der entscheidende Hebel für messbare Effizienzsteigerung.
-        </p>
-        <div class="founder-tags">
-          <span class="tag">Prozessoptimierung (Lean/Six Sigma)</span>
-          <span class="tag">Kapazitätsplanung</span>
-          <span class="tag">VDA 6.3 & Compliance</span>
-          <span class="tag">Produktionsanläufe</span>
-          <span class="tag">Interim Management</span>
+    {(founders ?? []).map((founder: any, i: number) => (
+      <div class={`founder-row${i === 1 ? ' founder-row--reverse' : ''}`}>
+        <div class="founder-photo">
+          <img src={founder.photo} alt={founder.name} class="founder-img" />
+        </div>
+        <div class="founder-content">
+          <div class="founder-name">{founder.name}</div>
+          <div class="founder-role">{founder.role}</div>
+          {(founder.manifesto ?? []).map((paragraph: string) => (
+            <p class="founder-manifesto">{paragraph}</p>
+          ))}
+          <div class="founder-tags">
+            {(founder.tags ?? []).map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Flo Section -->
-    <div class="founder-row founder-row--reverse">
-      <div class="founder-photo">
-        <img src="/assets/pics/Flo_Placeholder.jpeg" alt="Florian Bartsch" class="founder-img" />
-      </div>
-      <div class="founder-content">
-        <div class="founder-name">Florian Bartsch</div>
-        <div class="founder-role">Co-Founder, ASIGHT Consulting</div>
-        <p class="founder-manifesto">
-          Ich baue die Lösung. Ich komme aus dem Projekt- und Prozessmanagement und habe selbst erlebt, wie es ist, freitagnachmittags Excel-Listen zusammenzukopieren statt Entscheidungen zu treffen. Heute baue ich die Systeme, die das überflüssig machen – von der SPS an der Maschine bis zum Dashboard beim Werksleiter. Ich ernte die Daten dort, wo sie entstehen, und mache sie zu Entscheidungsvorlagen – für den Produktionsleiter genauso wie für den Vorstand. Und ich bleibe, bis es im Alltag funktioniert.
-        </p>
-        <div class="founder-tags">
-          <span class="tag">Projektmanagement</span>
-          <span class="tag">Digitalisierung & Dashboards</span>
-          <span class="tag">Datenanalyse & KPI-Systeme</span>
-          <span class="tag">Automatisierung</span>
-        </div>
-      </div>
-    </div>
+    ))}
   </div>
 </section>
 

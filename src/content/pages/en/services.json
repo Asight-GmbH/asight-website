@@ -1,0 +1,46 @@
+{
+  "headline": "From the machine to the<br /><span class=\"highlight\">Management Cockpit.</span> Everything from one source.",
+  "subline": "Other consultants deliver concepts or tools. We deliver the entire chain – from data source to decision-making foundation.",
+  "steps": [
+    {
+      "number": "01",
+      "title": "Diagnosis",
+      "subtitle": "Identification of waste and compliance status.",
+      "points": [
+        "VDA 6.3 Audit & Maturity Assessment",
+        "Lean Management Methods",
+        "Bottleneck Analysis",
+        "OEE Potential Analysis",
+        "As-Is Assessment",
+        "Process Risk Evaluation"
+      ]
+    },
+    {
+      "number": "02",
+      "title": "Infrastructure",
+      "subtitle": "Foundation for transparency, data consistency and 'Single Source of Truth'.",
+      "points": [
+        "Shopfloor Management Implementation",
+        "Structured Data Capture",
+        "Industrial IoT & PLC Integration",
+        "Elimination of Redundant Spreadsheets",
+        "Performance Visualization",
+        "Data Integrity Assurance",
+        "Interface Harmonization"
+      ]
+    },
+    {
+      "number": "03",
+      "title": "Scaling",
+      "subtitle": "Active value creation and future-readiness.",
+      "points": [
+        "Active Process Optimization",
+        "Lead Time Reduction",
+        "Predictive Capacity Planning",
+        "Automated OEM Compliance",
+        "Investment Validation (ROI)",
+        "Sustainable Performance Assurance"
+      ]
+    }
+  ]
+}

@@ -9,4 +9,11 @@ export default defineConfig({
   site: 'https://asightconsulting.com',
   adapter: vercel(),
   output: 'server',
+  i18n: {
+    defaultLocale: 'de',
+    locales: ['de', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
 });

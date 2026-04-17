@@ -1,31 +1,18 @@
 ---
-const testimonials = [
-  {
-    name: "Tin-Duc Nguyen",
-    position: "Manager / Projektleiter EEDoc, Daimler Truck North America",
-    photo: "/assets/pics/Tin-Duc_Nguyen_Referenz.png",
-    quote: "Alexander hat mich während meiner Zeit bei Daimler Truck im Rahmen eines softwaredefinierten Fahrzeugprojekts projektmanagementseitig unterstützt – technisch anspruchsvoll und strategisch relevant für den Wandel hin zu einer softwarebasierten Fahrzeugarchitektur. Durch seine strukturierte Herangehensweise hat er konkrete nächste Schritte sichergestellt – das gab dem Projekt erkennbares Momentum. Auch im Konzernumfeld hat er sich professionell und verbindlich auf allen Ebenen eingebracht. Ich habe die Zusammenarbeit mit Alexander als äußerst positiv erlebt – engagiert, strukturiert und verlässlich in der Umsetzung."
-  },
-  {
-    name: "Nicolai Dittrich",
-    position: "Vertriebsleiter, njvision",
-    photo: "/assets/pics/Nicolai_Dittrich_Referenz.png",
-    quote: "Die Zusammenarbeit mit Alexander und Florian im Rahmen einer Analyse unserer Vertriebsprozesse war für uns äußerst gewinnbringend. Beide traten vom ersten Tag an sehr strukturiert, professionell und gleichzeitig nahbar auf. Durch ihre analytische Stärke und methodische Klarheit gelang es ihnen, auch verborgene Schwachstellen in unseren Abläufen sichtbar zu machen und konkrete Handlungsempfehlungen zu formulieren. Was ich besonders geschätzt habe, war ihre Fähigkeit, komplexe Themen verständlich aufzubereiten und dabei unser Team aktiv einzubinden. So entstand nicht nur eine belastbare Analyse, sondern auch eine gemeinsame Grundlage für nachhaltige Verbesserungen."
-  },
-  {
-    name: "Tobias Zimmermann",
-    position: "Projektleiter Batterie Nacharbeit, Mercedes-Benz U.S. International",
-    photo: "/assets/pics/Tobias_Zimmermann_Referenz.png",
-    quote: "Mit Alexander habe ich in einer herausfordernden Phase eng zusammengearbeitet. Er übernahm die Führung im Projektmanagement und legte wichtige Grundsteine, um das Projekt auf Kurs zu bringen. Besonders beeindruckte mich seine strukturierte Herangehensweise und seine Fähigkeit, ideenreiche Lösungen zu entwickeln. Auch bei unterschiedlichen Meinungen stand für Alexander stets der Projekterfolg im Mittelpunkt. Er förderte eine konstruktive Zusammenarbeit, die zu starken Ergebnissen führte."
-  }
-];
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const headlineData = await getEntry('pages', `${locale}/testimonials-headline`);
+const { headline: testimonialsHeadline, testimonials } = headlineData?.data ?? {};
 ---
 
 <section id="referenzen" class="testimonials-section">
   <div class="container">
-    <h2 class="testimonials-headline">Das sagen unsere Kunden</h2>
+    <h2 class="testimonials-headline">{testimonialsHeadline}</h2>
     <div class="testimonials-grid">
-      {testimonials.map((t, i) => (
+      {(testimonials ?? []).map((t: any, i: number) => (
         <div class={`testimonial-card testimonial-card--${i === 0 ? 'cyan' : i === 1 ? 'purple' : 'orange'}`}>
           <div class="stars">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>

@@ -1,12 +1,19 @@
 ---
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const contact = await getEntry('pages', `${locale}/contact`);
+const { section_label, headline, description, cta_title, cta_description, cta_button_text, cta_url } = contact?.data ?? {};
 ---
 <section id="kontakt" class="section">
   <div class="container">
     <div class="contact-grid">
       <div class="contact-info">
-        <div class="section-label">Kontakt</div>
-        <h2 class="section-title">Lassen Sie uns sprechen.</h2>
-        <p class="contact-desc">Egal ob konkretes Projekt oder erste Orientierung &ndash; wir nehmen uns Zeit für Ihr Anliegen.</p>
+        <div class="section-label">{section_label}</div>
+        <h2 class="section-title">{headline}</h2>
+        <p class="contact-desc">{description}</p>
         <div class="contact-details">
           <div class="contact-item">
             <div class="contact-item-label">E-Mail</div>
@@ -28,9 +35,9 @@
       </div>
       <div class="contact-cta">
         <div class="cta-card">
-          <h3 class="cta-title">Erstgespräch vereinbaren</h3>
-          <p class="cta-desc">Wir besprechen Ihren Bedarf und zeigen Ihnen, wie wir helfen können. Kostenlos und unverbindlich.</p>
-          <a href="https://tidycal.com/asight/beratungstermin-30min" class="btn btn-primary" target="_blank" style="width:100%;justify-content:center;">Termin wählen &rarr;</a>
+          <h3 class="cta-title">{cta_title}</h3>
+          <p class="cta-desc">{cta_description}</p>
+          <a href={cta_url} class="btn btn-primary" target="_blank" style="width:100%;justify-content:center;">{cta_button_text} &rarr;</a>
           <div class="cta-channels">
             <a href="https://wa.me/491736754423" class="channel-link" target="_blank">WhatsApp</a>
             <a href="mailto:a.eyb@asightconsulting.com" class="channel-link">E-Mail</a>

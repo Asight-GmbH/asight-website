@@ -1,0 +1,9 @@
+{
+  "nav_items": [
+    { "label": "Services", "href": "/#services" },
+    { "label": "Referenzen", "href": "/#referenzen" },
+    { "label": "Kontakt", "href": "/#kontakt" }
+  ],
+  "cta_text": "Termin buchen",
+  "cta_href": "/#kontakt"
+}

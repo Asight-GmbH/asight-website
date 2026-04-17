@@ -1,9 +1,11 @@
 ---
-const navItems = [
-  { label: "Services", href: "/#services" },
-  { label: "Referenzen", href: "/#referenzen" },
-  { label: "Kontakt", href: "/#kontakt" },
-];
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const header = await getEntry('pages', `${locale}/header`);
+const { nav_items, cta_text, cta_href } = header?.data ?? {};
 ---
 
 <header class="header">
@@ -12,11 +14,14 @@ const navItems = [
       <img src="/assets/logos/ASIGHT Wordmark final.svg" alt="ASIGHT Consulting" class="logo-img" />
     </a>
     <nav class="nav">
-      {navItems.map((item) => (
+      {(nav_items ?? []).map((item: any) => (
         <a href={item.href} class="nav-link">{item.label}</a>
       ))}
     </nav>
-    <a href="/#kontakt" class="btn btn-primary btn-sm">Termin buchen</a>
+    <div class="header-right">
+      <a href={locale === 'de' ? '/en/' : '/'} class="lang-switch">{locale === 'de' ? 'EN' : 'DE'}</a>
+      <a href={cta_href} class="btn btn-primary btn-sm">{cta_text}</a>
+    </div>
   </div>
 </header>
 
@@ -28,6 +33,9 @@ const navItems = [
   .nav { display: flex; gap: 2rem; }
   .nav-link { font-size: 0.875rem; font-weight: 500; color: var(--c-text-secondary); text-decoration: none; transition: color var(--t-fast); }
   .nav-link:hover { color: var(--c-accent); }
+  .header-right { display: flex; align-items: center; gap: 1rem; }
+  .lang-switch { font-size: 0.8rem; font-weight: 600; color: var(--c-text-muted); text-decoration: none; padding: 0.3rem 0.6rem; border: 1px solid var(--c-border); border-radius: 4px; transition: all 0.2s ease; }
+  .lang-switch:hover { color: var(--c-accent); border-color: var(--c-accent); }
   .btn-sm { padding: 0.55rem 1.25rem; font-size: 0.825rem; }
   @media (max-width: 768px) { .nav { display: none; } }
 </style>

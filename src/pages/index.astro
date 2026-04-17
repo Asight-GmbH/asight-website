@@ -9,16 +9,18 @@ import Founders from "../components/Founders.astro";
 import Testimonials from "../components/Testimonials.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
+
+const locale = "de";
 ---
 
-<BaseLayout title="ASIGHT Consulting | Projektmanagement, Prozessoptimierung & Digitale Lösungen">
-  <Header />
-  <Hero />
-  <ImpactStrip />
-  <SocialProof />
-  <Services />
-  <Founders />
-  <Testimonials />
-  <Contact />
-  <Footer />
+<BaseLayout title="ASIGHT Consulting | Projektmanagement, Prozessoptimierung & Digitale Lösungen" lang={locale}>
+  <Header locale={locale} />
+  <Hero locale={locale} />
+  <ImpactStrip locale={locale} />
+  <SocialProof locale={locale} />
+  <Services locale={locale} />
+  <Founders locale={locale} />
+  <Testimonials locale={locale} />
+  <Contact locale={locale} />
+  <Footer locale={locale} />
 </BaseLayout>
