@@ -5,7 +5,7 @@
   "founders": [
     {
       "name": "Alexander Eyb",
-      "role": "Co-Founder & Expert in Process Excellence",
+      "role": "Founder",
       "photo": "/assets/pics/Alexander_Eyb.png",
       "manifesto": [
         "Real process optimization doesn't happen in meeting rooms, but where value creation takes place. My expertise is based on years of quality and process management at OEMs and Tier-1 suppliers. I know the pain of unstable processes and missing data integrity from firsthand experience.",
@@ -21,7 +21,7 @@
     },
     {
       "name": "Florian Bartsch",
-      "role": "Co-Founder, ASIGHT Consulting",
+      "role": "Co-Founder, ASIGHT Solutions",
       "photo": "/assets/pics/Florian_Bartsch_Color.png",
       "manifesto": [
         "I build the solution. I come from project and process management and have experienced firsthand what it's like to spend Friday afternoons copying Excel spreadsheets instead of making decisions. Today I build the systems that make this obsolete – from the PLC on the machine to the dashboard for the plant manager. I harvest data where it originates and turn it into decision templates – for the production manager as well as for the board. And I stay until it works in daily operations."
