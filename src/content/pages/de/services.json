@@ -1,6 +1,6 @@
 {
   "headline": "Von der Maschine bis zum<br /><span class=\"highlight\">Management-Cockpit.</span> Alles aus einer Hand.",
-  "subline": "Andere Berater liefern Konzepte oder Tools. Wir liefern die gesamte Kette – von der Datenquelle bis zur Entscheidungsgrundlage.",
+  "subline": "Wir begleiten Sie vom Anlagenaufbau bis zur datenbasierten Entscheidungsgrundlage.",
   "steps": [
     {
       "number": "01",
@@ -8,11 +8,12 @@
       "subtitle": "Identifikation von Verschwendung und Compliance-Status.",
       "points": [
         "VDA 6.3 Audit & Reifegradbewertung",
-        "Lean Management Methoden",
-        "Engpass-Analyse",
+        "Projektmanagement Methodik & Steuerung",
+        "Lean Management Pinzipien",
+        "Ist-Aufnahme & Engpass Analyse",
         "OEE-Potenzialanalyse",
-        "Ist-Aufnahme",
-        "Prozess-Risikobewertung"
+        "Prozess Risikobewertung",
+        "Definition von KPI Standards"
       ]
     },
     {
