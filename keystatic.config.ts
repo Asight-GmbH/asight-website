@@ -17,43 +17,132 @@ const req = { isRequired: true } as const;
 
 // Reusable schemas
 const heroSchema = {
-  headline_top: fields.text({ label: 'Headline (Zeile 1)', validation: req }),
-  accent_line1: fields.text({ label: 'Accent Text (Zeile 1)', validation: req }),
-  accent_line2: fields.text({ label: 'Accent Text (Zeile 2)', validation: req }),
-  subtitle: fields.text({ label: 'Subtitle', multiline: true, validation: req }),
-  cta_text: fields.text({ label: 'CTA Button Text', validation: req }),
-  cta_url: fields.text({ label: 'CTA URL', validation: req }),
+  headline_top: fields.text({
+    label: 'Headline (Zeile 1)',
+    description: 'Erste, weiße Zeile der Hero-Headline.',
+    validation: req,
+  }),
+  accent_line1: fields.text({
+    label: 'Accent Text (Zeile 1)',
+    description: 'Farbige Zeile direkt darunter — erste Zeile.',
+    validation: req,
+  }),
+  accent_line2: fields.text({
+    label: 'Accent Text (Zeile 2)',
+    description: 'Farbige Zeile — zweite Zeile.',
+    validation: req,
+  }),
+  subtitle: fields.text({
+    label: 'Subtitle',
+    description: 'Beschreibungstext unter der Headline.',
+    multiline: true,
+    validation: req,
+  }),
+  cta_text: fields.text({
+    label: 'CTA Button Text',
+    description: 'Text auf dem Haupt-Button. Kurz halten.',
+    validation: req,
+  }),
+  cta_url: fields.text({
+    label: 'CTA URL',
+    description: 'Volle URL (https://...) zu der der Button führen soll.',
+    validation: req,
+  }),
 };
 
 const impactSchema = {
-  headline: fields.text({ label: 'Headline', validation: req }),
-  subline: fields.text({ label: 'Subline', multiline: true, validation: req }),
+  headline: fields.text({
+    label: 'Headline',
+    description: 'Überschrift der Impact-Sektion.',
+    validation: req,
+  }),
+  subline: fields.text({
+    label: 'Subline',
+    description: 'Unterzeile mit Kontext zur Headline.',
+    multiline: true,
+    validation: req,
+  }),
   cards: fields.array(
     fields.object({
-      title: fields.text({ label: 'Titel', validation: req }),
-      subtitle: fields.text({ label: 'Subtitle', validation: req }),
-      description: fields.text({ label: 'Beschreibung', multiline: true, validation: req }),
+      title: fields.text({
+        label: 'Titel',
+        description: 'Karten-Titel.',
+        validation: req,
+      }),
+      subtitle: fields.text({
+        label: 'Subtitle',
+        description: 'Ein-Satz-Zusammenfassung.',
+        validation: req,
+      }),
+      description: fields.text({
+        label: 'Beschreibung',
+        description: 'Detail-Beschreibung der Karte.',
+        multiline: true,
+        validation: req,
+      }),
     }),
     { label: 'Karten', itemLabel: (props) => props.fields.title.value || 'Neue Karte' }
   ),
 };
 
 const socialproofSchema = {
-  headline: fields.text({ label: 'Headline', validation: req }),
-  client_label: fields.text({ label: 'Kunden Label', validation: req }),
-  transition_text: fields.text({ label: 'Überleitung Text', validation: req }),
-  transition_emphasis: fields.text({ label: 'Überleitung Hervorhebung', validation: req }),
-  oem_label: fields.text({ label: 'OEM Label', validation: req }),
+  headline: fields.text({
+    label: 'Headline',
+    description: 'Überschrift über den Logos.',
+    validation: req,
+  }),
+  client_label: fields.text({
+    label: 'Kunden Label',
+    description: 'Kleine Überschrift vor den Kunden-Logos (z.B. "UNSERE KUNDEN").',
+    validation: req,
+  }),
+  transition_text: fields.text({
+    label: 'Überleitung Text',
+    description: 'Text zwischen Kunden- und OEM-Sektion.',
+    validation: req,
+  }),
+  transition_emphasis: fields.text({
+    label: 'Überleitung Hervorhebung',
+    description: 'Kursive zweite Zeile der Überleitung.',
+    validation: req,
+  }),
+  oem_label: fields.text({
+    label: 'OEM Label',
+    description: 'Kleine Überschrift vor den OEM-Logos (z.B. "BEAUFTRAGT VON").',
+    validation: req,
+  }),
 };
 
 const servicesSchema = {
-  headline: fields.text({ label: 'Headline', multiline: true, validation: req }),
-  subline: fields.text({ label: 'Subline', multiline: true, validation: req }),
+  headline: fields.text({
+    label: 'Headline',
+    description: 'Hauptüberschrift. HTML erlaubt (z.B. <span class="highlight">).',
+    multiline: true,
+    validation: req,
+  }),
+  subline: fields.text({
+    label: 'Subline',
+    description: 'Unterzeile mit Kontext.',
+    multiline: true,
+    validation: req,
+  }),
   steps: fields.array(
     fields.object({
-      number: fields.text({ label: 'Nummer', validation: req }),
-      title: fields.text({ label: 'Titel', validation: req }),
-      subtitle: fields.text({ label: 'Subtitle', validation: req }),
+      number: fields.text({
+        label: 'Nummer',
+        description: 'Schritt-Nummer (z.B. "01", "02").',
+        validation: req,
+      }),
+      title: fields.text({
+        label: 'Titel',
+        description: 'Titel des Schritts.',
+        validation: req,
+      }),
+      subtitle: fields.text({
+        label: 'Subtitle',
+        description: 'Kurze Beschreibung des Schritts.',
+        validation: req,
+      }),
       points: fields.array(
         fields.text({ label: 'Punkt', validation: req }),
         { label: 'Stichpunkte', itemLabel: (props) => props.value || 'Neuer Punkt' }
@@ -64,17 +153,45 @@ const servicesSchema = {
 };
 
 const foundersSchema = {
-  headline_highlight: fields.text({ label: 'Headline Highlight', validation: req }),
-  headline_plain: fields.text({ label: 'Headline Text', validation: req }),
-  subline: fields.text({ label: 'Subline', multiline: true, validation: req }),
+  headline_highlight: fields.text({
+    label: 'Headline Highlight',
+    description: 'Hervorgehobener Teil der Headline (in Farbe).',
+    validation: req,
+  }),
+  headline_plain: fields.text({
+    label: 'Headline Text',
+    description: 'Normaler Teil der Headline.',
+    validation: req,
+  }),
+  subline: fields.text({
+    label: 'Subline',
+    description: 'Einführungstext für den Gründer-Abschnitt.',
+    multiline: true,
+    validation: req,
+  }),
   founders: fields.array(
     fields.object({
-      name: fields.text({ label: 'Name', validation: req }),
-      role: fields.text({ label: 'Rolle', validation: req }),
-      photo: fields.text({ label: 'Foto Pfad', validation: req }),
+      name: fields.text({
+        label: 'Name',
+        description: 'Vollständiger Name des Gründers.',
+        validation: req,
+      }),
+      role: fields.text({
+        label: 'Rolle',
+        description: 'Job-Titel / Rolle.',
+        validation: req,
+      }),
+      photo: fields.text({
+        label: 'Foto Pfad',
+        description: 'Pfad zum Foto (z.B. /assets/pics/name.jpeg). Datei muss unter public/assets/pics/ liegen.',
+        validation: req,
+      }),
       manifesto: fields.array(
         fields.text({ label: 'Absatz', multiline: true, validation: req }),
-        { label: 'Manifesto Absätze', itemLabel: (props) => (props.value || '').substring(0, 50) + '...' }
+        {
+          label: 'Manifesto Absätze',
+          itemLabel: (props) => (props.value || '').substring(0, 50) + '...',
+        }
       ),
       tags: fields.array(
         fields.text({ label: 'Tag', validation: req }),
@@ -86,35 +203,102 @@ const foundersSchema = {
 };
 
 const contactSchema = {
-  section_label: fields.text({ label: 'Section Label', validation: req }),
-  headline: fields.text({ label: 'Headline', validation: req }),
-  description: fields.text({ label: 'Beschreibung', multiline: true, validation: req }),
-  cta_title: fields.text({ label: 'CTA Titel', validation: req }),
-  cta_description: fields.text({ label: 'CTA Beschreibung', multiline: true, validation: req }),
-  cta_button_text: fields.text({ label: 'CTA Button Text', validation: req }),
-  cta_url: fields.text({ label: 'CTA URL', validation: req }),
+  section_label: fields.text({
+    label: 'Section Label',
+    description: 'Kleine Überschrift (z.B. "Kontakt").',
+    validation: req,
+  }),
+  headline: fields.text({
+    label: 'Headline',
+    description: 'Hauptüberschrift der Kontakt-Sektion.',
+    validation: req,
+  }),
+  description: fields.text({
+    label: 'Beschreibung',
+    description: 'Kurzer Text unter der Headline.',
+    multiline: true,
+    validation: req,
+  }),
+  cta_title: fields.text({
+    label: 'CTA Titel',
+    description: 'Titel der CTA-Karte rechts.',
+    validation: req,
+  }),
+  cta_description: fields.text({
+    label: 'CTA Beschreibung',
+    description: 'Text in der CTA-Karte.',
+    multiline: true,
+    validation: req,
+  }),
+  cta_button_text: fields.text({
+    label: 'CTA Button Text',
+    description: 'Text auf dem Button (z.B. "Termin wählen").',
+    validation: req,
+  }),
+  cta_url: fields.text({
+    label: 'CTA URL',
+    description: 'Volle URL (https://...) zu der der Button führen soll.',
+    validation: req,
+  }),
 };
 
 const headerSchema = {
   nav_items: fields.array(
     fields.object({
-      label: fields.text({ label: 'Label', validation: req }),
-      href: fields.text({ label: 'Link', validation: req }),
+      label: fields.text({
+        label: 'Label',
+        description: 'Sichtbarer Navigations-Text.',
+        validation: req,
+      }),
+      href: fields.text({
+        label: 'Link',
+        description: 'Anker-Link (z.B. /#services) oder URL.',
+        validation: req,
+      }),
     }),
     { label: 'Navigation', itemLabel: (props) => props.fields.label.value || 'Neuer Link' }
   ),
-  cta_text: fields.text({ label: 'CTA Button Text', validation: req }),
-  cta_href: fields.text({ label: 'CTA Link', validation: req }),
+  cta_text: fields.text({
+    label: 'CTA Button Text',
+    description: 'Text auf dem Button rechts im Header.',
+    validation: req,
+  }),
+  cta_href: fields.text({
+    label: 'CTA Link',
+    description: 'Ziel-Link des Header-Buttons.',
+    validation: req,
+  }),
 };
 
 const testimonialsHeadlineSchema = {
-  headline: fields.text({ label: 'Headline', validation: req }),
+  headline: fields.text({
+    label: 'Headline',
+    description: 'Überschrift der Testimonials-Sektion.',
+    validation: req,
+  }),
   testimonials: fields.array(
     fields.object({
-      name: fields.text({ label: 'Name', validation: req }),
-      position: fields.text({ label: 'Position / Firma', validation: req }),
-      photo: fields.text({ label: 'Foto Pfad', validation: req }),
-      quote: fields.text({ label: 'Zitat', multiline: true, validation: req }),
+      name: fields.text({
+        label: 'Name',
+        description: 'Voller Name der Person.',
+        validation: req,
+      }),
+      position: fields.text({
+        label: 'Position / Firma',
+        description: 'Job-Titel und Firma.',
+        validation: req,
+      }),
+      photo: fields.text({
+        label: 'Foto Pfad',
+        description: 'Pfad zum Foto (z.B. /assets/pics/name.png).',
+        validation: req,
+      }),
+      quote: fields.text({
+        label: 'Zitat',
+        description: 'Das Kundenzitat.',
+        multiline: true,
+        validation: req,
+      }),
     }),
     { label: 'Testimonials', itemLabel: (props) => props.fields.name.value || 'Neues Testimonial' }
   ),
@@ -138,7 +322,7 @@ export default config({
         'hero_en', 'impact_en', 'socialproof_en', 'services_en',
         'founders_en', 'testimonials_headline_en', 'contact_en', 'header_en',
       ],
-      'Collections': ['testimonials', 'blog', 'team'],
+      'Einträge': ['testimonials', 'blog', 'team'],
     },
   },
   singletons: {
@@ -169,8 +353,8 @@ export default config({
       path: 'src/content/testimonials/*',
       format: { contentField: 'content' },
       schema: {
-        name: fields.text({ label: 'Name', validation: { isRequired: true } }),
-        position: fields.text({ label: 'Position', validation: { isRequired: true } }),
+        name: fields.text({ label: 'Name', validation: req }),
+        position: fields.text({ label: 'Position', validation: req }),
         locale: fields.select({
           label: 'Sprache',
           options: [
@@ -191,10 +375,10 @@ export default config({
       path: 'src/content/blog/*',
       format: { contentField: 'content' },
       schema: {
-        title: fields.text({ label: 'Titel', validation: { isRequired: true } }),
-        date: fields.date({ label: 'Datum', validation: { isRequired: true } }),
-        author: fields.text({ label: 'Autor', validation: { isRequired: true } }),
-        excerpt: fields.text({ label: 'Auszug', multiline: true, validation: { isRequired: true } }),
+        title: fields.text({ label: 'Titel', validation: req }),
+        date: fields.date({ label: 'Datum', validation: req }),
+        author: fields.text({ label: 'Autor', validation: req }),
+        excerpt: fields.text({ label: 'Auszug', multiline: true, validation: req }),
         locale: fields.select({
           label: 'Sprache',
           options: [
@@ -207,7 +391,11 @@ export default config({
           fields.text({ label: 'Tag' }),
           { label: 'Tags', itemLabel: (props) => props.value || 'Neuer Tag' }
         ),
-        published: fields.checkbox({ label: 'Veröffentlicht', defaultValue: false }),
+        published: fields.checkbox({
+          label: 'Veröffentlicht',
+          description: 'Nur veröffentlichte Artikel erscheinen auf der Website.',
+          defaultValue: false,
+        }),
         content: fields.mdx({ label: 'Inhalt' }),
       },
     }),
@@ -218,9 +406,9 @@ export default config({
       path: 'src/content/team/*',
       format: { contentField: 'content' },
       schema: {
-        name: fields.text({ label: 'Name', validation: { isRequired: true } }),
-        role: fields.text({ label: 'Rolle', validation: { isRequired: true } }),
-        location: fields.text({ label: 'Standort', validation: { isRequired: true } }),
+        name: fields.text({ label: 'Name', validation: req }),
+        role: fields.text({ label: 'Rolle', validation: req }),
+        location: fields.text({ label: 'Standort', validation: req }),
         locale: fields.select({
           label: 'Sprache',
           options: [
