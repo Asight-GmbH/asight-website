@@ -3,7 +3,11 @@ import { glob } from 'astro/loaders';
 
 // Page singletons (JSON data files for each section, per locale)
 const pages = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: 'src/content/pages' }),
+  loader: glob({
+    pattern: '**/index.json',
+    base: 'src/content/pages',
+    generateId: ({ entry }) => entry.replace(/\/index\.json$/, ''),
+  }),
   schema: z.any(),
 });
 
