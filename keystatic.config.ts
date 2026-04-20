@@ -12,47 +12,50 @@ function localeSingleton(label: string, basePath: string, locale: string, schema
   });
 }
 
+// Helper: shortcut for required text fields
+const req = { isRequired: true } as const;
+
 // Reusable schemas
 const heroSchema = {
-  headline_top: fields.text({ label: 'Headline (Zeile 1)' }),
-  accent_line1: fields.text({ label: 'Accent Text (Zeile 1)' }),
-  accent_line2: fields.text({ label: 'Accent Text (Zeile 2)' }),
-  subtitle: fields.text({ label: 'Subtitle', multiline: true }),
-  cta_text: fields.text({ label: 'CTA Button Text' }),
-  cta_url: fields.text({ label: 'CTA URL' }),
+  headline_top: fields.text({ label: 'Headline (Zeile 1)', validation: req }),
+  accent_line1: fields.text({ label: 'Accent Text (Zeile 1)', validation: req }),
+  accent_line2: fields.text({ label: 'Accent Text (Zeile 2)', validation: req }),
+  subtitle: fields.text({ label: 'Subtitle', multiline: true, validation: req }),
+  cta_text: fields.text({ label: 'CTA Button Text', validation: req }),
+  cta_url: fields.text({ label: 'CTA URL', validation: req }),
 };
 
 const impactSchema = {
-  headline: fields.text({ label: 'Headline' }),
-  subline: fields.text({ label: 'Subline', multiline: true }),
+  headline: fields.text({ label: 'Headline', validation: req }),
+  subline: fields.text({ label: 'Subline', multiline: true, validation: req }),
   cards: fields.array(
     fields.object({
-      title: fields.text({ label: 'Titel' }),
-      subtitle: fields.text({ label: 'Subtitle' }),
-      description: fields.text({ label: 'Beschreibung', multiline: true }),
+      title: fields.text({ label: 'Titel', validation: req }),
+      subtitle: fields.text({ label: 'Subtitle', validation: req }),
+      description: fields.text({ label: 'Beschreibung', multiline: true, validation: req }),
     }),
     { label: 'Karten', itemLabel: (props) => props.fields.title.value || 'Neue Karte' }
   ),
 };
 
 const socialproofSchema = {
-  headline: fields.text({ label: 'Headline' }),
-  client_label: fields.text({ label: 'Kunden Label' }),
-  transition_text: fields.text({ label: 'Überleitung Text' }),
-  transition_emphasis: fields.text({ label: 'Überleitung Hervorhebung' }),
-  oem_label: fields.text({ label: 'OEM Label' }),
+  headline: fields.text({ label: 'Headline', validation: req }),
+  client_label: fields.text({ label: 'Kunden Label', validation: req }),
+  transition_text: fields.text({ label: 'Überleitung Text', validation: req }),
+  transition_emphasis: fields.text({ label: 'Überleitung Hervorhebung', validation: req }),
+  oem_label: fields.text({ label: 'OEM Label', validation: req }),
 };
 
 const servicesSchema = {
-  headline: fields.text({ label: 'Headline', multiline: true }),
-  subline: fields.text({ label: 'Subline', multiline: true }),
+  headline: fields.text({ label: 'Headline', multiline: true, validation: req }),
+  subline: fields.text({ label: 'Subline', multiline: true, validation: req }),
   steps: fields.array(
     fields.object({
-      number: fields.text({ label: 'Nummer' }),
-      title: fields.text({ label: 'Titel' }),
-      subtitle: fields.text({ label: 'Subtitle' }),
+      number: fields.text({ label: 'Nummer', validation: req }),
+      title: fields.text({ label: 'Titel', validation: req }),
+      subtitle: fields.text({ label: 'Subtitle', validation: req }),
       points: fields.array(
-        fields.text({ label: 'Punkt' }),
+        fields.text({ label: 'Punkt', validation: req }),
         { label: 'Stichpunkte', itemLabel: (props) => props.value || 'Neuer Punkt' }
       ),
     }),
@@ -61,20 +64,20 @@ const servicesSchema = {
 };
 
 const foundersSchema = {
-  headline_highlight: fields.text({ label: 'Headline Highlight' }),
-  headline_plain: fields.text({ label: 'Headline Text' }),
-  subline: fields.text({ label: 'Subline', multiline: true }),
+  headline_highlight: fields.text({ label: 'Headline Highlight', validation: req }),
+  headline_plain: fields.text({ label: 'Headline Text', validation: req }),
+  subline: fields.text({ label: 'Subline', multiline: true, validation: req }),
   founders: fields.array(
     fields.object({
-      name: fields.text({ label: 'Name' }),
-      role: fields.text({ label: 'Rolle' }),
-      photo: fields.text({ label: 'Foto Pfad' }),
+      name: fields.text({ label: 'Name', validation: req }),
+      role: fields.text({ label: 'Rolle', validation: req }),
+      photo: fields.text({ label: 'Foto Pfad', validation: req }),
       manifesto: fields.array(
-        fields.text({ label: 'Absatz', multiline: true }),
+        fields.text({ label: 'Absatz', multiline: true, validation: req }),
         { label: 'Manifesto Absätze', itemLabel: (props) => (props.value || '').substring(0, 50) + '...' }
       ),
       tags: fields.array(
-        fields.text({ label: 'Tag' }),
+        fields.text({ label: 'Tag', validation: req }),
         { label: 'Tags', itemLabel: (props) => props.value || 'Neuer Tag' }
       ),
     }),
@@ -83,35 +86,35 @@ const foundersSchema = {
 };
 
 const contactSchema = {
-  section_label: fields.text({ label: 'Section Label' }),
-  headline: fields.text({ label: 'Headline' }),
-  description: fields.text({ label: 'Beschreibung', multiline: true }),
-  cta_title: fields.text({ label: 'CTA Titel' }),
-  cta_description: fields.text({ label: 'CTA Beschreibung', multiline: true }),
-  cta_button_text: fields.text({ label: 'CTA Button Text' }),
-  cta_url: fields.text({ label: 'CTA URL' }),
+  section_label: fields.text({ label: 'Section Label', validation: req }),
+  headline: fields.text({ label: 'Headline', validation: req }),
+  description: fields.text({ label: 'Beschreibung', multiline: true, validation: req }),
+  cta_title: fields.text({ label: 'CTA Titel', validation: req }),
+  cta_description: fields.text({ label: 'CTA Beschreibung', multiline: true, validation: req }),
+  cta_button_text: fields.text({ label: 'CTA Button Text', validation: req }),
+  cta_url: fields.text({ label: 'CTA URL', validation: req }),
 };
 
 const headerSchema = {
   nav_items: fields.array(
     fields.object({
-      label: fields.text({ label: 'Label' }),
-      href: fields.text({ label: 'Link' }),
+      label: fields.text({ label: 'Label', validation: req }),
+      href: fields.text({ label: 'Link', validation: req }),
     }),
     { label: 'Navigation', itemLabel: (props) => props.fields.label.value || 'Neuer Link' }
   ),
-  cta_text: fields.text({ label: 'CTA Button Text' }),
-  cta_href: fields.text({ label: 'CTA Link' }),
+  cta_text: fields.text({ label: 'CTA Button Text', validation: req }),
+  cta_href: fields.text({ label: 'CTA Link', validation: req }),
 };
 
 const testimonialsHeadlineSchema = {
-  headline: fields.text({ label: 'Headline' }),
+  headline: fields.text({ label: 'Headline', validation: req }),
   testimonials: fields.array(
     fields.object({
-      name: fields.text({ label: 'Name' }),
-      position: fields.text({ label: 'Position / Firma' }),
-      photo: fields.text({ label: 'Foto Pfad' }),
-      quote: fields.text({ label: 'Zitat', multiline: true }),
+      name: fields.text({ label: 'Name', validation: req }),
+      position: fields.text({ label: 'Position / Firma', validation: req }),
+      photo: fields.text({ label: 'Foto Pfad', validation: req }),
+      quote: fields.text({ label: 'Zitat', multiline: true, validation: req }),
     }),
     { label: 'Testimonials', itemLabel: (props) => props.fields.name.value || 'Neues Testimonial' }
   ),
