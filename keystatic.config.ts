@@ -15,33 +15,36 @@ function localeSingleton(label: string, basePath: string, locale: string, schema
 // Helper: shortcut for required text fields
 const req = { isRequired: true } as const;
 
+// Helper: required with max length
+const reqMax = (max: number) => ({ isRequired: true, length: { max } });
+
 // Reusable schemas
 const heroSchema = {
   headline_top: fields.text({
     label: 'Headline (Zeile 1)',
-    description: 'Erste, weiße Zeile der Hero-Headline.',
-    validation: req,
+    description: 'Erste, weiße Zeile der Hero-Headline. Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
   accent_line1: fields.text({
     label: 'Accent Text (Zeile 1)',
-    description: 'Farbige Zeile direkt darunter — erste Zeile.',
-    validation: req,
+    description: 'Farbige Zeile direkt darunter — erste Zeile. Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
   accent_line2: fields.text({
     label: 'Accent Text (Zeile 2)',
-    description: 'Farbige Zeile — zweite Zeile.',
-    validation: req,
+    description: 'Farbige Zeile — zweite Zeile. Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
   subtitle: fields.text({
     label: 'Subtitle',
-    description: 'Beschreibungstext unter der Headline.',
+    description: 'Beschreibungstext unter der Headline. Max. 400 Zeichen.',
     multiline: true,
-    validation: req,
+    validation: reqMax(400),
   }),
   cta_text: fields.text({
     label: 'CTA Button Text',
-    description: 'Text auf dem Haupt-Button. Kurz halten.',
-    validation: req,
+    description: 'Text auf dem Haupt-Button. Kurz halten. Max. 50 Zeichen.',
+    validation: reqMax(50),
   }),
   cta_url: fields.text({
     label: 'CTA URL',
@@ -53,32 +56,32 @@ const heroSchema = {
 const impactSchema = {
   headline: fields.text({
     label: 'Headline',
-    description: 'Überschrift der Impact-Sektion.',
-    validation: req,
+    description: 'Überschrift der Impact-Sektion. Max. 100 Zeichen.',
+    validation: reqMax(100),
   }),
   subline: fields.text({
     label: 'Subline',
-    description: 'Unterzeile mit Kontext zur Headline.',
+    description: 'Unterzeile mit Kontext zur Headline. Max. 250 Zeichen.',
     multiline: true,
-    validation: req,
+    validation: reqMax(250),
   }),
   cards: fields.array(
     fields.object({
       title: fields.text({
         label: 'Titel',
-        description: 'Karten-Titel.',
-        validation: req,
+        description: 'Karten-Titel. Max. 50 Zeichen.',
+        validation: reqMax(50),
       }),
       subtitle: fields.text({
         label: 'Subtitle',
-        description: 'Ein-Satz-Zusammenfassung.',
-        validation: req,
+        description: 'Ein-Satz-Zusammenfassung. Max. 80 Zeichen.',
+        validation: reqMax(80),
       }),
       description: fields.text({
         label: 'Beschreibung',
-        description: 'Detail-Beschreibung der Karte.',
+        description: 'Detail-Beschreibung der Karte. Max. 300 Zeichen.',
         multiline: true,
-        validation: req,
+        validation: reqMax(300),
       }),
     }),
     { label: 'Karten', itemLabel: (props) => props.fields.title.value || 'Neue Karte' }
@@ -88,63 +91,63 @@ const impactSchema = {
 const socialproofSchema = {
   headline: fields.text({
     label: 'Headline',
-    description: 'Überschrift über den Logos.',
-    validation: req,
+    description: 'Überschrift über den Logos. Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
   client_label: fields.text({
     label: 'Kunden Label',
-    description: 'Kleine Überschrift vor den Kunden-Logos (z.B. "UNSERE KUNDEN").',
-    validation: req,
+    description: 'Kleine Überschrift vor den Kunden-Logos (z.B. "UNSERE KUNDEN"). Max. 30 Zeichen.',
+    validation: reqMax(30),
   }),
   transition_text: fields.text({
     label: 'Überleitung Text',
-    description: 'Text zwischen Kunden- und OEM-Sektion.',
-    validation: req,
+    description: 'Text zwischen Kunden- und OEM-Sektion. Max. 150 Zeichen.',
+    validation: reqMax(150),
   }),
   transition_emphasis: fields.text({
     label: 'Überleitung Hervorhebung',
-    description: 'Kursive zweite Zeile der Überleitung.',
-    validation: req,
+    description: 'Kursive zweite Zeile der Überleitung. Max. 150 Zeichen.',
+    validation: reqMax(150),
   }),
   oem_label: fields.text({
     label: 'OEM Label',
-    description: 'Kleine Überschrift vor den OEM-Logos (z.B. "BEAUFTRAGT VON").',
-    validation: req,
+    description: 'Kleine Überschrift vor den OEM-Logos (z.B. "BEAUFTRAGT VON"). Max. 30 Zeichen.',
+    validation: reqMax(30),
   }),
 };
 
 const servicesSchema = {
   headline: fields.text({
     label: 'Headline',
-    description: 'Hauptüberschrift. HTML erlaubt (z.B. <span class="highlight">).',
+    description: 'Hauptüberschrift. HTML erlaubt (z.B. <span class="highlight">). Max. 200 Zeichen.',
     multiline: true,
-    validation: req,
+    validation: reqMax(200),
   }),
   subline: fields.text({
     label: 'Subline',
-    description: 'Unterzeile mit Kontext.',
+    description: 'Unterzeile mit Kontext. Max. 300 Zeichen.',
     multiline: true,
-    validation: req,
+    validation: reqMax(300),
   }),
   steps: fields.array(
     fields.object({
       number: fields.text({
         label: 'Nummer',
-        description: 'Schritt-Nummer (z.B. "01", "02").',
-        validation: req,
+        description: 'Schritt-Nummer (z.B. "01", "02"). Max. 5 Zeichen.',
+        validation: reqMax(5),
       }),
       title: fields.text({
         label: 'Titel',
-        description: 'Titel des Schritts.',
-        validation: req,
+        description: 'Titel des Schritts. Max. 30 Zeichen.',
+        validation: reqMax(30),
       }),
       subtitle: fields.text({
         label: 'Subtitle',
-        description: 'Kurze Beschreibung des Schritts.',
-        validation: req,
+        description: 'Kurze Beschreibung des Schritts. Max. 150 Zeichen.',
+        validation: reqMax(150),
       }),
       points: fields.array(
-        fields.text({ label: 'Punkt', validation: req }),
+        fields.text({ label: 'Punkt', validation: reqMax(100) }),
         { label: 'Stichpunkte', itemLabel: (props) => props.value || 'Neuer Punkt' }
       ),
     }),
@@ -155,31 +158,31 @@ const servicesSchema = {
 const foundersSchema = {
   headline_highlight: fields.text({
     label: 'Headline Highlight',
-    description: 'Hervorgehobener Teil der Headline (in Farbe).',
-    validation: req,
+    description: 'Hervorgehobener Teil der Headline (in Farbe). Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
   headline_plain: fields.text({
     label: 'Headline Text',
-    description: 'Normaler Teil der Headline.',
-    validation: req,
+    description: 'Normaler Teil der Headline. Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
   subline: fields.text({
     label: 'Subline',
-    description: 'Einführungstext für den Gründer-Abschnitt.',
+    description: 'Einführungstext für den Gründer-Abschnitt. Max. 400 Zeichen.',
     multiline: true,
-    validation: req,
+    validation: reqMax(400),
   }),
   founders: fields.array(
     fields.object({
       name: fields.text({
         label: 'Name',
-        description: 'Vollständiger Name des Gründers.',
-        validation: req,
+        description: 'Vollständiger Name des Gründers. Max. 60 Zeichen.',
+        validation: reqMax(60),
       }),
       role: fields.text({
         label: 'Rolle',
-        description: 'Job-Titel / Rolle.',
-        validation: req,
+        description: 'Job-Titel / Rolle. Max. 100 Zeichen.',
+        validation: reqMax(100),
       }),
       photo: fields.text({
         label: 'Foto Pfad',
@@ -187,14 +190,14 @@ const foundersSchema = {
         validation: req,
       }),
       manifesto: fields.array(
-        fields.text({ label: 'Absatz', multiline: true, validation: req }),
+        fields.text({ label: 'Absatz', multiline: true, validation: reqMax(1000) }),
         {
           label: 'Manifesto Absätze',
           itemLabel: (props) => (props.value || '').substring(0, 50) + '...',
         }
       ),
       tags: fields.array(
-        fields.text({ label: 'Tag', validation: req }),
+        fields.text({ label: 'Tag', validation: reqMax(50) }),
         { label: 'Tags', itemLabel: (props) => props.value || 'Neuer Tag' }
       ),
     }),
@@ -205,35 +208,35 @@ const foundersSchema = {
 const contactSchema = {
   section_label: fields.text({
     label: 'Section Label',
-    description: 'Kleine Überschrift (z.B. "Kontakt").',
-    validation: req,
+    description: 'Kleine Überschrift (z.B. "Kontakt"). Max. 30 Zeichen.',
+    validation: reqMax(30),
   }),
   headline: fields.text({
     label: 'Headline',
-    description: 'Hauptüberschrift der Kontakt-Sektion.',
-    validation: req,
+    description: 'Hauptüberschrift der Kontakt-Sektion. Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
   description: fields.text({
     label: 'Beschreibung',
-    description: 'Kurzer Text unter der Headline.',
+    description: 'Kurzer Text unter der Headline. Max. 300 Zeichen.',
     multiline: true,
-    validation: req,
+    validation: reqMax(300),
   }),
   cta_title: fields.text({
     label: 'CTA Titel',
-    description: 'Titel der CTA-Karte rechts.',
-    validation: req,
+    description: 'Titel der CTA-Karte rechts. Max. 60 Zeichen.',
+    validation: reqMax(60),
   }),
   cta_description: fields.text({
     label: 'CTA Beschreibung',
-    description: 'Text in der CTA-Karte.',
+    description: 'Text in der CTA-Karte. Max. 250 Zeichen.',
     multiline: true,
-    validation: req,
+    validation: reqMax(250),
   }),
   cta_button_text: fields.text({
     label: 'CTA Button Text',
-    description: 'Text auf dem Button (z.B. "Termin wählen").',
-    validation: req,
+    description: 'Text auf dem Button (z.B. "Termin wählen"). Max. 30 Zeichen.',
+    validation: reqMax(30),
   }),
   cta_url: fields.text({
     label: 'CTA URL',
