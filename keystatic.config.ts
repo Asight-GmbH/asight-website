@@ -19,7 +19,7 @@ const heroSchema = {
   accent_line2: fields.text({ label: 'Accent Text (Zeile 2)' }),
   subtitle: fields.text({ label: 'Subtitle', multiline: true }),
   cta_text: fields.text({ label: 'CTA Button Text' }),
-  cta_url: fields.url({ label: 'CTA URL' }),
+  cta_url: fields.text({ label: 'CTA URL' }),
 };
 
 const impactSchema = {
@@ -89,7 +89,7 @@ const contactSchema = {
   cta_title: fields.text({ label: 'CTA Titel' }),
   cta_description: fields.text({ label: 'CTA Beschreibung', multiline: true }),
   cta_button_text: fields.text({ label: 'CTA Button Text' }),
-  cta_url: fields.url({ label: 'CTA URL' }),
+  cta_url: fields.text({ label: 'CTA URL' }),
 };
 
 const headerSchema = {
