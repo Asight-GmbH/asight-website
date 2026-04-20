@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discovery Dashboard Pro - RE Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --re-primary-gradient: linear-gradient(135deg, #7A9600 0%, #B1D800 50%, #D3FF00 100%);
+            --re-primary: #B1D800;
+            --re-primary-dark: #7A9600;
+            --re-primary-light: #D3FF00;
+            --re-primary-foreground: #1A1A1A;
+            --re-bg: #1A1A1A;
+            --re-card: #1A1A1A;
+            --re-border: #3B3B3B;
+            --re-text: #BFBFBF;
+            --re-text-muted: #ADADAD;
+            --re-success: #22C55E;
+            --re-warning: #F59E0B;
+            --re-error: #EF4444;
+            --re-info: #2563EB;
+            --re-radius: 8px;
+            --re-radius-lg: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--re-bg);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--re-text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        /* Icons */
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            flex-shrink: 0;
+        }
+        
+        .icon-sm { width: 18px; height: 18px; }
+        .icon-lg { width: 32px; height: 32px; }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: var(--re-card);
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius-lg);
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            background: var(--re-primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: var(--re-text-muted);
+        }
+        
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--re-card);
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius-lg);
+            overflow-x: auto;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: all 0.3s;
+            min-width: 80px;
+        }
+        
+        .step.active {
+            opacity: 1;
+        }
+        
+        .step.completed {
+            opacity: 0.8;
+        }
+        
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--re-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .step.active .step-number {
+            background: var(--re-primary-gradient);
+            color: var(--re-primary-foreground);
+        }
+        
+        .step.completed .step-number {
+            background: var(--re-success);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.75em;
+            text-align: center;
+            color: var(--re-text-muted);
+        }
+        
+        .step.active .step-label {
+            color: var(--re-primary);
+            font-weight: 600;
+        }
+        
+        /* Phase Cards */
+        .phase-card {
+            background: var(--re-card);
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius-lg);
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .phase-card.active {
+            display: block;
+        }
+        
+        .phase-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--re-border);
+        }
+        
+        .phase-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .phase-title h2 {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .phase-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--re-radius);
+            background: var(--re-primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .phase-icon .icon {
+            stroke: var(--re-primary-foreground);
+        }
+        
+        .phase-description {
+            color: var(--re-text-muted);
+            font-size: 0.95em;
+        }
+        
+        .phase-why {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(177, 216, 0, 0.08);
+            border-left: 3px solid var(--re-primary);
+            border-radius: 0 var(--re-radius) var(--re-radius) 0;
+        }
+        
+        .phase-why-label {
+            font-size: 0.8em;
+            color: var(--re-primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .phase-why-text {
+            font-size: 0.9em;
+            color: var(--re-text);
+        }
+        
+        .phase-content {
+            padding: 25px;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .form-hint {
+            display: block;
+            font-size: 0.85em;
+            color: var(--re-text-muted);
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+        
+        .form-example {
+            font-size: 0.8em;
+            color: var(--re-primary-dark);
+            font-style: italic;
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--re-border);
+            border-radius: var(--re-radius);
+            font-size: 1em;
+            background: rgba(0,0,0,0.3);
+            color: var(--re-text);
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--re-primary);
+            box-shadow: 0 0 0 4px rgba(177, 216, 0, 0.15);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-select option {
+            background: var(--re-bg);
+            color: var(--re-text);
+        }
+        
+        /* Guided Questions */
+        .guided-question {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .guided-question-number {
+            font-size: 0.75em;
+            color: var(--re-primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .guided-question-text {
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        /* Insight Box */
+        .insight-box {
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid var(--re-info);
+            border-radius: var(--re-radius);
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .insight-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .insight-box-header .icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--re-info);
+        }
+        
+        .insight-box-label {
+            font-size: 0.8em;
+            color: var(--re-info);
+            font-weight: 600;
+        }
+        
+        .insight-box-text {
+            font-size: 0.9em;
+            color: var(--re-text);
+        }
+        
+        /* Warning Box */
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--re-warning);
+            border-radius: var(--re-radius);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .warning-box-header .icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--re-warning);
+        }
+        
+        .warning-box-label {
+            font-size: 0.8em;
+            color: var(--re-warning);
+            font-weight: 600;
+        }
+        
+        .warning-box-text {
+            font-size: 0.9em;
+            color: var(--re-text);
+        }
+        
+        /* Competitor Grid */
+        .competitor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .competitor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .competitor-category {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius);
+            padding: 15px;
+        }
+        
+        .competitor-category-header {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--re-primary);
+            margin-bottom: 10px;
+        }
+        
+        .competitor-category textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 10px;
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius);
+            background: transparent;
+            color: var(--re-text);
+            font-family: inherit;
+            font-size: 0.9em;
+            resize: vertical;
+        }
+        
+        .competitor-category textarea:focus {
+            outline: none;
+            border-color: var(--re-primary);
+        }
+        
+        /* USP Finder */
+        .usp-finder {
+            background: rgba(177, 216, 0, 0.05);
+            border: 1px solid var(--re-primary-dark);
+            border-radius: var(--re-radius-lg);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .usp-finder-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--re-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .usp-finder-title .icon {
+            stroke: var(--re-primary);
+        }
+        
+        .usp-generated {
+            font-size: 1.1em;
+            color: var(--re-primary-light);
+            line-height: 1.5;
+            font-style: italic;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: var(--re-radius);
+        }
+        
+        /* Summary Preview */
+        .summary-section {
+            margin-top: 20px;
+        }
+        
+        .summary-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .summary-card-title {
+            font-size: 0.85em;
+            color: var(--re-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .summary-card-content {
+            color: var(--re-text);
+            font-size: 0.95em;
+        }
+        
+        .summary-card-content strong {
+            color: #fff;
+        }
+        
+        /* Navigation */
+        .phase-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 25px;
+            border-top: 1px solid var(--re-border);
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--re-radius);
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        
+        .nav-btn .icon {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .nav-btn.secondary {
+            background: transparent;
+            color: var(--re-text-muted);
+            border: 1px solid var(--re-border);
+        }
+        
+        .nav-btn.secondary:hover {
+            border-color: var(--re-text-muted);
+            color: var(--re-text);
+        }
+        
+        .nav-btn.secondary .icon {
+            stroke: var(--re-text-muted);
+        }
+        
+        .nav-btn.primary {
+            background: var(--re-primary-gradient);
+            color: var(--re-primary-foreground);
+        }
+        
+        .nav-btn.primary:hover {
+            box-shadow: 0 0 20px rgba(177, 216, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.primary .icon {
+            stroke: var(--re-primary-foreground);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        /* Export Actions */
+        .export-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .export-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: var(--re-radius);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+        
+        .export-btn .icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .export-btn.primary {
+            background: var(--re-primary-gradient);
+            color: var(--re-primary-foreground);
+        }
+        
+        .export-btn.primary .icon {
+            stroke: var(--re-primary-foreground);
+        }
+        
+        .export-btn.primary:hover {
+            box-shadow: 0 0 25px rgba(177, 216, 0, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .export-btn.secondary {
+            background: transparent;
+            color: var(--re-primary);
+            border: 2px solid var(--re-primary);
+        }
+        
+        .export-btn.secondary .icon {
+            stroke: var(--re-primary);
+        }
+        
+        .export-btn.secondary:hover {
+            background: rgba(177, 216, 0, 0.1);
+        }
+        
+        /* Save Indicator */
+        .save-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--re-success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--re-radius);
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .save-indicator .icon {
+            width: 18px;
+            height: 18px;
+            stroke: white;
+        }
+        
+        .save-indicator.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Discovery Dashboard Pro</h1>
+            <p class="subtitle">Geführter Prozess zur Positionierung | RE Automation</p>
+        </div>
+        
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step active" onclick="goToPhase(1)">
+                <div class="step-number">1</div>
+                <div class="step-label">Fundament</div>
+            </div>
+            <div class="step" onclick="goToPhase(2)">
+                <div class="step-number">2</div>
+                <div class="step-label">Hebel</div>
+            </div>
+            <div class="step" onclick="goToPhase(3)">
+                <div class="step-number">3</div>
+                <div class="step-label">Zielgruppe</div>
+            </div>
+            <div class="step" onclick="goToPhase(4)">
+                <div class="step-number">4</div>
+                <div class="step-label">Wettbewerb</div>
+            </div>
+            <div class="step" onclick="goToPhase(5)">
+                <div class="step-number">5</div>
+                <div class="step-label">USP</div>
+            </div>
+            <div class="step" onclick="goToPhase(6)">
+                <div class="step-number">6</div>
+                <div class="step-label">Ergebnis</div>
+            </div>
+        </div>
+        
+        <!-- Phase 1: Fundament -->
+        <div class="phase-card active" id="phase1">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <h2>Phase 1: Fundament</h2>
+                </div>
+                <p class="phase-description">Bevor du Zielgruppen und Wettbewerber definierst, musst du Klarheit über euch selbst haben.</p>
+                <div class="phase-why">
+                    <div class="phase-why-label">WARUM DIESER SCHRITT?</div>
+                    <div class="phase-why-text">Ohne Klarheit über das eigene Fundament kannst du keinen Wettbewerb definieren. Du weißt nicht, mit wem du dich vergleichst.</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 1 VON 4</div>
+                    <div class="guided-question-text">Was habt ihr bisher tatsächlich gemacht?</div>
+                    <span class="form-hint">Nicht was ihr machen könntet – was habt ihr geliefert? Konkrete Projekte, nicht Wunschdenken.</span>
+                    <textarea class="form-textarea" id="pastProjects" placeholder="z.B. KPI-Dashboard für Automotive-Zulieferer, Prozessdigitalisierung für Maschinenbauer..." oninput="saveData()"></textarea>
+                    <div class="insight-box">
+                        <div class="insight-box-header">
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                            <span class="insight-box-label">TIPP</span>
+                        </div>
+                        <div class="insight-box-text">Der gemeinsame Nenner deiner bisherigen Projekte zeigt, wo eure echte Stärke liegt – nicht das, was ihr gerne hättet.</div>
+                    </div>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 2 VON 4</div>
+                    <div class="guided-question-text">Wie kamen diese Kunden zu euch?</div>
+                    <span class="form-hint">Kaltakquise? Netzwerk? Empfehlung? Website?</span>
+                    <textarea class="form-textarea" id="customerAcquisition" placeholder="z.B. 100% über Netzwerk, der zweite Kunde kam über den ersten..." oninput="saveData()"></textarea>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 3 VON 4</div>
+                    <div class="guided-question-text">Was hat sich für den Kunden verändert?</div>
+                    <span class="form-hint">Nicht was ihr geliefert habt – was ist beim Kunden jetzt anders? Was hat er davon?</span>
+                    <textarea class="form-textarea" id="customerOutcome" placeholder="z.B. Keine manuellen Reports mehr, schnellere Entscheidungen, Audit bestanden..." oninput="saveData()"></textarea>
+                    <div class="insight-box">
+                        <div class="insight-box-header">
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                            <span class="insight-box-label">UNTERSCHIED</span>
+                        </div>
+                        <div class="insight-box-text">"Wir haben ein Dashboard gebaut" = Output. "Der Kunde trifft jetzt bessere Entscheidungen" = Outcome. Du verkaufst Outcomes.</div>
+                    </div>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 4 VON 4</div>
+                    <div class="guided-question-text">Wer seid "ihr"? Was bringt jeder mit?</div>
+                    <span class="form-hint">Unterschiedliche Stärken, Hintergründe, Netzwerke?</span>
+                    <textarea class="form-textarea" id="teamStrengths" placeholder="z.B. Alex: Netzwerker, QM-Background | Flo: Technisch, Digitalisierung..." oninput="saveData()"></textarea>
+                </div>
+            </div>
+            <div class="phase-nav">
+                <button class="nav-btn secondary" disabled>
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    Zurück
+                </button>
+                <button class="nav-btn primary" onclick="nextPhase()">
+                    Weiter
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 2: Hebel -->
+        <div class="phase-card" id="phase2">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <h2>Phase 2: Der echte Hebel</h2>
+                </div>
+                <p class="phase-description">Das Problem, das du siehst, ist oft nur ein Symptom. Der echte Hebel liegt tiefer.</p>
+                <div class="phase-why">
+                    <div class="phase-why-label">WARUM DIESER SCHRITT?</div>
+                    <div class="phase-why-text">"Excel-Chaos lösen" klingt klein. "Entscheidungs- und auditfähig machen" ist ein Business-Risiko. Geschäftsführer zahlen für das zweite.</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="warning-box">
+                    <div class="warning-box-header">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span class="warning-box-label">HÄUFIGER FEHLER</span>
+                    </div>
+                    <div class="warning-box-text">Viele positionieren sich auf dem Symptom ("bessere Dashboards"), nicht auf dem Risiko ("keine Fehlentscheidungen mehr"). Das Symptom macht den Hebel zu klein.</div>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 1 VON 3</div>
+                    <div class="guided-question-text">Was passiert, wenn eure Kunden das Problem NICHT lösen?</div>
+                    <span class="form-hint">Was steht auf dem Spiel? Was sind die Konsequenzen?</span>
+                    <textarea class="form-textarea" id="riskIfNotSolved" placeholder="z.B. Fehlentscheidungen durch falsche Zahlen, Audit nicht bestanden, OEM macht Druck, Lieferantenstatus gefährdet..." oninput="saveData()"></textarea>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 2 VON 3</div>
+                    <div class="guided-question-text">Was war der Moment, wo eure Kunden gesagt haben "das brauchen wir"?</div>
+                    <span class="form-hint">Der Trigger – Eskalation? Audit? Kundendruck? Strategische Initiative?</span>
+                    <textarea class="form-textarea" id="triggerMoment" placeholder="z.B. OEM hat wegen fehlender Transparenz eskaliert, Audit stand an, Jahre des Durchwurstelns..." oninput="saveData()"></textarea>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 3 VON 3</div>
+                    <div class="guided-question-text">Was ist der eigentliche Hebel – nicht das Symptom?</div>
+                    <span class="form-hint">Formuliere das Problem so, dass ein Geschäftsführer aufhorcht.</span>
+                    <textarea class="form-textarea" id="realLeverage" placeholder="z.B. Nicht 'Excel-Chaos lösen' sondern 'Entscheidungs- und auditfähig machen'..." oninput="saveData()"></textarea>
+                    <div class="insight-box">
+                        <div class="insight-box-header">
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                            <span class="insight-box-label">TEST</span>
+                        </div>
+                        <div class="insight-box-text">Würde ein Geschäftsführer bei diesem Problem aufhorchen? Wenn nicht, bist du noch beim Symptom.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="phase-nav">
+                <button class="nav-btn secondary" onclick="prevPhase()">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    Zurück
+                </button>
+                <button class="nav-btn primary" onclick="nextPhase()">
+                    Weiter
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 3: Zielgruppe -->
+        <div class="phase-card" id="phase3">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <h2>Phase 3: Zielgruppe & Persona</h2>
+                </div>
+                <p class="phase-description">Jetzt weißt du, was ihr macht und welches Problem ihr löst. Für wen genau?</p>
+                <div class="phase-why">
+                    <div class="phase-why-label">WARUM JETZT ERST?</div>
+                    <div class="phase-why-text">Zielgruppe ergibt sich aus dem, was ihr tatsächlich gemacht habt – nicht aus Wunschdenken. Deshalb kam das Fundament zuerst.</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="form-group">
+                    <label class="form-label">Branche / Industrie</label>
+                    <span class="form-hint">Wo habt ihr bisher gearbeitet? Was ergibt sich aus eurem Fundament?</span>
+                    <input type="text" class="form-input" id="industry" placeholder="z.B. Fertigender Mittelstand, Automotive, Maschinenbau" oninput="saveData()">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Unternehmensgröße</label>
+                    <select class="form-select" id="companySize" onchange="saveData()">
+                        <option value="">Bitte wählen...</option>
+                        <option value="startup">Startup (1-10 MA)</option>
+                        <option value="small">Klein (11-50 MA)</option>
+                        <option value="medium">Mittel (51-250 MA)</option>
+                        <option value="large">Groß (250+ MA)</option>
+                        <option value="enterprise">Enterprise (1000+ MA)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Region / Markt</label>
+                    <input type="text" class="form-input" id="region" placeholder="z.B. DACH, Europa" oninput="saveData()">
+                </div>
+                
+                <hr style="border: none; border-top: 1px solid var(--re-border); margin: 30px 0;">
+                
+                <div class="form-group">
+                    <label class="form-label">Persona Name</label>
+                    <span class="form-hint">Gib der Person einen Namen – macht sie greifbar.</span>
+                    <input type="text" class="form-input" id="personaName" placeholder="z.B. Thomas, der Produktionsleiter" oninput="saveData()">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Jobtitel / Rolle</label>
+                    <input type="text" class="form-input" id="personaRole" placeholder="z.B. Produktionsleiter, Head of Operations" oninput="saveData()">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Größte Herausforderung</label>
+                    <span class="form-hint">Nutze die Erkenntnisse aus Phase 2 – was hält diese Person nachts wach?</span>
+                    <textarea class="form-textarea" id="personaChallenge" placeholder="z.B. Entscheidungen auf Basis von Excel-Listen treffen, keine einheitliche Datenbasis..." oninput="saveData()"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Ziel / Wunsch</label>
+                    <textarea class="form-textarea" id="personaGoal" placeholder="z.B. Belastbare Zahlen auf Knopfdruck, nicht mehr blind fliegen..." oninput="saveData()"></textarea>
+                </div>
+            </div>
+            <div class="phase-nav">
+                <button class="nav-btn secondary" onclick="prevPhase()">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    Zurück
+                </button>
+                <button class="nav-btn primary" onclick="nextPhase()">
+                    Weiter
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 4: Wettbewerb -->
+        <div class="phase-card" id="phase4">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                    </div>
+                    <h2>Phase 4: Wettbewerb</h2>
+                </div>
+                <p class="phase-description">Die Frage ist nicht "Wer macht auch X?" sondern "Welche Alternativen hat dein Kunde?"</p>
+                <div class="phase-why">
+                    <div class="phase-why-label">WARUM DIESER ANSATZ?</div>
+                    <div class="phase-why-text">Wettbewerb sind nicht nur direkte Konkurrenten. Es sind alle Alternativen – auch "Inhouse lösen" oder "Nichts tun".</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="warning-box">
+                    <div class="warning-box-header">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span class="warning-box-label">HÄUFIGER FEHLER</span>
+                    </div>
+                    <div class="warning-box-text">Viele versuchen Wettbewerber zu definieren, bevor sie ihre eigene Richtung kennen. Deshalb hast du Phase 1-3 zuerst gemacht.</div>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">DIE KERNFRAGE</div>
+                    <div class="guided-question-text">Wenn dein Kunde sein Problem lösen will – welche Alternativen hat er zu euch?</div>
+                </div>
+                
+                <p style="color: var(--re-text-muted); margin-bottom: 15px; font-size: 0.9em;">Fülle die Kategorien aus, die relevant sind:</p>
+                
+                <div class="competitor-grid">
+                    <div class="competitor-category">
+                        <div class="competitor-category-header">Große Beratungen</div>
+                        <textarea id="compBigConsulting" placeholder="z.B. McKinsey, BCG, Roland Berger – zu teuer, Senior verkauft / Junior liefert" oninput="saveData()"></textarea>
+                    </div>
+                    <div class="competitor-category">
+                        <div class="competitor-category-header">Spezialisierte Berater</div>
+                        <textarea id="compSpecialized" placeholder="z.B. QM-Berater, IATF-Spezialisten – können Audit, bauen aber nichts" oninput="saveData()"></textarea>
+                    </div>
+                    <div class="competitor-category">
+                        <div class="competitor-category-header">Agenturen / Dienstleister</div>
+                        <textarea id="compAgencies" placeholder="z.B. BI-Agenturen, Digitalisierungsagenturen – Tech-Fokus, verstehen Prozesse nicht" oninput="saveData()"></textarea>
+                    </div>
+                    <div class="competitor-category">
+                        <div class="competitor-category-header">Software / Systemhäuser</div>
+                        <textarea id="compSoftware" placeholder="z.B. Bechtle, ERP-Anbieter – verkaufen Tools, kein Prozess-Know-how" oninput="saveData()"></textarea>
+                    </div>
+                    <div class="competitor-category">
+                        <div class="competitor-category-header">Inhouse / Selbst machen</div>
+                        <textarea id="compInhouse" placeholder="z.B. Interne IT – überlastet, kein externer Blick, kein Sparringspartner" oninput="saveData()"></textarea>
+                    </div>
+                    <div class="competitor-category">
+                        <div class="competitor-category-header">Nichts tun</div>
+                        <textarea id="compNothing" placeholder="z.B. Weiterwursteln mit Excel – Leidensdruck noch nicht groß genug" oninput="saveData()"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 25px;">
+                    <label class="form-label">Wo seht ihr euch in dieser Landschaft?</label>
+                    <span class="form-hint">Was ist die Lücke, die ihr füllt?</span>
+                    <textarea class="form-textarea" id="competitivePosition" placeholder="z.B. Zwischen den großen Beratungen und den IT-Dienstleistern – Prozess-Know-how UND Umsetzung..." oninput="saveData()"></textarea>
+                </div>
+            </div>
+            <div class="phase-nav">
+                <button class="nav-btn secondary" onclick="prevPhase()">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    Zurück
+                </button>
+                <button class="nav-btn primary" onclick="nextPhase()">
+                    Weiter
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 5: USP -->
+        <div class="phase-card" id="phase5">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+                    </div>
+                    <h2>Phase 5: USP finden</h2>
+                </div>
+                <p class="phase-description">Der USP liegt in der Lücke zwischen den anderen – was könnt ihr, was sie nicht können?</p>
+                <div class="phase-why">
+                    <div class="phase-why-label">WARUM JETZT ERST?</div>
+                    <div class="phase-why-text">Der USP ergibt sich aus dem Vergleich mit Wettbewerbern. Ohne Phase 4 ist er nur eine Behauptung.</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="warning-box">
+                    <div class="warning-box-header">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span class="warning-box-label">HÄUFIGER FEHLER</span>
+                    </div>
+                    <div class="warning-box-text">"Keine Folien" oder "Hands-on" klingt gut, aber das behaupten inzwischen alle – auch McKinsey. Der echte USP muss strukturell unterschiedlich sein.</div>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 1 VON 3</div>
+                    <div class="guided-question-text">Was können die Wettbewerber strukturell NICHT bieten?</div>
+                    <span class="form-hint">Nicht was sie behaupten – was ist bei ihnen systemisch anders?</span>
+                    <textarea class="form-textarea" id="whatOthersCant" placeholder="z.B. Große Beratungen: Senior verkauft, Junior liefert – das ist deren Geschäftsmodell, sie können es nicht ändern..." oninput="saveData(); generateUSP()"></textarea>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 2 VON 3</div>
+                    <div class="guided-question-text">Was macht ihr, das strukturell anders ist?</div>
+                    <span class="form-hint">Etwas, das sich aus eurer Größe, eurem Hintergrund oder eurem Modell ergibt.</span>
+                    <textarea class="form-textarea" id="whatYouDoDifferent" placeholder="z.B. Dieselben Leute von Anfang bis Ende – kein Handover, kein Wechsel von Senior zu Junior..." oninput="saveData(); generateUSP()"></textarea>
+                </div>
+                
+                <div class="guided-question">
+                    <div class="guided-question-number">FRAGE 3 VON 3</div>
+                    <div class="guided-question-text">Warum können die anderen das nicht kopieren?</div>
+                    <span class="form-hint">Der beste USP ist einer, den Wettbewerber nicht einfach übernehmen können.</span>
+                    <textarea class="form-textarea" id="whyCantCopy" placeholder="z.B. Deren Geschäftsmodell basiert auf Leverage – Seniors verkaufen, Juniors liefern. Sie können nicht anders, ohne ihr Modell zu zerstören..." oninput="saveData(); generateUSP()"></textarea>
+                </div>
+                
+                <div class="usp-finder">
+                    <div class="usp-finder-title">
+                        <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        Dein USP-Kandidat:
+                    </div>
+                    <div class="usp-generated" id="uspGenerated">
+                        Beantworte die Fragen oben – dann formuliere hier deinen USP...
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label class="form-label">Dein USP (finale Formulierung)</label>
+                        <textarea class="form-textarea" id="finalUSP" placeholder="z.B. 'Dieselben Leute vom Problem bis zur laufenden Lösung. Kein Handover.'" oninput="saveData()"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="phase-nav">
+                <button class="nav-btn secondary" onclick="prevPhase()">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    Zurück
+                </button>
+                <button class="nav-btn primary" onclick="nextPhase()">
+                    Weiter
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 6: Ergebnis -->
+        <div class="phase-card" id="phase6">
+            <div class="phase-header">
+                <div class="phase-title">
+                    <div class="phase-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <h2>Phase 6: Ergebnis</h2>
+                </div>
+                <p class="phase-description">Deine Positionierung zusammengefasst.</p>
+            </div>
+            <div class="phase-content">
+                <div class="summary-section">
+                    <div class="summary-card">
+                        <div class="summary-card-title">FUNDAMENT</div>
+                        <div class="summary-card-content" id="summaryFoundation">-</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-card-title">DER ECHTE HEBEL</div>
+                        <div class="summary-card-content" id="summaryLeverage">-</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-card-title">ZIELGRUPPE & PERSONA</div>
+                        <div class="summary-card-content" id="summaryTarget">-</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-card-title">WETTBEWERBSPOSITION</div>
+                        <div class="summary-card-content" id="summaryCompetition">-</div>
+                    </div>
+                    
+                    <div class="summary-card" style="border-color: var(--re-primary); background: rgba(177, 216, 0, 0.05);">
+                        <div class="summary-card-title" style="font-size: 1em;">USP</div>
+                        <div class="summary-card-content" id="summaryUSP" style="font-size: 1.1em; color: var(--re-primary-light);">-</div>
+                    </div>
+                </div>
+                
+                <div class="export-actions">
+                    <button class="export-btn primary" onclick="exportMarkdown()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export als Markdown
+                    </button>
+                    <button class="export-btn secondary" onclick="exportJSON()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        Export als JSON
+                    </button>
+                </div>
+            </div>
+            <div class="phase-nav">
+                <button class="nav-btn secondary" onclick="prevPhase()">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    Zurück
+                </button>
+                <button class="nav-btn primary" onclick="goToPhase(1)">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                    Von vorne
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Save Indicator -->
+    <div class="save-indicator" id="saveIndicator">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Automatisch gespeichert
+    </div>
+    
+    <script>
+        let currentPhase = 1;
+        let data = JSON.parse(localStorage.getItem('re-discovery-pro') || '{}');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            updateSteps();
+        });
+        
+        function loadData() {
+            const fields = [
+                'pastProjects', 'customerAcquisition', 'customerOutcome', 'teamStrengths',
+                'riskIfNotSolved', 'triggerMoment', 'realLeverage',
+                'industry', 'companySize', 'region', 'personaName', 'personaRole', 'personaChallenge', 'personaGoal',
+                'compBigConsulting', 'compSpecialized', 'compAgencies', 'compSoftware', 'compInhouse', 'compNothing', 'competitivePosition',
+                'whatOthersCant', 'whatYouDoDifferent', 'whyCantCopy', 'finalUSP'
+            ];
+            
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && data[id]) {
+                    el.value = data[id];
+                }
+            });
+            
+            generateUSP();
+        }
+        
+        function saveData() {
+            const fields = [
+                'pastProjects', 'customerAcquisition', 'customerOutcome', 'teamStrengths',
+                'riskIfNotSolved', 'triggerMoment', 'realLeverage',
+                'industry', 'companySize', 'region', 'personaName', 'personaRole', 'personaChallenge', 'personaGoal',
+                'compBigConsulting', 'compSpecialized', 'compAgencies', 'compSoftware', 'compInhouse', 'compNothing', 'competitivePosition',
+                'whatOthersCant', 'whatYouDoDifferent', 'whyCantCopy', 'finalUSP'
+            ];
+            
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    data[id] = el.value;
+                }
+            });
+            
+            localStorage.setItem('re-discovery-pro', JSON.stringify(data));
+            showSaveIndicator();
+        }
+        
+        function showSaveIndicator() {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => indicator.classList.remove('show'), 2000);
+        }
+        
+        function goToPhase(phase) {
+            currentPhase = phase;
+            updatePhases();
+            updateSteps();
+            updateSummary();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function nextPhase() {
+            if (currentPhase < 6) {
+                currentPhase++;
+                goToPhase(currentPhase);
+            }
+        }
+        
+        function prevPhase() {
+            if (currentPhase > 1) {
+                currentPhase--;
+                goToPhase(currentPhase);
+            }
+        }
+        
+        function updatePhases() {
+            document.querySelectorAll('.phase-card').forEach((card, index) => {
+                card.classList.toggle('active', index + 1 === currentPhase);
+            });
+        }
+        
+        function updateSteps() {
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 === currentPhase) {
+                    step.classList.add('active');
+                } else if (index + 1 < currentPhase) {
+                    step.classList.add('completed');
+                }
+            });
+        }
+        
+        function generateUSP() {
+            const whatOthers = document.getElementById('whatOthersCant')?.value || '';
+            const whatYou = document.getElementById('whatYouDoDifferent')?.value || '';
+            
+            if (whatYou) {
+                document.getElementById('uspGenerated').textContent = whatYou;
+            } else if (whatOthers) {
+                document.getElementById('uspGenerated').textContent = 'Basierend auf deinen Antworten: Was die anderen nicht können ist klar – formuliere jetzt, was IHR anders macht.';
+            } else {
+                document.getElementById('uspGenerated').textContent = 'Beantworte die Fragen oben – dann formuliere hier deinen USP...';
+            }
+        }
+        
+        function updateSummary() {
+            // Foundation
+            const foundation = [];
+            if (data.pastProjects) foundation.push(`<strong>Bisherige Projekte:</strong> ${data.pastProjects}`);
+            if (data.teamStrengths) foundation.push(`<strong>Team:</strong> ${data.teamStrengths}`);
+            document.getElementById('summaryFoundation').innerHTML = foundation.join('<br><br>') || '-';
+            
+            // Leverage
+            const leverage = [];
+            if (data.realLeverage) leverage.push(`<strong>Hebel:</strong> ${data.realLeverage}`);
+            if (data.riskIfNotSolved) leverage.push(`<strong>Risiko:</strong> ${data.riskIfNotSolved}`);
+            document.getElementById('summaryLeverage').innerHTML = leverage.join('<br><br>') || '-';
+            
+            // Target
+            const target = [];
+            if (data.industry) target.push(`<strong>Branche:</strong> ${data.industry}`);
+            if (data.personaName) target.push(`<strong>Persona:</strong> ${data.personaName} (${data.personaRole || '-'})`);
+            if (data.personaChallenge) target.push(`<strong>Challenge:</strong> ${data.personaChallenge}`);
+            document.getElementById('summaryTarget').innerHTML = target.join('<br><br>') || '-';
+            
+            // Competition
+            document.getElementById('summaryCompetition').innerHTML = data.competitivePosition || '-';
+            
+            // USP
+            document.getElementById('summaryUSP').innerHTML = data.finalUSP || '-';
+        }
+        
+        function exportMarkdown() {
+            const md = `# Discovery Ergebnis
+
+## Fundament
+**Bisherige Projekte:**
+${data.pastProjects || '-'}
+
+**Wie kamen Kunden:**
+${data.customerAcquisition || '-'}
+
+**Outcome für Kunden:**
+${data.customerOutcome || '-'}
+
+**Team:**
+${data.teamStrengths || '-'}
+
+## Der echte Hebel
+**Risiko wenn nicht gelöst:**
+${data.riskIfNotSolved || '-'}
+
+**Trigger-Moment:**
+${data.triggerMoment || '-'}
+
+**Der echte Hebel:**
+${data.realLeverage || '-'}
+
+## Zielgruppe & Persona
+**Branche:** ${data.industry || '-'}
+**Unternehmensgröße:** ${data.companySize || '-'}
+**Region:** ${data.region || '-'}
+
+**Persona:** ${data.personaName || '-'} (${data.personaRole || '-'})
+**Challenge:** ${data.personaChallenge || '-'}
+**Ziel:** ${data.personaGoal || '-'}
+
+## Wettbewerb
+**Position:** ${data.competitivePosition || '-'}
+
+## USP
+${data.finalUSP || '-'}
+
+---
+*Erstellt mit Discovery Dashboard Pro*
+`;
+            
+            const blob = new Blob([md], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `discovery-${Date.now()}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function exportJSON() {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `discovery-${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Auto-save
+        setInterval(() => {
+            if (Object.keys(data).length > 0) {
+                saveData();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

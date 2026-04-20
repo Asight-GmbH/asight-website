@@ -2,7 +2,12 @@ import type { APIContext, APIRoute } from 'astro';
 import { makeHandler } from '@keystatic/astro/api';
 import config from '../../../../keystatic.config';
 
-const originalHandler = makeHandler({ config });
+const originalHandler = makeHandler({
+  config,
+  clientId: process.env.KEYSTATIC_GITHUB_CLIENT_ID,
+  clientSecret: process.env.KEYSTATIC_GITHUB_CLIENT_SECRET,
+  secret: process.env.KEYSTATIC_SECRET,
+});
 
 export const prerender = false;
 

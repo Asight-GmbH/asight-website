@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discovery Dashboard - RE Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --re-primary-gradient: linear-gradient(135deg, #7A9600 0%, #B1D800 50%, #D3FF00 100%);
+            --re-primary: #B1D800;
+            --re-primary-dark: #7A9600;
+            --re-primary-light: #D3FF00;
+            --re-primary-foreground: #1A1A1A;
+            --re-bg: #1A1A1A;
+            --re-card: #1A1A1A;
+            --re-border: #3B3B3B;
+            --re-text: #BFBFBF;
+            --re-text-muted: #ADADAD;
+            --re-success: #22C55E;
+            --re-warning: #F59E0B;
+            --re-error: #EF4444;
+            --re-info: #2563EB;
+            --re-radius: 8px;
+            --re-radius-lg: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--re-bg);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--re-text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Lucide Icon Base */
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            flex-shrink: 0;
+        }
+        
+        .icon-sm { width: 18px; height: 18px; }
+        .icon-lg { width: 32px; height: 32px; }
+        .icon-xl { width: 48px; height: 48px; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: var(--re-card);
+            border: 1px solid var(--re-border);
+            border-radius: var(--re-radius-lg);
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: var(--re-primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header .icon {
+            width: 48px;
+            height: 48px;
+            stroke: var(--re-primary);
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            color: var(--re-text-muted);
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            background: var(--re-card);
+            padding: 20px;
+            border-radius: var(--re-radius-lg);
+            border: 1px solid var(--re-border);
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            background: var(--re-primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .progress-text {
+            font-size: 0.9em;
+            color: var(--re-text-muted);
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: var(--re-border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--re-primary-gradient);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Main Grid */
+        .discovery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .discovery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Cards */
+        .discovery-card {
+            background: var(--re-card);
+            border-radius: var(--re-radius-lg);
+            padding: 30px;
+            border: 1px solid var(--re-border);
+            transition: all 0.3s;
+        }
+        
+        .discovery-card:hover {
+            border-color: var(--re-primary-dark);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--re-border);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--re-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            background: var(--re-primary-gradient);
+        }
+        
+        .card-icon .icon {
+            stroke: var(--re-primary-foreground);
+        }
+        
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .card-subtitle {
+            font-size: 0.85em;
+            color: var(--re-text-muted);
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--re-text);
+            margin-bottom: 8px;
+        }
+        
+        .form-hint {
+            font-size: 0.8em;
+            color: var(--re-text-muted);
+            font-weight: normal;
+            margin-left: 5px;
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--re-border);
+            border-radius: var(--re-radius);
+            font-size: 1em;
+            transition: all 0.3s;
+            background: transparent;
+            color: var(--re-text);
+            font-family: inherit;
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--re-primary);
+            box-shadow: 0 0 0 4px rgba(177, 216, 0, 0.15);
+        }
+        
+        .form-select option {
+            background: var(--re-bg);
+            color: var(--re-text);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Tags Input */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px;
+            border: 2px solid var(--re-border);
+            border-radius: var(--re-radius);
+            background: transparent;
+            min-height: 50px;
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--re-primary-gradient);
+            color: var(--re-primary-foreground);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tag-remove:hover {
+            opacity: 1;
+        }
+        
+        .tag-remove .icon {
+            width: 14px;
+            height: 14px;
+            stroke: var(--re-primary-foreground);
+        }
+        
+        .tag-input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 5px;
+            flex: 1;
+            min-width: 100px;
+            color: var(--re-text);
+            font-family: inherit;
+        }
+        
+        /* Slider */
+        .slider-group {
+            margin-bottom: 20px;
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .slider-value {
+            font-weight: 600;
+            background: var(--re-primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--re-border);
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--re-primary);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        /* Value Proposition Preview */
+        .value-preview {
+            background: rgba(177, 216, 0, 0.1);
+            border: 2px solid var(--re-primary-dark);
+            border-radius: var(--re-radius-lg);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .value-preview-title {
+            font-size: 0.9em;
+            color: var(--re-primary-light);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .value-preview-title .icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--re-primary-light);
+        }
+        
+        .value-preview-text {
+            font-size: 1.1em;
+            color: var(--re-primary-light);
+            line-height: 1.5;
+            font-style: italic;
+        }
+        
+        /* Persona Preview */
+        .persona-preview {
+            background: rgba(177, 216, 0, 0.05);
+            border: 2px solid var(--re-border);
+            border-radius: var(--re-radius-lg);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .persona-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--re-primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        
+        .persona-avatar .icon {
+            width: 40px;
+            height: 40px;
+            stroke: var(--re-primary-foreground);
+        }
+        
+        .persona-name {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            background: var(--re-primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        
+        .persona-role {
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--re-primary);
+            margin-bottom: 15px;
+        }
+        
+        .persona-details {
+            font-size: 0.9em;
+            color: var(--re-text);
+        }
+        
+        .persona-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .persona-detail-item .icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--re-primary);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .persona-details strong {
+            color: var(--re-primary-light);
+        }
+        
+        /* Actions */
+        .actions-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: var(--re-radius);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+        
+        .action-btn .icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .action-btn.primary {
+            background: var(--re-primary-gradient);
+            color: var(--re-primary-foreground);
+        }
+        
+        .action-btn.primary .icon {
+            stroke: var(--re-primary-foreground);
+        }
+        
+        .action-btn.primary:hover {
+            box-shadow: 0 0 25px rgba(177, 216, 0, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--re-primary);
+            border: 2px solid var(--re-primary);
+        }
+        
+        .action-btn.secondary .icon {
+            stroke: var(--re-primary);
+        }
+        
+        .action-btn.secondary:hover {
+            background: rgba(177, 216, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        /* Save Indicator */
+        .save-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--re-success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--re-radius);
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .save-indicator .icon {
+            width: 18px;
+            height: 18px;
+            stroke: white;
+        }
+        
+        .save-indicator.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                <h1>Discovery Dashboard</h1>
+            </div>
+            <p class="subtitle">User Personas & Zielgruppen definieren | RE Automation</p>
+        </div>
+        
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span class="progress-title">Discovery Fortschritt</span>
+                <span class="progress-text" id="progressText">0 von 12 Feldern ausgefüllt</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div class="discovery-grid">
+            <!-- Target Audience -->
+            <div class="discovery-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <div>
+                        <div class="card-title">Zielgruppe</div>
+                        <div class="card-subtitle">Wer sind die idealen Kunden?</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Branche / Industrie <span class="form-hint">(Hauptfokus)</span></label>
+                    <input type="text" class="form-input" id="industry" placeholder="z.B. Automotive, E-Mobility, Manufacturing" oninput="updateProgress(); saveData();">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Unternehmensgröße</label>
+                    <select class="form-select" id="companySize" onchange="updateProgress(); saveData();">
+                        <option value="">Bitte wählen...</option>
+                        <option value="startup">Startup (1-10 MA)</option>
+                        <option value="small">Klein (11-50 MA)</option>
+                        <option value="medium">Mittel (51-250 MA)</option>
+                        <option value="large">Groß (250+ MA)</option>
+                        <option value="enterprise">Enterprise (1000+ MA)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Region / Markt</label>
+                    <input type="text" class="form-input" id="region" placeholder="z.B. DACH, Europa, Global" oninput="updateProgress(); saveData();">
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label class="form-label">Budget-Level</label>
+                        <span class="slider-value" id="budgetValue">Mittel</span>
+                    </div>
+                    <input type="range" class="slider" id="budgetSlider" min="1" max="5" value="3" oninput="updateBudget(); saveData();">
+                </div>
+            </div>
+            
+            <!-- Persona Builder -->
+            <div class="discovery-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <div>
+                        <div class="card-title">Persona Builder</div>
+                        <div class="card-subtitle">Erstelle eine Buyer Persona</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Persona Name <span class="form-hint">(fiktiv)</span></label>
+                    <input type="text" class="form-input" id="personaName" placeholder="z.B. Thomas der Produktionsleiter" oninput="updatePersonaPreview(); updateProgress(); saveData();">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Jobtitel / Rolle</label>
+                    <input type="text" class="form-input" id="personaRole" placeholder="z.B. Head of Operations" oninput="updatePersonaPreview(); updateProgress(); saveData();">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Größte Herausforderung</label>
+                    <textarea class="form-textarea" id="personaChallenge" placeholder="Was hält diese Person nachts wach? Was ist ihr größtes Problem?" oninput="updatePersonaPreview(); updateProgress(); saveData();"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Ziel / Wunsch</label>
+                    <textarea class="form-textarea" id="personaGoal" placeholder="Was will diese Person erreichen? Was ist der Traum-Zustand?" oninput="updatePersonaPreview(); updateProgress(); saveData();"></textarea>
+                </div>
+                
+                <div class="persona-preview" id="personaPreview" style="display: none;">
+                    <div class="persona-avatar" id="personaAvatar">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <div class="persona-name" id="personaNamePreview">-</div>
+                    <div class="persona-role" id="personaRolePreview">-</div>
+                    <div class="persona-details">
+                        <div class="persona-detail-item">
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            <span><strong>Challenge:</strong> <span id="personaChallengePreview">-</span></span>
+                        </div>
+                        <div class="persona-detail-item">
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span><strong>Ziel:</strong> <span id="personaGoalPreview">-</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Value Proposition -->
+            <div class="discovery-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+                    </div>
+                    <div>
+                        <div class="card-title">Value Proposition</div>
+                        <div class="card-subtitle">Was ist der einzigartige Wert?</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Hauptproblem das gelöst wird</label>
+                    <textarea class="form-textarea" id="problemSolved" placeholder="Welches spezifische Problem löst das Angebot?" oninput="updateValueProp(); updateProgress(); saveData();"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Einzigartiger Ansatz</label>
+                    <textarea class="form-textarea" id="uniqueApproach" placeholder="WIE wird das Problem gelöst? Was ist anders als bei Wettbewerbern?" oninput="updateValueProp(); updateProgress(); saveData();"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Messbares Ergebnis</label>
+                    <input type="text" class="form-input" id="measurableResult" placeholder="z.B. +35% Effizienz, 50% weniger Ausfälle" oninput="updateValueProp(); updateProgress(); saveData();">
+                </div>
+                
+                <div class="value-preview">
+                    <div class="value-preview-title">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+                        Generierte Value Proposition:
+                    </div>
+                    <div class="value-preview-text" id="valueProposition">
+                        Fülle die Felder aus, um eine Value Proposition zu generieren...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Competition -->
+            <div class="discovery-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                    </div>
+                    <div>
+                        <div class="card-title">Wettbewerb</div>
+                        <div class="card-subtitle">Differenzierung verstehen</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Hauptwettbewerber <span class="form-hint">(Enter drücken)</span></label>
+                    <div class="tags-container" id="competitorsContainer">
+                        <input type="text" class="tag-input" id="competitorInput" placeholder="Wettbewerber eingeben..." onkeypress="addCompetitor(event)">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Warum besser als Wettbewerber?</label>
+                    <textarea class="form-textarea" id="whyBetter" placeholder="Was macht das Angebot besser/anders als die Konkurrenz?" oninput="updateProgress(); saveData();"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Unique Selling Points (USPs)</label>
+                    <div class="tags-container" id="uspsContainer">
+                        <input type="text" class="tag-input" id="uspInput" placeholder="USP eingeben..." onkeypress="addUSP(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="actions-bar">
+            <button class="action-btn primary" onclick="generateReport()">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Report generieren
+            </button>
+            <button class="action-btn secondary" onclick="exportPersonaData()">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export JSON
+            </button>
+            <button class="action-btn secondary" onclick="saveDiscovery()">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Speichern
+            </button>
+        </div>
+    </div>
+    
+    <!-- Save Indicator -->
+    <div class="save-indicator" id="saveIndicator">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Automatisch gespeichert
+    </div>
+    
+    <script>
+        let discoveryData = JSON.parse(localStorage.getItem('re-discovery-v2') || '{}');
+        let competitors = discoveryData.competitors || [];
+        let usps = discoveryData.usps || [];
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDiscoveryData();
+            updateProgress();
+        });
+        
+        function loadDiscoveryData() {
+            if (discoveryData.targetAudience) {
+                document.getElementById('industry').value = discoveryData.targetAudience.industry || '';
+                document.getElementById('companySize').value = discoveryData.targetAudience.companySize || '';
+                document.getElementById('region').value = discoveryData.targetAudience.region || '';
+                document.getElementById('budgetSlider').value = discoveryData.targetAudience.budget || 3;
+                updateBudget();
+            }
+            
+            if (discoveryData.persona) {
+                document.getElementById('personaName').value = discoveryData.persona.personaName || '';
+                document.getElementById('personaRole').value = discoveryData.persona.role || '';
+                document.getElementById('personaChallenge').value = discoveryData.persona.challenge || '';
+                document.getElementById('personaGoal').value = discoveryData.persona.goal || '';
+                updatePersonaPreview();
+            }
+            
+            if (discoveryData.valueProp) {
+                document.getElementById('problemSolved').value = discoveryData.valueProp.problem || '';
+                document.getElementById('uniqueApproach').value = discoveryData.valueProp.approach || '';
+                document.getElementById('measurableResult').value = discoveryData.valueProp.result || '';
+                updateValueProp();
+            }
+            
+            if (discoveryData.competition) {
+                document.getElementById('whyBetter').value = discoveryData.competition.whyBetter || '';
+            }
+            
+            competitors.forEach(comp => addTagToContainer('competitorsContainer', comp, 'competitor'));
+            usps.forEach(usp => addTagToContainer('uspsContainer', usp, 'usp'));
+        }
+        
+        function saveDiscoveryData() {
+            discoveryData = {
+                targetAudience: {
+                    industry: document.getElementById('industry').value,
+                    companySize: document.getElementById('companySize').value,
+                    region: document.getElementById('region').value,
+                    budget: document.getElementById('budgetSlider').value
+                },
+                persona: {
+                    personaName: document.getElementById('personaName').value,
+                    role: document.getElementById('personaRole').value,
+                    challenge: document.getElementById('personaChallenge').value,
+                    goal: document.getElementById('personaGoal').value
+                },
+                valueProp: {
+                    problem: document.getElementById('problemSolved').value,
+                    approach: document.getElementById('uniqueApproach').value,
+                    result: document.getElementById('measurableResult').value
+                },
+                competition: {
+                    competitors: competitors,
+                    whyBetter: document.getElementById('whyBetter').value,
+                    usps: usps
+                }
+            };
+            
+            localStorage.setItem('re-discovery-v2', JSON.stringify(discoveryData));
+        }
+        
+        function saveData() {
+            saveDiscoveryData();
+            showSaveIndicator();
+        }
+        
+        function showSaveIndicator() {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => indicator.classList.remove('show'), 2000);
+        }
+        
+        function updateProgress() {
+            const fields = [
+                'industry', 'companySize', 'region',
+                'personaName', 'personaRole', 'personaChallenge', 'personaGoal',
+                'problemSolved', 'uniqueApproach', 'measurableResult',
+                'whyBetter'
+            ];
+            
+            let filled = 0;
+            fields.forEach(id => {
+                if (document.getElementById(id).value.trim()) filled++;
+            });
+            
+            if (competitors.length > 0) filled++;
+            
+            const total = fields.length + 1;
+            const percent = Math.round((filled / total) * 100);
+            
+            document.getElementById('progressText').textContent = `${filled} von ${total} Feldern ausgefüllt`;
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+        
+        function updateBudget() {
+            const values = ['Sehr niedrig', 'Niedrig', 'Mittel', 'Hoch', 'Premium'];
+            const val = document.getElementById('budgetSlider').value;
+            document.getElementById('budgetValue').textContent = values[val - 1];
+        }
+        
+        function updatePersonaPreview() {
+            const name = document.getElementById('personaName').value;
+            const role = document.getElementById('personaRole').value;
+            const challenge = document.getElementById('personaChallenge').value;
+            const goal = document.getElementById('personaGoal').value;
+            
+            const preview = document.getElementById('personaPreview');
+            
+            if (name || role) {
+                preview.style.display = 'block';
+                document.getElementById('personaNamePreview').textContent = name || '-';
+                document.getElementById('personaRolePreview').textContent = role || '-';
+                document.getElementById('personaChallengePreview').textContent = challenge || '-';
+                document.getElementById('personaGoalPreview').textContent = goal || '-';
+                
+                // Update avatar icon based on role
+                const avatar = document.getElementById('personaAvatar');
+                let iconSvg = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+                
+                if (role.toLowerCase().includes('ceo') || role.toLowerCase().includes('geschäfts')) {
+                    iconSvg = '<svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+                } else if (role.toLowerCase().includes('tech') || role.toLowerCase().includes('it')) {
+                    iconSvg = '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>';
+                } else if (role.toLowerCase().includes('marketing')) {
+                    iconSvg = '<svg class="icon" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>';
+                } else if (role.toLowerCase().includes('produktion') || role.toLowerCase().includes('operation')) {
+                    iconSvg = '<svg class="icon" viewBox="0 0 24 24"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>';
+                }
+                
+                avatar.innerHTML = iconSvg;
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+        
+        function updateValueProp() {
+            const problem = document.getElementById('problemSolved').value;
+            const approach = document.getElementById('uniqueApproach').value;
+            const result = document.getElementById('measurableResult').value;
+            
+            let valueProp = '';
+            
+            if (problem && approach && result) {
+                valueProp = `Wir helfen Unternehmen, ${problem.toLowerCase()}, durch ${approach.toLowerCase()} – mit dem Ergebnis: ${result}.`;
+            } else if (problem && result) {
+                valueProp = `Wir lösen das Problem "${problem}" mit dem Ergebnis: ${result}.`;
+            } else if (problem) {
+                valueProp = `Wir helfen bei: ${problem}`;
+            } else {
+                valueProp = 'Fülle die Felder aus, um eine Value Proposition zu generieren...';
+            }
+            
+            document.getElementById('valueProposition').textContent = valueProp;
+        }
+        
+        function addCompetitor(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('competitorInput');
+                const value = input.value.trim();
+                
+                if (value && !competitors.includes(value)) {
+                    competitors.push(value);
+                    addTagToContainer('competitorsContainer', value, 'competitor');
+                    input.value = '';
+                    updateProgress();
+                    saveData();
+                }
+            }
+        }
+        
+        function addUSP(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('uspInput');
+                const value = input.value.trim();
+                
+                if (value && !usps.includes(value)) {
+                    usps.push(value);
+                    addTagToContainer('uspsContainer', value, 'usp');
+                    input.value = '';
+                    saveData();
+                }
+            }
+        }
+        
+        function addTagToContainer(containerId, value, type) {
+            const container = document.getElementById(containerId);
+            const input = container.querySelector('.tag-input');
+            
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.innerHTML = `${value} <span class="tag-remove" onclick="removeTag(this, '${value}', '${type}')"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>`;
+            
+            container.insertBefore(tag, input);
+        }
+        
+        function removeTag(element, value, type) {
+            element.parentElement.remove();
+            
+            if (type === 'competitor') {
+                competitors = competitors.filter(c => c !== value);
+            } else if (type === 'usp') {
+                usps = usps.filter(u => u !== value);
+            }
+            
+            updateProgress();
+            saveData();
+        }
+        
+        function generateReport() {
+            const name = discoveryData.persona?.personaName || 'Unbenannte Persona';
+            
+            alert(`Persona Report für "${name}" wird generiert...\n\nFortschritt: ${document.getElementById('progressText').textContent}\nValue Proposition: ${document.getElementById('valueProposition').textContent}`);
+        }
+        
+        function exportPersonaData() {
+            const exportData = {
+                ...discoveryData,
+                exportDate: new Date().toISOString(),
+                completionStatus: document.getElementById('progressText').textContent
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `persona-discovery-${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function saveDiscovery() {
+            saveDiscoveryData();
+            showSaveIndicator();
+            
+            const personaName = discoveryData.persona?.personaName || 'Unbenannte Persona';
+            alert(`Discovery für "${personaName}" wurde erfolgreich gespeichert!`);
+        }
+        
+        setInterval(() => {
+            if (document.getElementById('industry').value || document.getElementById('personaName').value) {
+                saveDiscoveryData();
+            }
+        }, 15000);
+    </script>
+</body>
+</html>
