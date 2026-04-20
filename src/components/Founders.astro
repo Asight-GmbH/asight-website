@@ -74,7 +74,7 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
 
   .founder-row {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 30% 70%;
     gap: 4rem;
     align-items: center;
     margin-bottom: 6rem;
@@ -85,7 +85,7 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
   }
 
   .founder-row--reverse {
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 70% 30%;
   }
 
   .founder-row--reverse .founder-photo {
@@ -106,13 +106,13 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
   .founder-photo::before {
     content: '';
     position: absolute;
-    width: 280px;
-    height: 360px;
-    border-radius: 20px;
+    width: 210px;
+    height: 270px;
+    border-radius: 16px;
     background: linear-gradient(135deg, #3AA6B9, #4B5F78);
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translate(24px, 24px);
+    transform: translate(-50%, -50%) translate(18px, 18px);
     z-index: 0;
     opacity: 0.85;
   }
@@ -121,30 +121,30 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
   .founder-photo::after {
     content: '';
     position: absolute;
-    width: 340px;
-    height: 340px;
+    width: 260px;
+    height: 260px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(58,166,185,0.35) 0%, transparent 70%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 0;
-    filter: blur(20px);
+    filter: blur(18px);
     pointer-events: none;
   }
 
   /* Mirror the accent for the reversed row */
   .founder-row--reverse .founder-photo::before {
-    transform: translate(-50%, -50%) translate(-24px, 24px);
+    transform: translate(-50%, -50%) translate(-18px, 18px);
     background: linear-gradient(225deg, #3AA6B9, #4B5F78);
   }
 
   .founder-img {
     width: 100%;
-    max-width: 320px;
+    max-width: 240px;
     aspect-ratio: 3/4;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 16px;
     border: 1px solid rgba(175,221,233,0.2);
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     position: relative;
