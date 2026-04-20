@@ -1,5 +1,5 @@
 import type { APIContext, APIRoute } from 'astro';
-import { makeHandler } from '@keystatic/astro/dist/keystatic-astro-api.js';
+import { makeHandler } from '@keystatic/astro/api';
 import config from '../../../../keystatic.config';
 
 const originalHandler = makeHandler({ config });
