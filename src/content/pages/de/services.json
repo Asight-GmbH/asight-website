@@ -21,13 +21,13 @@
       "title": "Infrastruktur",
       "subtitle": "Fundament für Transparenz, Datendurchgängigkeit und 'Single Source of Truth'.",
       "points": [
+        "Projektleitung beim Aufbau von Produktionsanlagen",
         "Einführung von Shopfloor Management",
-        "Strukturierte Datenerfassung",
-        "Industrial IoT & SPS-Anbindung",
+        "Strukturierte Datenerfassung & Industrial IoT",
+        "SPS-Anbindung & Schnittstellen Harmonisierung",
         "Eliminierung redundanter Excel-Listen",
-        "Visualisierung der Performance",
         "Sicherstellung der Datenintegrität",
-        "Schnittstellen-Harmonisierung"
+        "Anlagen Inbetriebnahme & Abnahmen"
       ]
     },
     {
@@ -35,12 +35,13 @@
       "title": "Skalierung",
       "subtitle": "Aktive Wertschöpfungssteigerung und Zukunftsfähigkeit.",
       "points": [
-        "Aktive Prozessoptimierung",
-        "Reduktion von Durchlaufzeiten",
+        "Aktive Prozessoptimierung & Kostensenkung",
+        "Reduktion von Durchlaufzeiten & Kapitalbindung",
         "Prädiktive Kapazitätsplanung",
         "Automatisierte OEM-Compliance",
-        "Investitions-Validierung (ROI)",
-        "Nachhaltige Performance-Sicherung"
+        "Investitionsvalidierung (ROI Betrachtung)",
+        "Nachhaltige Performance Sicherung",
+        "Skalierbare Standards für Rollouts"
       ]
     }
   ]
