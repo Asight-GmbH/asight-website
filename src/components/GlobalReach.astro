@@ -47,7 +47,7 @@ const icons: Record<string, string> = {
           <img src="/assets/world-map-final.svg" alt="" class="world-map" />
 
           {locations.map((loc: any) => (
-            <div class="map-pin" style={`left: ${loc.x}%; top: ${loc.y}%;`}>
+            <div class={`map-pin map-pin--label-${loc.label_position ?? 'top'}`} style={`left: ${loc.x}%; top: ${loc.y}%;`}>
               <span class="pin-dot"></span>
               <span class="pin-pulse"></span>
               <span class="pin-label">{loc.name}</span>
@@ -129,15 +129,13 @@ const icons: Record<string, string> = {
   /* === Pins === */
   .map-pin {
     position: absolute;
-    transform: translate(-50%, -100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
     pointer-events: none;
+    width: 0;
+    height: 0;
   }
 
   .pin-label {
+    position: absolute;
     font-size: 0.75rem;
     font-weight: 600;
     color: #d6dae0;
@@ -146,12 +144,35 @@ const icons: Record<string, string> = {
     padding: 2px 8px;
     border-radius: 4px;
     white-space: nowrap;
-    order: -1;
-    margin-bottom: 4px;
+  }
+
+  /* Label positioning variants */
+  .map-pin--label-top .pin-label {
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .map-pin--label-bottom .pin-label {
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .map-pin--label-left .pin-label {
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .map-pin--label-right .pin-label {
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .pin-dot {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
     width: 12px;
     height: 12px;
     background: #3AA6B9;
@@ -163,9 +184,8 @@ const icons: Record<string, string> = {
 
   .pin-pulse {
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
+    top: 0;
+    left: 0;
     width: 12px;
     height: 12px;
     background: #3AA6B9;
@@ -175,8 +195,8 @@ const icons: Record<string, string> = {
   }
 
   @keyframes pinPulse {
-    0%   { transform: translate(-50%, 0) scale(1);   opacity: 0.6; }
-    100% { transform: translate(-50%, 0) scale(2.8); opacity: 0;   }
+    0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(2.8); opacity: 0;   }
   }
 
   /* === Info Cards === */

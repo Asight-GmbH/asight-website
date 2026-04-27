@@ -2,10 +2,10 @@
   "map_label": "GLOBALE REICHWEITE",
   "map_subtitle": "Erfahrungs-Fokus",
   "locations": [
-    { "name": "USA", "x": 26, "y": 28 },
-    { "name": "Deutschland", "x": 50, "y": 23 },
-    { "name": "Polen", "x": 53, "y": 21 },
-    { "name": "Slowakei", "x": 52.5, "y": 25.5 }
+    { "name": "USA", "x": 24, "y": 30, "label_position": "top" },
+    { "name": "Deutschland", "x": 50, "y": 25, "label_position": "left" },
+    { "name": "Polen", "x": 53, "y": 21, "label_position": "top" },
+    { "name": "Slowakei", "x": 52.5, "y": 25.5, "label_position": "right" }
   ],
   "cards": [
     {

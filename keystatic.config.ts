@@ -301,6 +301,17 @@ const globalReachSchema = {
         description: 'Vertikal: 0=oben, 100=unten.',
         validation: { isRequired: true },
       }),
+      label_position: fields.select({
+        label: 'Label-Position',
+        description: 'Wo soll das Label relativ zum Pin erscheinen?',
+        options: [
+          { label: 'Oben (Standard)', value: 'top' },
+          { label: 'Unten', value: 'bottom' },
+          { label: 'Links', value: 'left' },
+          { label: 'Rechts', value: 'right' },
+        ],
+        defaultValue: 'top',
+      }),
     }),
     { label: 'Standorte', itemLabel: (props) => props.fields.name.value || 'Neuer Standort' }
   ),
