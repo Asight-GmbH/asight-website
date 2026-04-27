@@ -1,6 +1,9 @@
 {
   "nav_items": [
+    { "label": "Wirkung", "href": "/#wirkung" },
+    { "label": "Reichweite", "href": "/#reichweite" },
     { "label": "Services", "href": "/#services" },
+    { "label": "Über uns", "href": "/#ueber-uns" },
     { "label": "Referenzen", "href": "/#referenzen" },
     { "label": "Kontakt", "href": "/#kontakt" }
   ],

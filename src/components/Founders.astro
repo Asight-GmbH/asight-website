@@ -7,7 +7,7 @@ const { locale = 'de' } = Astro.props;
 const foundersData = await getEntry('pages', `${locale}/founders`);
 const { headline_highlight, headline_plain, subline, founders } = foundersData?.data ?? {};
 ---
-<section class="founders-section">
+<section id="ueber-uns" class="founders-section">
   <div class="container">
     <div class="founders-header">
       <h2 class="founders-headline">

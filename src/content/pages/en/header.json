@@ -1,6 +1,9 @@
 {
   "nav_items": [
+    { "label": "Impact", "href": "/en/#wirkung" },
+    { "label": "Global Reach", "href": "/en/#reichweite" },
     { "label": "Services", "href": "/en/#services" },
+    { "label": "About Us", "href": "/en/#ueber-uns" },
     { "label": "References", "href": "/en/#referenzen" },
     { "label": "Contact", "href": "/en/#kontakt" }
   ],
