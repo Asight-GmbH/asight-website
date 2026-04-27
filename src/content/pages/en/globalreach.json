@@ -2,10 +2,10 @@
   "map_label": "GLOBAL REACH",
   "map_subtitle": "Where we've delivered",
   "locations": [
-    { "name": "USA", "x": 18, "y": 32 },
-    { "name": "Germany", "x": 49.5, "y": 24 },
-    { "name": "Poland", "x": 51.5, "y": 22 },
-    { "name": "Slovakia", "x": 50.7, "y": 26 }
+    { "name": "USA", "x": 25, "y": 42 },
+    { "name": "Germany", "x": 51.5, "y": 35 },
+    { "name": "Poland", "x": 53, "y": 33 },
+    { "name": "Slovakia", "x": 53, "y": 36 }
   ],
   "cards": [
     {
