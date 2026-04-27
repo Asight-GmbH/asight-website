@@ -106,13 +106,13 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
   .founder-photo::before {
     content: '';
     position: absolute;
-    width: 210px;
-    height: 270px;
+    width: 240px;
+    height: 320px;
     border-radius: 16px;
     background: linear-gradient(135deg, #3AA6B9, #4B5F78);
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translate(18px, 18px);
+    transform: translate(-50%, -50%);
     z-index: 0;
     opacity: 0.85;
   }
@@ -133,9 +133,8 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
     pointer-events: none;
   }
 
-  /* Mirror the accent for the reversed row */
+  /* Mirror the gradient direction for the reversed row */
   .founder-row--reverse .founder-photo::before {
-    transform: translate(-50%, -50%) translate(-18px, 18px);
     background: linear-gradient(225deg, #3AA6B9, #4B5F78);
   }
 
