@@ -273,6 +273,61 @@ const headerSchema = {
   }),
 };
 
+const globalReachSchema = {
+  map_label: fields.text({
+    label: 'Map Label',
+    description: 'Kleines Label oben (z.B. "GLOBALE REICHWEITE").',
+    validation: reqMax(40),
+  }),
+  map_subtitle: fields.text({
+    label: 'Map Subtitle',
+    description: 'Untertitel unter dem Label.',
+    validation: reqMax(80),
+  }),
+  locations: fields.array(
+    fields.object({
+      name: fields.text({
+        label: 'Standort',
+        description: 'Name des Standorts (wird auf der Karte angezeigt).',
+        validation: reqMax(30),
+      }),
+      x: fields.number({
+        label: 'X-Position (%)',
+        description: 'Horizontal: 0=ganz links, 100=ganz rechts.',
+        validation: { isRequired: true },
+      }),
+      y: fields.number({
+        label: 'Y-Position (%)',
+        description: 'Vertikal: 0=oben, 100=unten.',
+        validation: { isRequired: true },
+      }),
+    }),
+    { label: 'Standorte', itemLabel: (props) => props.fields.name.value || 'Neuer Standort' }
+  ),
+  cards: fields.array(
+    fields.object({
+      icon: fields.select({
+        label: 'Icon',
+        options: [
+          { label: 'Team', value: 'team' },
+          { label: 'Globe', value: 'globe' },
+        ],
+        defaultValue: 'team',
+      }),
+      title: fields.text({
+        label: 'Titel',
+        validation: reqMax(80),
+      }),
+      description: fields.text({
+        label: 'Beschreibung',
+        multiline: true,
+        validation: reqMax(250),
+      }),
+    }),
+    { label: 'Info-Karten', itemLabel: (props) => props.fields.title.value || 'Neue Karte' }
+  ),
+};
+
 const testimonialsHeadlineSchema = {
   headline: fields.text({
     label: 'Headline',
@@ -318,11 +373,11 @@ export default config({
     brand: { name: 'ASIGHT CMS' },
     navigation: {
       'Deutsch': [
-        'hero_de', 'impact_de', 'socialproof_de', 'services_de',
+        'hero_de', 'impact_de', 'socialproof_de', 'globalreach_de', 'services_de',
         'founders_de', 'testimonials_headline_de', 'contact_de', 'header_de',
       ],
       'English': [
-        'hero_en', 'impact_en', 'socialproof_en', 'services_en',
+        'hero_en', 'impact_en', 'socialproof_en', 'globalreach_en', 'services_en',
         'founders_en', 'testimonials_headline_en', 'contact_en', 'header_en',
       ],
       'Einträge': ['testimonials', 'blog', 'team'],
@@ -333,6 +388,7 @@ export default config({
     hero_de: localeSingleton('Hero', 'hero', 'de', heroSchema),
     impact_de: localeSingleton('Impact Strip', 'impact', 'de', impactSchema),
     socialproof_de: localeSingleton('Social Proof', 'socialproof', 'de', socialproofSchema),
+    globalreach_de: localeSingleton('Global Reach', 'globalreach', 'de', globalReachSchema),
     services_de: localeSingleton('Services', 'services', 'de', servicesSchema),
     founders_de: localeSingleton('Founders', 'founders', 'de', foundersSchema),
     testimonials_headline_de: localeSingleton('Testimonials Headline', 'testimonials-headline', 'de', testimonialsHeadlineSchema),
@@ -343,6 +399,7 @@ export default config({
     hero_en: localeSingleton('Hero', 'hero', 'en', heroSchema),
     impact_en: localeSingleton('Impact Strip', 'impact', 'en', impactSchema),
     socialproof_en: localeSingleton('Social Proof', 'socialproof', 'en', socialproofSchema),
+    globalreach_en: localeSingleton('Global Reach', 'globalreach', 'en', globalReachSchema),
     services_en: localeSingleton('Services', 'services', 'en', servicesSchema),
     founders_en: localeSingleton('Founders', 'founders', 'en', foundersSchema),
     testimonials_headline_en: localeSingleton('Testimonials Headline', 'testimonials-headline', 'en', testimonialsHeadlineSchema),

@@ -1,0 +1,22 @@
+{
+  "map_label": "GLOBAL REACH",
+  "map_subtitle": "Where we've delivered",
+  "locations": [
+    { "name": "USA", "x": 22, "y": 50 },
+    { "name": "Germany", "x": 51, "y": 38 },
+    { "name": "Poland", "x": 55, "y": 32 },
+    { "name": "Slovakia", "x": 54.5, "y": 39 }
+  ],
+  "cards": [
+    {
+      "icon": "team",
+      "title": "Cross-cultural Project Management",
+      "description": "Leading international teams and managing on-site supplier coordination."
+    },
+    {
+      "icon": "globe",
+      "title": "US Market Expertise",
+      "description": "Years of experience setting up and running production sites across North America."
+    }
+  ]
+}

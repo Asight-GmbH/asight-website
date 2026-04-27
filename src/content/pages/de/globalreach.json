@@ -1,0 +1,22 @@
+{
+  "map_label": "GLOBALE REICHWEITE",
+  "map_subtitle": "Erfahrungs-Fokus",
+  "locations": [
+    { "name": "USA", "x": 22, "y": 50 },
+    { "name": "Deutschland", "x": 51, "y": 38 },
+    { "name": "Polen", "x": 55, "y": 32 },
+    { "name": "Slowakei", "x": 54.5, "y": 39 }
+  ],
+  "cards": [
+    {
+      "icon": "team",
+      "title": "Interkulturelles Projektmanagement",
+      "description": "Leitung internationaler Teams und Lieferantensteuerung vor Ort."
+    },
+    {
+      "icon": "globe",
+      "title": "US-Markt-Expertise",
+      "description": "Langjährige Erfahrung im Aufbau und Betrieb von Produktionsstandorten in Nordamerika."
+    }
+  ]
+}

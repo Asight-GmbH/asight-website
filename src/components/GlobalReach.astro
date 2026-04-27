@@ -1,0 +1,255 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const data = await getEntry('pages', `${locale}/globalreach`);
+const fallback = {
+  map_label: 'GLOBALE REICHWEITE',
+  map_subtitle: 'Erfahrungs-Fokus',
+  locations: [
+    { name: 'USA',         x: 22,  y: 50 },
+    { name: 'Deutschland', x: 51,  y: 38 },
+    { name: 'Polen',       x: 55,  y: 32 },
+    { name: 'Slowakei',    x: 54.5,y: 39 },
+  ],
+  cards: [
+    {
+      icon: 'team',
+      title: 'Interkulturelles Projektmanagement',
+      description: 'Leitung internationaler Teams und Lieferantensteuerung vor Ort.',
+    },
+    {
+      icon: 'globe',
+      title: 'US-Markt-Expertise',
+      description: 'Langjährige Erfahrung im Aufbau und Betrieb von Produktionsstandorten in Nordamerika.',
+    },
+  ],
+};
+
+const { map_label, map_subtitle, locations, cards } = (data?.data ?? fallback) as typeof fallback;
+
+const icons: Record<string, string> = {
+  team: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  globe: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>`,
+};
+---
+
+<section class="global-reach">
+  <div class="container">
+    <div class="reach-grid">
+      <!-- Map card -->
+      <div class="map-card">
+        <div class="map-label">{map_label}</div>
+        <div class="map-subtitle">{map_subtitle}</div>
+        <div class="map-wrapper">
+          <svg class="world-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="dots" x="0" y="0" width="9" height="9" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.2" fill="rgba(175,221,233,0.18)"/>
+              </pattern>
+              <clipPath id="continents">
+                <!-- North America -->
+                <path d="M115,90 Q160,75 220,90 Q260,95 285,130 L295,165 Q280,210 250,235 L220,260 L195,275 Q175,265 165,250 L150,225 L130,210 L115,180 L100,150 L100,115 Z"/>
+                <path d="M195,275 L215,295 L210,315 L185,310 Z"/>
+                <!-- South America -->
+                <path d="M260,295 Q295,300 310,330 L325,375 L320,420 Q305,445 285,455 L265,440 L255,395 Q250,355 255,320 Z"/>
+                <!-- Europe -->
+                <path d="M460,110 Q510,100 545,115 L575,135 Q585,160 570,180 L545,195 Q520,200 495,190 L470,175 L455,150 Z"/>
+                <!-- Africa -->
+                <path d="M475,205 Q520,205 555,225 L580,265 L575,320 Q560,360 530,375 L505,365 Q480,335 470,295 L470,250 Z"/>
+                <!-- Asia -->
+                <path d="M580,115 Q650,90 740,105 Q810,120 855,150 L880,185 Q870,225 830,250 L785,260 Q735,250 690,235 L640,210 L605,185 L585,160 Z"/>
+                <!-- India -->
+                <path d="M675,225 Q700,235 715,260 L710,290 L690,295 L675,275 Z"/>
+                <!-- Southeast Asia -->
+                <path d="M785,260 L815,275 L810,300 L790,295 Z"/>
+                <!-- Australia -->
+                <path d="M800,365 Q850,355 880,375 L890,405 Q870,425 835,420 L805,400 Z"/>
+              </clipPath>
+            </defs>
+            <rect x="0" y="0" width="1000" height="500" fill="url(#dots)" clip-path="url(#continents)"/>
+          </svg>
+
+          {locations.map((loc: any) => (
+            <div class="map-pin" style={`left: ${loc.x}%; top: ${loc.y}%;`}>
+              <span class="pin-dot"></span>
+              <span class="pin-pulse"></span>
+              <span class="pin-label">{loc.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Info cards -->
+      <div class="info-cards">
+        {cards.map((card: any) => (
+          <div class="info-card">
+            <div class="info-icon" set:html={icons[card.icon] ?? icons.globe} />
+            <div class="info-content">
+              <h3 class="info-title">{card.title}</h3>
+              <p class="info-text">{card.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .global-reach {
+    background: #11161d;
+    padding: 0 0 5rem;
+  }
+
+  .reach-grid {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 1.5rem;
+  }
+
+  /* === Map Card === */
+  .map-card {
+    position: relative;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 2rem 2rem 2.5rem;
+    overflow: hidden;
+  }
+
+  .map-label {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: #AFDDE9;
+    margin-bottom: 0.25rem;
+  }
+
+  .map-subtitle {
+    font-size: 0.95rem;
+    color: #8791a1;
+    margin-bottom: 1.5rem;
+  }
+
+  .map-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+  }
+
+  .world-map {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* === Pins === */
+  .map-pin {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+  }
+
+  .pin-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #d6dae0;
+    background: rgba(58,166,185,0.15);
+    border: 1px solid rgba(175,221,233,0.25);
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    order: -1;
+    margin-bottom: 4px;
+  }
+
+  .pin-dot {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    background: #3AA6B9;
+    border: 2px solid #AFDDE9;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 0 12px rgba(58,166,185,0.6);
+  }
+
+  .pin-pulse {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 12px;
+    height: 12px;
+    background: #3AA6B9;
+    border-radius: 50%;
+    animation: pinPulse 2s ease-out infinite;
+    z-index: 1;
+  }
+
+  @keyframes pinPulse {
+    0%   { transform: translate(-50%, 0) scale(1);   opacity: 0.6; }
+    100% { transform: translate(-50%, 0) scale(2.8); opacity: 0;   }
+  }
+
+  /* === Info Cards === */
+  .info-cards {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .info-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 1.75rem;
+  }
+
+  .info-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(58,166,185,0.1);
+    color: #AFDDE9;
+    flex-shrink: 0;
+  }
+
+  .info-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #d6dae0;
+    margin: 0 0 0.5rem;
+  }
+
+  .info-text {
+    font-size: 0.9rem;
+    color: #8791a1;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .reach-grid {
+      grid-template-columns: 1fr;
+    }
+    .info-cards {
+      grid-template-rows: auto auto;
+    }
+  }
+</style>
