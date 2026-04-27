@@ -44,33 +44,7 @@ const icons: Record<string, string> = {
         <div class="map-label">{map_label}</div>
         <div class="map-subtitle">{map_subtitle}</div>
         <div class="map-wrapper">
-          <svg class="world-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="dots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1.6" fill="rgba(175,221,233,0.55)"/>
-              </pattern>
-              <clipPath id="continents">
-                <!-- North America -->
-                <path d="M115,90 Q160,75 220,90 Q260,95 285,130 L295,165 Q280,210 250,235 L220,260 L195,275 Q175,265 165,250 L150,225 L130,210 L115,180 L100,150 L100,115 Z"/>
-                <path d="M195,275 L215,295 L210,315 L185,310 Z"/>
-                <!-- South America -->
-                <path d="M260,295 Q295,300 310,330 L325,375 L320,420 Q305,445 285,455 L265,440 L255,395 Q250,355 255,320 Z"/>
-                <!-- Europe -->
-                <path d="M460,110 Q510,100 545,115 L575,135 Q585,160 570,180 L545,195 Q520,200 495,190 L470,175 L455,150 Z"/>
-                <!-- Africa -->
-                <path d="M475,205 Q520,205 555,225 L580,265 L575,320 Q560,360 530,375 L505,365 Q480,335 470,295 L470,250 Z"/>
-                <!-- Asia -->
-                <path d="M580,115 Q650,90 740,105 Q810,120 855,150 L880,185 Q870,225 830,250 L785,260 Q735,250 690,235 L640,210 L605,185 L585,160 Z"/>
-                <!-- India -->
-                <path d="M675,225 Q700,235 715,260 L710,290 L690,295 L675,275 Z"/>
-                <!-- Southeast Asia -->
-                <path d="M785,260 L815,275 L810,300 L790,295 Z"/>
-                <!-- Australia -->
-                <path d="M800,365 Q850,355 880,375 L890,405 Q870,425 835,420 L805,400 Z"/>
-              </clipPath>
-            </defs>
-            <rect x="0" y="0" width="1000" height="500" fill="url(#dots)" clip-path="url(#continents)"/>
-          </svg>
+          <img src="/assets/world-map-dotted.svg" alt="" class="world-map" />
 
           {locations.map((loc: any) => (
             <div class="map-pin" style={`left: ${loc.x}%; top: ${loc.y}%;`}>
