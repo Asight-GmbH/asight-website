@@ -106,13 +106,14 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
   .founder-photo::before {
     content: '';
     position: absolute;
-    width: 240px;
-    height: 320px;
+    width: 210px;
+    height: 270px;
     border-radius: 16px;
     background: linear-gradient(135deg, #3AA6B9, #4B5F78);
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    /* Alex (first row): align flush with bottom-right of photo */
+    transform: translate(-50%, -50%) translate(15px, 25px);
     z-index: 0;
     opacity: 0.85;
   }
@@ -133,8 +134,9 @@ const { headline_highlight, headline_plain, subline, founders } = foundersData?.
     pointer-events: none;
   }
 
-  /* Mirror the gradient direction for the reversed row */
+  /* Florian (reverse row): align flush with bottom-left of photo */
   .founder-row--reverse .founder-photo::before {
+    transform: translate(-50%, -50%) translate(-15px, 25px);
     background: linear-gradient(225deg, #3AA6B9, #4B5F78);
   }
 
