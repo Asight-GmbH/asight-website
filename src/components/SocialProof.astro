@@ -7,10 +7,10 @@ const { locale = 'de' } = Astro.props;
 const sp = await getEntry('pages', `${locale}/socialproof`);
 const { headline, client_label, transition_text, transition_emphasis, oem_label } = sp?.data ?? {};
 ---
-<section id="reichweite" class="social-proof">
+<section class="social-proof">
   <div class="container">
     <!-- Headline -->
-    <h2 class="social-proof-headline">{headline}</h2>
+    <h2 id="reichweite" class="social-proof-headline">{headline}</h2>
 
     <!-- Überleitung -->
     <p class="transition-text">
