@@ -19,7 +19,7 @@ const { nav_items, cta_text, cta_href } = header?.data ?? {};
       ))}
     </nav>
     <div class="header-right">
-      <a href={locale === 'de' ? '/en/' : '/'} class="lang-switch">{locale === 'de' ? 'EN' : 'DE'}</a>
+      <a href={locale === 'de' ? '/en/?lang=en' : '/?lang=de'} class="lang-switch">{locale === 'de' ? 'EN' : 'DE'}</a>
       <a href={cta_href} class="btn btn-primary btn-sm">{cta_text}</a>
     </div>
   </div>
