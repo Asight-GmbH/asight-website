@@ -8,7 +8,7 @@
     { "name": "Birmingham", "x": 22.9, "y": 36, "label_position": "left" },
     { "name": "Greenville", "x": 24.2, "y": 35, "label_position": "bottom" },
     { "name": "Bremen", "x": 50, "y": 20, "label_position": "top" },
-    { "name": "Legnica", "x": 54, "y": 22, "label_position": "right" },
+    { "name": "Legnica", "x": 54, "y": 20, "label_position": "right" },
     { "name": "Stuttgart", "x": 50, "y": 25, "label_position": "left" },
     { "name": "St. Gallen", "x": 50, "y": 28, "label_position": "bottom" },
     { "name": "Bratislava", "x": 54, "y": 28, "label_position": "right" },
