@@ -48,6 +48,7 @@ const icons: Record<string, string> = {
 
           {locations.map((loc: any) => (
             <div class={`map-pin map-pin--label-${loc.label_position ?? 'top'}`} style={`left: ${loc.x}%; top: ${loc.y}%;`}>
+              <span class="pin-glow"></span>
               <span class="pin-dot"></span>
               <span class="pin-pulse"></span>
               <span class="pin-label">{loc.name}</span>
@@ -166,6 +167,22 @@ const icons: Record<string, string> = {
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
+  }
+
+  /* Soft radial glow halo (matches impact-card hover effect) */
+  .pin-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #3AA6B9 0%, transparent 70%);
+    filter: blur(14px);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .pin-dot {
