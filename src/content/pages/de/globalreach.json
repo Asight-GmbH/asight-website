@@ -14,9 +14,9 @@
     { "name": "St. Gallen", "x": 50.3, "y": 26, "label_position": "bottom" },
     { "name": "Bratislava", "x": 52.5, "y": 25.5, "label_position": "right" },
     { "name": "Amman", "x": 58, "y": 38, "label_position": "right" },
-    { "name": "Shenzhen", "x": 80, "y": 45, "label_position": "bottom" },
-    { "name": "Busan", "x": 84, "y": 35, "label_position": "right" },
-    { "name": "East London", "x": 56, "y": 80, "label_position": "bottom" }
+    { "name": "Shenzhen", "x": 78, "y": 43, "label_position": "bottom" },
+    { "name": "Busan", "x": 82, "y": 33, "label_position": "right" },
+    { "name": "East London", "x": 54, "y": 78, "label_position": "bottom" }
   ],
   "cards": [
     {
