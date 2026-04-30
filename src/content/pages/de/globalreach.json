@@ -2,21 +2,32 @@
   "map_label": "GLOBALE REICHWEITE",
   "map_subtitle": "Erfahrungs-Fokus",
   "locations": [
-    { "name": "USA", "x": 24, "y": 30, "label_position": "top" },
-    { "name": "Deutschland", "x": 50, "y": 25, "label_position": "left" },
-    { "name": "Polen", "x": 53, "y": 21, "label_position": "top" },
-    { "name": "Slowakei", "x": 52.5, "y": 25.5, "label_position": "right" }
+    { "name": "Portland", "x": 13, "y": 27, "label_position": "top" },
+    { "name": "Detroit", "x": 24, "y": 30, "label_position": "top" },
+    { "name": "Columbus OH", "x": 24, "y": 31.5, "label_position": "right" },
+    { "name": "Chattanooga", "x": 23.3, "y": 35, "label_position": "left" },
+    { "name": "Birmingham", "x": 22.9, "y": 36, "label_position": "bottom" },
+    { "name": "Greenville SC", "x": 24.2, "y": 35, "label_position": "right" },
+    { "name": "Berlin", "x": 51.5, "y": 22, "label_position": "top" },
+    { "name": "Legnica", "x": 52.2, "y": 23, "label_position": "right" },
+    { "name": "Stuttgart", "x": 50.3, "y": 25, "label_position": "left" },
+    { "name": "St. Gallen", "x": 50.3, "y": 26, "label_position": "bottom" },
+    { "name": "Bratislava", "x": 52.5, "y": 25.5, "label_position": "right" },
+    { "name": "Amman", "x": 58, "y": 38, "label_position": "right" },
+    { "name": "Shenzhen", "x": 80, "y": 45, "label_position": "bottom" },
+    { "name": "Busan", "x": 84, "y": 35, "label_position": "right" },
+    { "name": "East London", "x": 56, "y": 80, "label_position": "bottom" }
   ],
   "cards": [
     {
-      "icon": "team",
-      "title": "Interkulturelles Projektmanagement",
-      "description": "Leitung internationaler Teams und Lieferantensteuerung vor Ort."
+      "icon": "globe",
+      "title": "Internationale Märkte",
+      "description": "Aktive Projekte in Nordamerika, Europa, Asien, Nahem Osten und Afrika. Wir liefern dort, wo Ihre Wertschöpfung stattfindet."
     },
     {
-      "icon": "globe",
-      "title": "US-Markt-Expertise",
-      "description": "Langjährige Erfahrung im Aufbau und Betrieb von Produktionsstandorten in Nordamerika."
+      "icon": "team",
+      "title": "Interkulturelles Projektmanagement",
+      "description": "Leitung internationaler Teams und Lieferantensteuerung vor Ort, mit Fokus auf nachhaltige Verankerung der Lösungen."
     }
   ]
 }

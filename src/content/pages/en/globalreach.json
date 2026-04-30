@@ -2,21 +2,32 @@
   "map_label": "GLOBAL REACH",
   "map_subtitle": "Where we've delivered",
   "locations": [
-    { "name": "USA", "x": 24, "y": 30, "label_position": "top" },
-    { "name": "Germany", "x": 50, "y": 25, "label_position": "left" },
-    { "name": "Poland", "x": 53, "y": 21, "label_position": "top" },
-    { "name": "Slovakia", "x": 52.5, "y": 25.5, "label_position": "right" }
+    { "name": "Portland", "x": 13, "y": 27, "label_position": "top" },
+    { "name": "Detroit", "x": 24, "y": 30, "label_position": "top" },
+    { "name": "Columbus OH", "x": 24, "y": 31.5, "label_position": "right" },
+    { "name": "Chattanooga", "x": 23.3, "y": 35, "label_position": "left" },
+    { "name": "Birmingham", "x": 22.9, "y": 36, "label_position": "bottom" },
+    { "name": "Greenville SC", "x": 24.2, "y": 35, "label_position": "right" },
+    { "name": "Berlin", "x": 51.5, "y": 22, "label_position": "top" },
+    { "name": "Legnica", "x": 52.2, "y": 23, "label_position": "right" },
+    { "name": "Stuttgart", "x": 50.3, "y": 25, "label_position": "left" },
+    { "name": "St. Gallen", "x": 50.3, "y": 26, "label_position": "bottom" },
+    { "name": "Bratislava", "x": 52.5, "y": 25.5, "label_position": "right" },
+    { "name": "Amman", "x": 58, "y": 38, "label_position": "right" },
+    { "name": "Shenzhen", "x": 80, "y": 45, "label_position": "bottom" },
+    { "name": "Busan", "x": 84, "y": 35, "label_position": "right" },
+    { "name": "East London", "x": 56, "y": 80, "label_position": "bottom" }
   ],
   "cards": [
     {
-      "icon": "team",
-      "title": "Cross-cultural Project Management",
-      "description": "Leading international teams and managing on-site supplier coordination."
+      "icon": "globe",
+      "title": "International Markets",
+      "description": "Active projects across North America, Europe, Asia, Middle East and Africa. We deliver where your value creation happens."
     },
     {
-      "icon": "globe",
-      "title": "US Market Expertise",
-      "description": "Years of experience setting up and running production sites across North America."
+      "icon": "team",
+      "title": "Cross-cultural Project Management",
+      "description": "Leading international teams and on-site supplier coordination, focused on sustainable adoption of solutions."
     }
   ]
 }
