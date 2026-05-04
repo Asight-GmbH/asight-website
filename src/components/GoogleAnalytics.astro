@@ -1,0 +1,41 @@
+---
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+{gaId && (
+  <>
+    <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500,
+      });
+
+      gtag('js', new Date());
+      gtag('config', gaId, { anonymize_ip: true });
+
+      try {
+        const m = document.cookie.match(/(?:^|; )cookie-consent=([^;]+)/);
+        if (m) {
+          const stored = JSON.parse(decodeURIComponent(m[1]));
+          if (stored && stored.analytics) {
+            gtag('consent', 'update', { analytics_storage: 'granted' });
+          }
+        }
+      } catch (_) { /* ignore malformed cookie */ }
+
+      window.addEventListener('consent-changed', (e) => {
+        const d = (e && e.detail) || {};
+        gtag('consent', 'update', {
+          analytics_storage: d.analytics ? 'granted' : 'denied',
+        });
+      });
+    </script>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+  </>
+)}

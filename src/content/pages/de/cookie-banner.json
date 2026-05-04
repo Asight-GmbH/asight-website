@@ -1,0 +1,12 @@
+{
+  "headline": "Wir verwenden Cookies",
+  "description": "Wir nutzen Cookies, um die Website zu verbessern und anonyme Nutzungsstatistiken zu erheben. Notwendige Cookies sind immer aktiv. Sie können selbst entscheiden, welche optionalen Cookies Sie zulassen möchten.",
+  "accept_button": "Alle akzeptieren",
+  "reject_button": "Nur notwendige",
+  "settings_button": "Einstellungen",
+  "analytics_label": "Analyse-Cookies (Google Analytics 4)",
+  "analytics_description": "Helfen uns zu verstehen, wie Besucher die Website nutzen, damit wir Inhalte und Performance verbessern können. Daten werden anonymisiert übertragen.",
+  "privacy_link_text": "Datenschutzerklärung",
+  "save_button": "Auswahl speichern",
+  "change_settings_link": "Cookie-Einstellungen ändern"
+}

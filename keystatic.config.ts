@@ -339,6 +339,56 @@ const globalReachSchema = {
   ),
 };
 
+const cookieBannerSchema = {
+  headline: fields.text({
+    label: 'Headline',
+    description: 'Kurze Überschrift im Banner. Max. 80 Zeichen.',
+    validation: reqMax(80),
+  }),
+  description: fields.text({
+    label: 'Beschreibungstext',
+    description: 'Erklärtext im Banner. Max. 400 Zeichen.',
+    multiline: true,
+    validation: reqMax(400),
+  }),
+  accept_button: fields.text({
+    label: 'Button: Alle akzeptieren',
+    validation: reqMax(40),
+  }),
+  reject_button: fields.text({
+    label: 'Button: Nur notwendige',
+    validation: reqMax(40),
+  }),
+  settings_button: fields.text({
+    label: 'Button: Einstellungen',
+    validation: reqMax(40),
+  }),
+  analytics_label: fields.text({
+    label: 'Analyse-Cookies Label',
+    description: 'Überschrift im Settings-Modal.',
+    validation: reqMax(80),
+  }),
+  analytics_description: fields.text({
+    label: 'Analyse-Cookies Beschreibung',
+    description: 'Erklärtext für Analytics-Toggle. Max. 250 Zeichen.',
+    multiline: true,
+    validation: reqMax(250),
+  }),
+  privacy_link_text: fields.text({
+    label: 'Link-Text zur Datenschutzerklärung',
+    validation: reqMax(60),
+  }),
+  save_button: fields.text({
+    label: 'Button: Speichern',
+    validation: reqMax(40),
+  }),
+  change_settings_link: fields.text({
+    label: 'Link: Cookie-Einstellungen ändern',
+    description: 'Wird in der Datenschutzerklärung genutzt.',
+    validation: reqMax(80),
+  }),
+};
+
 const testimonialsHeadlineSchema = {
   headline: fields.text({
     label: 'Headline',
@@ -385,11 +435,11 @@ export default config({
     navigation: {
       'Deutsch': [
         'hero_de', 'impact_de', 'socialproof_de', 'globalreach_de', 'services_de',
-        'founders_de', 'testimonials_headline_de', 'contact_de', 'header_de',
+        'founders_de', 'testimonials_headline_de', 'contact_de', 'header_de', 'cookie_banner_de',
       ],
       'English': [
         'hero_en', 'impact_en', 'socialproof_en', 'globalreach_en', 'services_en',
-        'founders_en', 'testimonials_headline_en', 'contact_en', 'header_en',
+        'founders_en', 'testimonials_headline_en', 'contact_en', 'header_en', 'cookie_banner_en',
       ],
       'Einträge': ['testimonials', 'blog', 'team'],
     },
@@ -405,6 +455,7 @@ export default config({
     testimonials_headline_de: localeSingleton('Testimonials Headline', 'testimonials-headline', 'de', testimonialsHeadlineSchema),
     contact_de: localeSingleton('Kontakt', 'contact', 'de', contactSchema),
     header_de: localeSingleton('Header', 'header', 'de', headerSchema),
+    cookie_banner_de: localeSingleton('Cookie-Banner', 'cookie-banner', 'de', cookieBannerSchema),
 
     // English
     hero_en: localeSingleton('Hero', 'hero', 'en', heroSchema),
@@ -416,6 +467,7 @@ export default config({
     testimonials_headline_en: localeSingleton('Testimonials Headline', 'testimonials-headline', 'en', testimonialsHeadlineSchema),
     contact_en: localeSingleton('Contact', 'contact', 'en', contactSchema),
     header_en: localeSingleton('Header', 'header', 'en', headerSchema),
+    cookie_banner_en: localeSingleton('Cookie Banner', 'cookie-banner', 'en', cookieBannerSchema),
   },
   collections: {
     testimonials: collection({

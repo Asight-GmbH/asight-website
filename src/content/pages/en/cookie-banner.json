@@ -1,0 +1,12 @@
+{
+  "headline": "We use cookies",
+  "description": "We use cookies to improve the website and collect anonymous usage statistics. Essential cookies are always active. You can decide which optional cookies you allow.",
+  "accept_button": "Accept all",
+  "reject_button": "Essential only",
+  "settings_button": "Settings",
+  "analytics_label": "Analytics cookies (Google Analytics 4)",
+  "analytics_description": "Help us understand how visitors use the site so we can improve content and performance. Data is transmitted anonymously.",
+  "privacy_link_text": "Privacy Policy",
+  "save_button": "Save selection",
+  "change_settings_link": "Change cookie settings"
+}

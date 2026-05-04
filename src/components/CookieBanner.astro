@@ -1,0 +1,288 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const entry = await getEntry('pages', `${locale}/cookie-banner`);
+const t = entry?.data ?? {};
+
+const privacyHref = '/datenschutz';
+---
+<div id="cookie-banner" class="cookie-banner" hidden role="dialog" aria-live="polite" aria-label={t.headline}>
+  <div class="cb-inner">
+    <div class="cb-text">
+      <h3 class="cb-headline">{t.headline}</h3>
+      <p class="cb-description">
+        {t.description}
+        {' '}
+        <a href={privacyHref} class="cb-link">{t.privacy_link_text}</a>
+      </p>
+    </div>
+    <div class="cb-buttons">
+      <button type="button" class="cb-btn cb-btn--ghost" data-cb-action="settings">{t.settings_button}</button>
+      <button type="button" class="cb-btn cb-btn--ghost" data-cb-action="reject">{t.reject_button}</button>
+      <button type="button" class="cb-btn cb-btn--primary" data-cb-action="accept">{t.accept_button}</button>
+    </div>
+  </div>
+</div>
+
+<div id="cookie-modal" class="cb-modal" hidden role="dialog" aria-modal="true" aria-labelledby="cb-modal-title">
+  <div class="cb-modal-backdrop" data-cb-action="close-modal"></div>
+  <div class="cb-modal-card">
+    <h3 id="cb-modal-title" class="cb-modal-headline">{t.headline}</h3>
+    <p class="cb-modal-description">{t.description}</p>
+
+    <div class="cb-toggle-row">
+      <div class="cb-toggle-text">
+        <strong>{t.analytics_label}</strong>
+        <p>{t.analytics_description}</p>
+      </div>
+      <label class="cb-switch">
+        <input type="checkbox" id="cb-toggle-analytics" />
+        <span class="cb-slider"></span>
+      </label>
+    </div>
+
+    <div class="cb-modal-buttons">
+      <a href={privacyHref} class="cb-link">{t.privacy_link_text}</a>
+      <button type="button" class="cb-btn cb-btn--primary" data-cb-action="save">{t.save_button}</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    const COOKIE_NAME = 'cookie-consent';
+    const banner = document.getElementById('cookie-banner');
+    const modal = document.getElementById('cookie-modal');
+    const toggle = document.getElementById('cb-toggle-analytics');
+    if (!banner || !modal || !toggle) return;
+
+    function readConsent() {
+      const m = document.cookie.match(/(?:^|; )cookie-consent=([^;]+)/);
+      if (!m) return null;
+      try { return JSON.parse(decodeURIComponent(m[1])); } catch (_) { return null; }
+    }
+
+    function writeConsent(analytics) {
+      const value = encodeURIComponent(JSON.stringify({ analytics: !!analytics, ts: new Date().toISOString() }));
+      const oneYear = 60 * 60 * 24 * 365;
+      document.cookie = COOKIE_NAME + '=' + value + '; path=/; max-age=' + oneYear + '; samesite=lax; secure';
+      window.dispatchEvent(new CustomEvent('consent-changed', { detail: { analytics: !!analytics } }));
+    }
+
+    function hideBanner() { banner.hidden = true; }
+    function showBanner() { banner.hidden = false; }
+    function openModal() {
+      const stored = readConsent();
+      toggle.checked = !!(stored && stored.analytics);
+      modal.hidden = false;
+    }
+    function closeModal() { modal.hidden = true; }
+
+    if (!readConsent()) showBanner();
+
+    document.addEventListener('click', (e) => {
+      const el = e.target instanceof Element ? e.target.closest('[data-cb-action]') : null;
+      if (!el) return;
+      const action = el.getAttribute('data-cb-action');
+      switch (action) {
+        case 'accept':       writeConsent(true);  hideBanner(); closeModal(); break;
+        case 'reject':       writeConsent(false); hideBanner(); closeModal(); break;
+        case 'settings':     openModal(); break;
+        case 'close-modal':  closeModal(); break;
+        case 'save':         writeConsent(toggle.checked); hideBanner(); closeModal(); break;
+        case 'reopen':       e.preventDefault(); document.cookie = COOKIE_NAME + '=; path=/; max-age=0'; showBanner(); break;
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+  })();
+</script>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 9999;
+    background: rgba(17, 22, 29, 0.95);
+    border: 1px solid rgba(175, 221, 233, 0.18);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    color: #d6dae0;
+    font-family: 'Inter', sans-serif;
+    animation: cbSlideUp 0.4s ease-out;
+  }
+  .cookie-banner[hidden] { display: none; }
+
+  @keyframes cbSlideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .cb-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .cb-text { flex: 1; min-width: 0; }
+  .cb-headline {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.25rem;
+  }
+  .cb-description {
+    font-size: 0.85rem;
+    color: #8791a1;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .cb-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .cb-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.6rem 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .cb-btn--primary {
+    background: linear-gradient(135deg, #3AA6B9, #2E8A9A);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(58, 166, 185, 0.3);
+  }
+  .cb-btn--primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(58, 166, 185, 0.4); }
+  .cb-btn--ghost {
+    background: transparent;
+    color: #d6dae0;
+    border-color: rgba(175, 221, 233, 0.25);
+  }
+  .cb-btn--ghost:hover { background: rgba(175, 221, 233, 0.08); border-color: rgba(175, 221, 233, 0.45); }
+
+  .cb-link {
+    color: #AFDDE9;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .cb-link:hover { color: #fff; }
+
+  .cb-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .cb-modal[hidden] { display: none; }
+  .cb-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+  }
+  .cb-modal-card {
+    position: relative;
+    background: #11161d;
+    border: 1px solid rgba(175, 221, 233, 0.18);
+    border-radius: 14px;
+    padding: 2rem;
+    max-width: 560px;
+    width: 100%;
+    color: #d6dae0;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+  .cb-modal-headline {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.5rem;
+  }
+  .cb-modal-description {
+    font-size: 0.9rem;
+    color: #8791a1;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+  }
+
+  .cb-toggle-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .cb-toggle-text { flex: 1; }
+  .cb-toggle-text strong { font-size: 0.95rem; color: #fff; display: block; margin-bottom: 0.25rem; }
+  .cb-toggle-text p { font-size: 0.825rem; color: #8791a1; margin: 0; line-height: 1.5; }
+
+  .cb-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .cb-switch input { opacity: 0; width: 0; height: 0; }
+  .cb-slider {
+    position: absolute; inset: 0;
+    background: rgba(175, 221, 233, 0.15);
+    border-radius: 12px;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  .cb-slider::before {
+    content: '';
+    position: absolute;
+    height: 18px; width: 18px;
+    left: 3px; top: 3px;
+    background: #d6dae0;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  .cb-switch input:checked + .cb-slider { background: #3AA6B9; }
+  .cb-switch input:checked + .cb-slider::before { transform: translateX(20px); background: #fff; }
+
+  .cb-modal-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 760px) {
+    .cb-inner { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .cb-buttons { flex-wrap: wrap; }
+    .cb-btn { flex: 1; min-width: 100px; }
+    .cb-modal-card { padding: 1.5rem; }
+    .cb-modal-buttons { flex-direction: column-reverse; align-items: stretch; }
+    .cb-modal-buttons .cb-btn { width: 100%; }
+  }
+</style>
