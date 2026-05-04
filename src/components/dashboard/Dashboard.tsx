@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Activity } from 'lucide-react';
 import OverviewWidget from './OverviewWidget';
+import EngagementWidget from './EngagementWidget';
 import RealtimeWidget from './RealtimeWidget';
 import TimeseriesWidget from './TimeseriesWidget';
 import SourcesWidget from './SourcesWidget';
@@ -47,6 +48,7 @@ export default function Dashboard() {
         <div className="asg-cell asg-cell--overview"><OverviewWidget days={days} /></div>
         <div className="asg-cell asg-cell--realtime"><RealtimeWidget /></div>
         <div className="asg-cell asg-cell--timeseries"><TimeseriesWidget days={days} /></div>
+        <div className="asg-cell asg-cell--engagement"><EngagementWidget days={days} /></div>
         <div className="asg-cell asg-cell--events"><EventsWidget days={days} /></div>
         <div className="asg-cell asg-cell--sources"><SourcesWidget days={days} /></div>
         <div className="asg-cell asg-cell--devices"><DevicesWidget days={days} /></div>
