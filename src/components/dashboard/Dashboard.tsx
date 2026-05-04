@@ -10,6 +10,7 @@ import LandingPagesWidget from './LandingPagesWidget';
 import GeoWidget from './GeoWidget';
 import DevicesWidget from './DevicesWidget';
 import EventsWidget from './EventsWidget';
+import FunnelWidget from './FunnelWidget';
 import QueriesWidget from './QueriesWidget';
 import SeoTrendWidget from './SeoTrendWidget';
 
@@ -52,6 +53,7 @@ export default function Dashboard() {
         <div className="asg-cell asg-cell--timeseries"><TimeseriesWidget days={days} /></div>
         <div className="asg-cell asg-cell--engagement"><EngagementWidget days={days} /></div>
         <div className="asg-cell asg-cell--events"><EventsWidget days={days} /></div>
+        <div className="asg-cell asg-cell--funnel"><FunnelWidget days={days} /></div>
         <div className="asg-cell asg-cell--sources"><SourcesWidget days={days} /></div>
         <div className="asg-cell asg-cell--devices"><DevicesWidget days={days} /></div>
         <div className="asg-cell asg-cell--pages"><PagesWidget days={days} /></div>

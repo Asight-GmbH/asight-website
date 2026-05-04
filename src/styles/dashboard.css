@@ -97,6 +97,7 @@
 .asg-cell--timeseries { grid-column: span 8;  --card-min-h: 340px; }
 .asg-cell--engagement { grid-column: span 12; --card-min-h: 0; }
 .asg-cell--events     { grid-column: span 6;  --card-min-h: 340px; }
+.asg-cell--funnel     { grid-column: span 6;  --card-min-h: 420px; }
 .asg-cell--sources    { grid-column: span 3;  --card-min-h: 340px; }
 .asg-cell--devices    { grid-column: span 3;  --card-min-h: 340px; }
 .asg-cell--pages      { grid-column: span 6;  --card-min-h: 380px; }
@@ -113,6 +114,7 @@
   .asg-cell--realtime,
   .asg-cell--timeseries,
   .asg-cell--events,
+  .asg-cell--funnel,
   .asg-cell--pages,
   .asg-cell--landing,
   .asg-cell--geo,
@@ -631,6 +633,106 @@
 @media (max-width: 900px) {
   .asg-eng { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Conversion funnel */
+.asg-funnel-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #f5d76e;
+  background: rgba(241,196,15,0.06);
+  border: 1px solid rgba(241,196,15,0.2);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.85rem;
+  line-height: 1.4;
+}
+.asg-funnel-warning code {
+  background: rgba(255,255,255,0.06);
+  padding: 0 0.3rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  color: #d6dae0;
+}
+
+.asg-funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+
+.asg-funnel-step {
+  display: flex;
+  flex-direction: column;
+}
+
+.asg-funnel-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.asg-funnel-bar {
+  height: 38px;
+  background: linear-gradient(90deg, #3AA6B9, #2E8A9A);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  min-width: 60px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(58,166,185,0.2);
+  transition: width 0.5s ease;
+}
+
+.asg-funnel-count {
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.asg-funnel-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.asg-funnel-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.asg-funnel-pct {
+  font-size: 0.72rem;
+  color: #5C7A94;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.asg-funnel-drop {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 1.2rem;
+  margin: 0.15rem 0;
+  position: relative;
+}
+
+.asg-funnel-drop span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.asg-drop--ok  { color: #f5d76e; }
+.asg-drop--bad { color: #f59e9e; }
 
 /* Landing pages table */
 .asg-lp-table-wrap {
