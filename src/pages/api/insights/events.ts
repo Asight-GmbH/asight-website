@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ url }) => {
     const days = parseDays(url, 30);
     const client = getGAClient();
     const property = getPropertyPath();
-    const dateRanges = [{ startDate: `${days}daysAgo`, endDate: 'yesterday' }];
+    const dateRanges = [{ startDate: `${days}daysAgo`, endDate: 'today' }];
 
     const [totalsRes] = await client.runReport({
       property,

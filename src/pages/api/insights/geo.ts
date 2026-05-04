@@ -11,7 +11,7 @@ export const GET: APIRoute = async ({ url }) => {
 
     const [response] = await client.runReport({
       property,
-      dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'yesterday' }],
+      dateRanges: [{ startDate: `${days}daysAgo`, endDate: 'today' }],
       dimensions: [{ name: 'country' }],
       metrics: [{ name: 'sessions' }, { name: 'totalUsers' }],
       orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
