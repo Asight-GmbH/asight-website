@@ -11,6 +11,7 @@ import GeoWidget from './GeoWidget';
 import DevicesWidget from './DevicesWidget';
 import EventsWidget from './EventsWidget';
 import QueriesWidget from './QueriesWidget';
+import SeoTrendWidget from './SeoTrendWidget';
 
 const RANGES = [
   { value: 7,  label: '7 T.' },
@@ -56,6 +57,7 @@ export default function Dashboard() {
         <div className="asg-cell asg-cell--pages"><PagesWidget days={days} /></div>
         <div className="asg-cell asg-cell--landing"><LandingPagesWidget days={days} /></div>
         <div className="asg-cell asg-cell--geo"><GeoWidget days={days} /></div>
+        <div className="asg-cell asg-cell--seo"><SeoTrendWidget days={days} /></div>
         <div className="asg-cell asg-cell--queries"><QueriesWidget days={days} /></div>
       </div>
     </div>
