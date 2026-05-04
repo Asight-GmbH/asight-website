@@ -6,6 +6,7 @@ import RealtimeWidget from './RealtimeWidget';
 import TimeseriesWidget from './TimeseriesWidget';
 import SourcesWidget from './SourcesWidget';
 import PagesWidget from './PagesWidget';
+import LandingPagesWidget from './LandingPagesWidget';
 import GeoWidget from './GeoWidget';
 import DevicesWidget from './DevicesWidget';
 import EventsWidget from './EventsWidget';
@@ -53,6 +54,7 @@ export default function Dashboard() {
         <div className="asg-cell asg-cell--sources"><SourcesWidget days={days} /></div>
         <div className="asg-cell asg-cell--devices"><DevicesWidget days={days} /></div>
         <div className="asg-cell asg-cell--pages"><PagesWidget days={days} /></div>
+        <div className="asg-cell asg-cell--landing"><LandingPagesWidget days={days} /></div>
         <div className="asg-cell asg-cell--geo"><GeoWidget days={days} /></div>
         <div className="asg-cell asg-cell--queries"><QueriesWidget days={days} /></div>
       </div>
