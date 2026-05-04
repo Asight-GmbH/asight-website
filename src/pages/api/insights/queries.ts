@@ -21,7 +21,7 @@ export const GET: APIRoute = async ({ url }) => {
     const startDate = new Date(endDate);
     startDate.setDate(startDate.getDate() - days);
 
-    const apiUrl = `https://searchconsole.googleapis.com/v1/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`;
+    const apiUrl = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`;
 
     const res = await fetch(apiUrl, {
       method: 'POST',
