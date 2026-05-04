@@ -21,13 +21,13 @@
       "title": "Infrastructure",
       "subtitle": "Foundation for transparency, data consistency and 'Single Source of Truth'.",
       "points": [
+        "Project Lead Plant Construction",
         "Shopfloor Management Implementation",
-        "Structured Data Capture",
-        "Industrial IoT & PLC Integration",
+        "Structured Data Capture & Industrial IoT",
+        "PLC Integration",
         "Elimination of Redundant Spreadsheets",
-        "Performance Visualization",
         "Data Integrity Assurance",
-        "Interface Harmonization"
+        "Maschine Commissioning & Acceptance"
       ]
     },
     {
