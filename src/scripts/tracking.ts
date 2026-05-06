@@ -1,12 +1,17 @@
 type GtagFn = (...args: unknown[]) => void;
 declare global {
-  interface Window { gtag?: GtagFn; }
+  interface Window {
+    gtag?: GtagFn;
+    dataLayer?: unknown[];
+  }
 }
 
 function track(name: string, params: Record<string, unknown>) {
   if (typeof window.gtag === 'function') {
     window.gtag('event', name, params);
   }
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: name, ...params });
 }
 
 function isExternal(href: string): boolean {

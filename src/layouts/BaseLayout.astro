@@ -1,6 +1,8 @@
 ---
 import Preloader from "../components/Preloader.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
+import GoogleTagManager from "../components/GoogleTagManager.astro";
+import GoogleTagManagerNoScript from "../components/GoogleTagManagerNoScript.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 
 interface Props {
@@ -28,8 +30,10 @@ const {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <GoogleAnalytics />
+  <GoogleTagManager />
 </head>
 <body>
+  <GoogleTagManagerNoScript />
   <Preloader />
   <slot />
   <CookieBanner locale={lang} />
