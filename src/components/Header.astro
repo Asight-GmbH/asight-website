@@ -22,11 +22,36 @@ const { nav_items, cta_text, cta_href } = header?.data ?? {};
       <a href={locale === 'de' ? '/en/?lang=en' : '/?lang=de'} class="lang-switch">{locale === 'de' ? 'EN' : 'DE'}</a>
       <a href={cta_href} class="btn btn-primary btn-sm">{cta_text}</a>
     </div>
+    <button
+      type="button"
+      class="nav-toggle"
+      id="nav-toggle"
+      aria-label="Menü öffnen"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
   </div>
 </header>
 
+<!-- Outside <header>: header has backdrop-filter which would otherwise trap this fixed overlay inside the header box -->
+<div class="mobile-menu" id="mobile-menu" hidden>
+  <nav class="mobile-nav">
+    {(nav_items ?? []).map((item: any) => (
+      <a href={item.href} class="mobile-nav-link" data-menu-close>{item.label}</a>
+    ))}
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href={locale === 'de' ? '/en/?lang=en' : '/?lang=de'} class="lang-switch mobile-lang-switch">{locale === 'de' ? 'EN' : 'DE'}</a>
+    <a href={cta_href} class="btn btn-primary mobile-cta" data-menu-close>{cta_text}</a>
+  </div>
+</div>
+
 <style>
-  .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--c-border); }
+  .header { position: fixed; top: 0; left: 0; right: 0; z-index: 300; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--c-border); }
   .header-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
   .logo { display: flex; align-items: center; text-decoration: none; }
   .logo-img { height: 28px; width: auto; margin-left: -2px; }
@@ -37,5 +62,123 @@ const { nav_items, cta_text, cta_href } = header?.data ?? {};
   .lang-switch { font-size: 0.8rem; font-weight: 600; color: var(--c-text-muted); text-decoration: none; padding: 0.3rem 0.6rem; border: 1px solid var(--c-border); border-radius: 4px; transition: all 0.2s ease; }
   .lang-switch:hover { color: var(--c-accent); border-color: var(--c-accent); }
   .btn-sm { padding: 0.55rem 1.25rem; font-size: 0.825rem; }
-  @media (max-width: 768px) { .nav { display: none; } }
+
+  /* Hamburger toggle — hidden on desktop */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: -10px;
+  }
+  .nav-toggle-bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--c-text);
+    transition: transform var(--t-med), opacity var(--t-fast);
+  }
+
+  /* Mobile fullscreen overlay menu */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: calc(72px + 1.5rem) var(--s-page) calc(2rem + env(safe-area-inset-bottom));
+    background: #ffffff;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity var(--t-med), transform var(--t-med);
+  }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-menu.is-open { opacity: 1; transform: translateY(0); }
+
+  .mobile-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    font-family: var(--f-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--c-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--c-border-light);
+    transition: color var(--t-fast);
+  }
+  .mobile-nav-link:hover, .mobile-nav-link:active { color: var(--c-accent); }
+
+  .mobile-menu-footer { display: flex; align-items: center; gap: 1rem; }
+  .mobile-lang-switch { min-height: 44px; display: inline-flex; align-items: center; }
+  .mobile-cta { flex: 1; justify-content: center; min-height: 48px; }
+
+  /* Open state: animate hamburger into an X */
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-toggle[aria-expanded="true"] { position: relative; z-index: 201; }
+
+  @media (max-width: 768px) {
+    .nav { display: none; }
+    .header-right { display: none; }
+    .nav-toggle { display: flex; }
+  }
 </style>
+
+<script is:inline>
+  (function () {
+    const toggle = document.getElementById('nav-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggle || !menu) return;
+
+    let isOpen = false;
+
+    function openMenu() {
+      isOpen = true;
+      menu.hidden = false;
+      // force reflow so the transition runs from the hidden state
+      void menu.offsetWidth;
+      menu.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Menü schließen');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      isOpen = false;
+      menu.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Menü öffnen');
+      document.body.style.overflow = '';
+      const onEnd = () => { if (!isOpen) menu.hidden = true; };
+      menu.addEventListener('transitionend', onEnd, { once: true });
+    }
+
+    toggle.addEventListener('click', function () {
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    menu.querySelectorAll('[data-menu-close]').forEach(function (el) {
+      el.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isOpen) closeMenu();
+    });
+
+    // Reset if viewport grows back to desktop
+    window.addEventListener('resize', function () {
+      if (isOpen && window.innerWidth > 768) closeMenu();
+    });
+  })();
+</script>

@@ -62,5 +62,10 @@ const { section_label, headline, description, cta_title, cta_description, cta_bu
   .cta-channels { display: flex; gap: 1rem; margin-top: 1.25rem; justify-content: center; }
   .channel-link { font-size: 0.85rem; font-weight: 600; color: var(--c-text-muted); padding: 0.5rem 1rem; border: 1px solid var(--c-border); border-radius: 8px; transition: all var(--t-fast); }
   .channel-link:hover { color: var(--c-accent); border-color: var(--c-accent); }
+  .contact-item-value { overflow-wrap: anywhere; }
   @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  @media (max-width: 480px) {
+    .cta-card { padding: 1.75rem; }
+    .cta-channels { flex-wrap: wrap; }
+  }
 </style>

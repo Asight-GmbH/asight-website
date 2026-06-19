@@ -64,3 +64,22 @@ h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); }
 .prose p { margin-bottom: 1.25rem; }
 .prose strong { color: var(--c-text); font-weight: 600; }
 @media (max-width: 768px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+
+/* --- Mobile polish (global) --- */
+@media (max-width: 768px) {
+  /* Safety net against horizontal overflow on small screens */
+  html, body { overflow-x: hidden; }
+  /* Comfortable tap targets */
+  .btn { min-height: 48px; padding: 0.85rem 1.5rem; }
+  .nav-link { min-height: 44px; display: inline-flex; align-items: center; }
+  .lang-switch { min-height: 40px; display: inline-flex; align-items: center; }
+  /* Tighter section rhythm on phones */
+  .section { padding: clamp(2.75rem, 11vw, 4.5rem) 0; }
+  /* Avoid long unbroken strings (URLs, emails) overflowing */
+  .prose { overflow-wrap: anywhere; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  .section-subtitle { font-size: 1.0625rem; }
+}
