@@ -15,6 +15,13 @@ const {
   description = "Projektmanagement, Prozessoptimierung & digitale Lösungen für die Industrie.",
   lang = 'de',
 } = Astro.props;
+
+// Canonical production host (www) — avoids the apex→www redirect so link
+// crawlers (Teams, LinkedIn, WhatsApp ...) can fetch the preview image directly.
+const SITE = 'https://www.asightconsulting.com';
+const canonicalURL = new URL(Astro.url.pathname, SITE).href;
+const ogImage = new URL('/assets/og/asight-og.png', SITE).href;
+const ogLocale = lang === 'en' ? 'en_US' : 'de_DE';
 ---
 
 <!DOCTYPE html>
@@ -25,6 +32,28 @@ const {
   <meta name="description" content={description} />
   <meta name="google-site-verification" content="1bX3_ihLVh3Au6wh41cLGTlzMKrAzRbogFJP__aVhRg" />
   <title>{title}</title>
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph (Teams, LinkedIn, WhatsApp, Slack, Facebook ...) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ASIGHT Consulting" />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:secure_url" content={ogImage} />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="ASIGHT Consulting" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
   <link rel="icon" type="image/svg+xml" href="/assets/logos/asight-logo.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
