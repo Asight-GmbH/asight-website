@@ -11,12 +11,14 @@
  * - The iframe loads lazily, once the visitor scrolls near it.
  * - Its height comes from the frame: the embed page posts its content height,
  *   we set it here. Messages are only accepted from the iframe's own origin.
- * - If no height arrives (blocked, offline, TrakState down), the frame is
- *   replaced by a short note and the link to trakstate.com.
+ * - If no height arrives within 10 s of coming into view (blocked, offline,
+ *   TrakState down), the frame is replaced by a short note and the link to
+ *   trakstate.com.
  *
  * Texts and URLs: Keystatic, "TrakState-Hinweis".
  * `PUBLIC_TRAKSTATE_EMBED_BASE` (optional, local development only) swaps the
- * origin of the embed URL, e.g. for a local build of the TrakState website.
+ * origin of the embed URL, e.g. for a local build of the TrakState website;
+ * `/` serves it from this site's own origin (files copied into public/).
  */
 import { getEntry } from 'astro:content';
 
@@ -29,7 +31,8 @@ let embedUrl: string | undefined = ts?.embed_url;
 const base = import.meta.env.PUBLIC_TRAKSTATE_EMBED_BASE;
 if (embedUrl && base) {
   const u = new URL(embedUrl);
-  embedUrl = new URL(u.pathname + u.search, base).href;
+  // public/ serves no directory index, so name the file.
+  embedUrl = base === '/' ? `${u.pathname.replace(/\/?$/, '/')}index.html` : new URL(u.pathname + u.search, base).href;
 }
 ---
 
@@ -90,16 +93,33 @@ if (embedUrl && base) {
       frame.classList.add('is-ready');
     });
 
-    // `load` also fires for a frame the browser refused to show (CSP) — only a
-    // height message proves the demo is really there.
-    iframe.addEventListener('load', () => {
-      window.setTimeout(() => {
-        if (sized) return;
-        iframe.hidden = true;
-        fallback.hidden = false;
-        frame.classList.add('is-ready');
-      }, 6000);
-    });
+    // The frame may have reported before this script listened, so ask for the
+    // height instead of only waiting for it. A frame that never answers —
+    // blocked by the browser or by trakstate.com, offline, down — gives way to
+    // the link. The clock starts once the frame is near the screen, because
+    // the iframe loads lazily.
+    const ping = () => iframe.contentWindow?.postMessage({ type: 'trakstate:embed-ping' }, origin);
+    iframe.addEventListener('load', ping);
+    const watch = new IntersectionObserver((entries) => {
+      if (!entries[0]?.isIntersecting) return;
+      watch.disconnect();
+      let tries = 0;
+      const timer = window.setInterval(() => {
+        if (sized) {
+          window.clearInterval(timer);
+          return;
+        }
+        if (++tries > 10) {
+          window.clearInterval(timer);
+          iframe.hidden = true;
+          fallback.hidden = false;
+          frame.classList.add('is-ready');
+          return;
+        }
+        ping();
+      }, 1000);
+    }, { rootMargin: '200px' });
+    watch.observe(frame);
   }
 </script>
 
