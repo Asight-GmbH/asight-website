@@ -1,7 +1,45 @@
 ---
+import TrakStateWordmark from "./TrakStateWordmark.astro";
+
+interface Props {
+  locale?: string;
+  /** TrakState strip at the bottom; from src/content/pages/<locale>/trakstate.json. */
+  trakstate?: { url: string; strip_text: string; strip_cta: string };
+}
+const { locale = 'de', trakstate } = Astro.props;
+
+// Fixed cockpit labels per language. Marketing copy lives in Keystatic,
+// these are UI labels of the mock-up and change with it.
+const L = {
+  de: {
+    title: 'MANAGEMENT COCKPIT', week: 'KW', sample: 'Beispielwerte', audit: 'Audit-ready',
+    cycle: 'Zykluszeit', scrap: 'Ausschussrate', reporting: 'Reporting', before: 'Vorher',
+    perWeek: 'h/Wo', trend: 'OEE-Entwicklung (12 Wochen)', start: 'Start', now: 'Jetzt', pp: 'PP',
+    events: ['Kurzstopp erkannt · Station 3', 'Rüstzeit unter Soll · Linie 2', 'Schicht B: OEE +4 PP', 'Ausschuss-Grund erfasst · Werker'],
+  },
+  en: {
+    title: 'MANAGEMENT COCKPIT', week: 'CW', sample: 'Sample data', audit: 'Audit-ready',
+    cycle: 'Cycle time', scrap: 'Scrap rate', reporting: 'Reporting', before: 'Before',
+    perWeek: 'h/wk', trend: 'OEE trend (12 weeks)', start: 'Start', now: 'Now', pp: 'pp',
+    events: ['Short stop detected · Station 3', 'Changeover below target · Line 2', 'Shift B: OEE +4 pp', 'Scrap reason logged · Operator'],
+  },
+}[locale === 'en' ? 'en' : 'de'];
+
+// ISO calendar week at build time; the script below refreshes it in the browser.
+function isoWeek(d: Date) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  return { week: Math.ceil(((t.getTime() - yearStart.getTime()) / 86400000 + 1) / 7), year: t.getUTCFullYear() };
+}
+const kw = isoWeek(new Date());
+// Trend axis ends in the current week; 52-week wrap is close enough for a mock-up.
+const weekLabel = (offset: number) => String(((kw.week + offset - 1 + 52) % 52) + 1).padStart(2, '0');
+const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replace('.', ','));
 ---
 <div class="cockpit-wrapper">
-  <div class="cockpit-panel">
+  <div class="cockpit-panel" data-cockpit data-week-label={L.week} data-locale={locale}>
     <!-- Glass reflections -->
     <div class="glass-reflection-top"></div>
     <div class="glass-reflection-diagonal"></div>
@@ -20,11 +58,11 @@
     <div class="cockpit-header">
       <div class="cockpit-header-left">
         <div class="status-dot"></div>
-        <span class="cockpit-title">MANAGEMENT COCKPIT</span>
+        <span class="cockpit-title">{L.title}</span>
       </div>
       <div class="cockpit-header-right">
-        <span class="cockpit-meta">Live · KW 16/2026</span>
-        <span class="audit-badge">Audit-ready</span>
+        <span class="cockpit-meta"><span data-week>{L.week} {String(kw.week).padStart(2, '0')}/{kw.year}</span> · {L.sample}</span>
+        <span class="audit-badge">{L.audit}</span>
       </div>
     </div>
 
@@ -35,56 +73,56 @@
           <span class="kpi-title">OEE</span>
         </div>
         <div class="kpi-value-row">
-          <span class="kpi-value">82.4</span>
+          <span class="kpi-value" data-tick="82.4" data-tick-range="0.4">{fmt(82.4)}</span>
           <span class="kpi-unit">%</span>
         </div>
         <div class="kpi-previous">
           <span class="trend-arrow up">↑</span>
-          <span>Vorher: 47.2%</span>
+          <span>{L.before}: {fmt(47.2)}%</span>
         </div>
       </div>
 
       <div class="kpi-card kpi-2">
         <div class="kpi-header">
-          <span class="kpi-title">Zykluszeit</span>
-          <span class="kpi-badge blue">2.06x</span>
+          <span class="kpi-title">{L.cycle}</span>
+          <span class="kpi-badge blue">{locale === 'en' ? '2.06x' : '2,06x'}</span>
         </div>
         <div class="kpi-value-row">
-          <span class="kpi-value">19.3</span>
+          <span class="kpi-value" data-tick="19.3" data-tick-range="0.3">{fmt(19.3)}</span>
           <span class="kpi-unit">s</span>
         </div>
         <div class="kpi-previous">
           <span class="trend-arrow down">↓</span>
-          <span>Vorher: 39.8s</span>
+          <span>{L.before}: {fmt(39.8)}s</span>
         </div>
       </div>
 
       <div class="kpi-card kpi-3">
         <div class="kpi-header">
-          <span class="kpi-title">Ausschussrate</span>
+          <span class="kpi-title">{L.scrap}</span>
         </div>
         <div class="kpi-value-row">
-          <span class="kpi-value">2.1</span>
+          <span class="kpi-value">{fmt(2.1)}</span>
           <span class="kpi-unit">%</span>
         </div>
         <div class="kpi-previous">
           <span class="trend-arrow down">↓</span>
-          <span>Vorher: 8.3%</span>
+          <span>{L.before}: {fmt(8.3)}%</span>
         </div>
       </div>
 
       <div class="kpi-card kpi-4">
         <div class="kpi-header">
-          <span class="kpi-title">Reporting</span>
+          <span class="kpi-title">{L.reporting}</span>
           <span class="kpi-badge green">−75%</span>
         </div>
         <div class="kpi-value-row">
           <span class="kpi-value">2</span>
-          <span class="kpi-unit">h/Wo</span>
+          <span class="kpi-unit">{L.perWeek}</span>
         </div>
         <div class="kpi-previous">
           <span class="trend-arrow down">↓</span>
-          <span>Vorher: 8h/Wo</span>
+          <span>{L.before}: 8{L.perWeek}</span>
         </div>
       </div>
     </div>
@@ -92,13 +130,17 @@
     <!-- Trend Chart -->
     <div class="trend-chart">
       <div class="trend-header">
-        <span class="trend-title">OEE-Entwicklung (12 Wochen)</span>
+        <span class="trend-title">{L.trend}</span>
         <div class="trend-stats">
-          <span class="trend-start">Start: 47%</span>
+          <span class="trend-start">{L.start}: 47%</span>
           <span class="trend-arrow-icon">→</span>
-          <span class="trend-now">Jetzt: 82%</span>
-          <span class="trend-badge">+35 PP</span>
+          <span class="trend-now">{L.now}: 82%</span>
+          <span class="trend-badge">+35 {L.pp}</span>
         </div>
+      </div>
+      <!-- Live event, cycled by the script below -->
+      <div class="cockpit-event" data-event data-events={JSON.stringify(L.events)} aria-hidden="true">
+        <span class="cockpit-event-dot"></span><span data-event-text>{L.events[0]}</span>
       </div>
       <svg class="sparkline" viewBox="0 0 280 48" preserveAspectRatio="none">
         <defs>
@@ -111,18 +153,91 @@
         <polyline points="0,45 25.5,43.2 51,44.1 76.4,39.6 101.8,35.1 127.3,28.8 152.7,21.6 178.2,13.5 203.6,7.2 229.1,3.6 254.5,1.8 280,0.9" fill="none" stroke="#AFDDE9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
       <div class="x-axis">
-        <span>KW 05</span>
-        <span>KW 08</span>
-        <span>KW 11</span>
-        <span>KW 14</span>
-        <span>KW 16</span>
+        <span data-week-offset="-11">{L.week} {weekLabel(-11)}</span>
+        <span data-week-offset="-8">{L.week} {weekLabel(-8)}</span>
+        <span data-week-offset="-5">{L.week} {weekLabel(-5)}</span>
+        <span data-week-offset="-2">{L.week} {weekLabel(-2)}</span>
+        <span data-week-offset="0">{L.week} {weekLabel(0)}</span>
       </div>
     </div>
+
+    {trakstate && (
+      <a class="ts-strip" href={trakstate.url} target="_blank" rel="noopener" data-ts-click="hero_cockpit">
+        <TrakStateWordmark size={26} class="ts-strip-logo" />
+        <span class="ts-strip-text">{trakstate.strip_text}</span>
+        <span class="ts-strip-cta">{trakstate.strip_cta} <span aria-hidden="true">&rarr;</span></span>
+      </a>
+    )}
   </div>
 
   <!-- Floating shadow -->
   <div class="cockpit-shadow"></div>
 </div>
+
+<script>
+  // Cockpit "live" feel: refresh the calendar week, let two KPIs drift a
+  // little and cycle shopfloor events. Only while the cockpit is on screen,
+  // and not at all for visitors who asked for reduced motion.
+  const panel = document.querySelector<HTMLElement>('[data-cockpit]');
+  if (panel) {
+    const locale = panel.dataset.locale === 'en' ? 'en' : 'de';
+    const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replace('.', ','));
+
+    const week = panel.querySelector<HTMLElement>('[data-week]');
+    if (week) {
+      const now = new Date();
+      const t = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+      t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+      const kw = Math.ceil(((t.getTime() - Date.UTC(t.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
+      week.textContent = `${panel.dataset.weekLabel} ${String(kw).padStart(2, '0')}/${t.getUTCFullYear()}`;
+      panel.querySelectorAll<HTMLElement>('[data-week-offset]').forEach((el) => {
+        const w = ((kw + Number(el.dataset.weekOffset) - 1 + 52) % 52) + 1;
+        el.textContent = `${panel.dataset.weekLabel} ${String(w).padStart(2, '0')}`;
+      });
+    }
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      const ticks = [...panel.querySelectorAll<HTMLElement>('[data-tick]')];
+      const event = panel.querySelector<HTMLElement>('[data-event]');
+      const eventText = panel.querySelector<HTMLElement>('[data-event-text]');
+      let events: string[] = [];
+      try {
+        events = JSON.parse(event?.dataset.events ?? '[]');
+      } catch {
+        // The list is rendered by the component itself; without it there is simply no event.
+        events = [];
+      }
+
+      let n = 0;
+      let timer: number | undefined;
+      const step = () => {
+        n += 1;
+        for (const el of ticks) {
+          const base = Number(el.dataset.tick);
+          const range = Number(el.dataset.tickRange);
+          el.textContent = fmt(base + (Math.random() * 2 - 1) * range);
+          el.classList.add('ticked');
+          window.setTimeout(() => el.classList.remove('ticked'), 700);
+        }
+        if (event && eventText && events.length && n % 3 === 0) {
+          eventText.textContent = events[(n / 3) % events.length];
+          event.classList.add('show');
+          window.setTimeout(() => event.classList.remove('show'), 3800);
+        }
+      };
+
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && timer === undefined) {
+          timer = window.setInterval(step, 2500);
+        } else if (!entry.isIntersecting && timer !== undefined) {
+          window.clearInterval(timer);
+          timer = undefined;
+        }
+      }).observe(panel);
+    }
+  }
+</script>
 
 <style>
   .cockpit-wrapper {
@@ -459,7 +574,131 @@
     filter: blur(12px);
   }
 
+
+  /* Live event toast */
+  .trend-chart {
+    position: relative;
+  }
+
+  .cockpit-event {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #f6f7f8;
+    white-space: nowrap;
+    background: rgba(17, 22, 29, 0.92);
+    border: 1px solid rgba(217, 151, 38, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translate(-50%, -6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+  }
+
+  .cockpit-event.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .cockpit-event-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #d99726;
+    box-shadow: 0 0 6px rgba(217, 151, 38, 0.6);
+  }
+
+  .kpi-value {
+    transition: color 0.6s ease;
+  }
+
+  .kpi-value.ticked {
+    color: #AFDDE9;
+  }
+
+  /* TrakState strip: the bridge from the mock-up to the real product */
+  .ts-strip {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(69, 178, 198, 0.08);
+    border: 1px solid rgba(69, 178, 198, 0.28);
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: kpiFadeIn 0.6s cubic-bezier(0.4,0,0.2,1) 1.3s forwards;
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .cockpit-panel:hover .ts-strip,
+  .ts-strip:focus-visible {
+    background: rgba(69, 178, 198, 0.16);
+    border-color: rgba(69, 178, 198, 0.6);
+    box-shadow: 0 0 24px rgba(69, 178, 198, 0.25);
+  }
+
+  .ts-strip:focus-visible {
+    outline: 2px solid #45B2C6;
+    outline-offset: 2px;
+  }
+
+  .ts-strip-logo {
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .ts-strip-text {
+    flex: 1;
+    font-size: 12px;
+    color: #d6dae0;
+  }
+
+  .ts-strip-cta {
+    font-size: 12px;
+    font-weight: 600;
+    color: #45B2C6;
+    white-space: nowrap;
+  }
+
+  .ts-strip-cta span {
+    display: inline-block;
+    transition: transform 0.25s ease;
+  }
+
+  .cockpit-panel:hover .ts-strip-cta span,
+  .ts-strip:focus-visible .ts-strip-cta span {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ts-strip {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   @media (max-width: 1024px) {
+    .ts-strip {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
     .cockpit-panel {
       transform: none;
       animation: none;
@@ -491,6 +730,22 @@
     .trend-header {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .cockpit-header {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .ts-strip {
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px 12px;
+    }
+
+    .ts-strip-text {
+      order: 3;
+      flex-basis: 100%;
     }
   }
 </style>
