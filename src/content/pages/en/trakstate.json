@@ -2,5 +2,29 @@
   "url": "https://www.trakstate.com/#try-it",
   "hint_text": "Measure, don't guess: our shopfloor tool TrakState",
   "strip_text": "This cockpit exists as software.",
-  "strip_cta": "Try it live"
+  "strip_cta": "Try it live",
+  "section_headline": "What stays after the project: ",
+  "section_accent": "TrakState.",
+  "section_subline": "The improvements we build in 8–12 weeks keep running in TrakState, our tool for your shop floor. Try it yourself, with sample data and no sign-up.",
+  "section_mapping": [
+    {
+      "impact": "Cycle time optimization",
+      "tab": "Measure"
+    },
+    {
+      "impact": "Lean implementation",
+      "tab": "Report downtime"
+    },
+    {
+      "impact": "Data-driven control",
+      "tab": "Machine connected"
+    },
+    {
+      "impact": "Permanent audit readiness",
+      "tab": "Ask the data"
+    }
+  ],
+  "embed_url": "https://www.trakstate.com/embed/tryout",
+  "embed_title": "Try TrakState",
+  "embed_fallback": "The demo can't be loaded here right now. It runs on trakstate.com."
 }

@@ -1,0 +1,261 @@
+---
+/**
+ * "What stays after the project": TrakState to try out, after the services
+ * (PRODLOG-291).
+ *
+ * The demo itself is not built here. It is the section from trakstate.com,
+ * embedded as an iframe from /embed/tryout, so it has one source and looks
+ * the same on both sites. trakstate.com only allows this site to frame it
+ * (nginx, frame-ancestors).
+ *
+ * - The iframe loads lazily, once the visitor scrolls near it.
+ * - Its height comes from the frame: the embed page posts its content height,
+ *   we set it here. Messages are only accepted from the iframe's own origin.
+ * - If no height arrives (blocked, offline, TrakState down), the frame is
+ *   replaced by a short note and the link to trakstate.com.
+ *
+ * Texts and URLs: Keystatic, "TrakState-Hinweis".
+ * `PUBLIC_TRAKSTATE_EMBED_BASE` (optional, local development only) swaps the
+ * origin of the embed URL, e.g. for a local build of the TrakState website.
+ */
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const ts = (await getEntry('pages', `${locale}/trakstate`))?.data;
+
+let embedUrl: string | undefined = ts?.embed_url;
+const base = import.meta.env.PUBLIC_TRAKSTATE_EMBED_BASE;
+if (embedUrl && base) {
+  const u = new URL(embedUrl);
+  embedUrl = new URL(u.pathname + u.search, base).href;
+}
+---
+
+{ts && embedUrl && (
+  <section id="trakstate" class="ts-section">
+    <div class="container">
+      <div class="ts-header">
+        <h2 class="ts-headline">{ts.section_headline}<span class="highlight">{ts.section_accent}</span></h2>
+        <p class="ts-subline">{ts.section_subline}</p>
+        {ts.section_mapping?.length > 0 && (
+          <ol class="ts-map">
+            {ts.section_mapping.map((m: { impact: string; tab: string }, i: number) => (
+              <li>
+                <span class="ts-map-impact">{m.impact}</span>
+                <span class="ts-map-arrow" aria-hidden="true">&rarr;</span>
+                <span class="ts-map-tab"><span class="ts-map-n">{i + 1}</span>{m.tab}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+
+      <div class="ts-frame" data-ts-frame>
+        <iframe
+          src={embedUrl}
+          title={ts.embed_title}
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+        <div class="ts-fallback" hidden>
+          <p>{ts.embed_fallback}</p>
+          <a class="ts-fallback-link" href={ts.url} target="_blank" rel="noopener" data-ts-click="tryout_fallback">
+            {ts.strip_cta} <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  // Size the iframe to the height the embedded page reports; fall back to a
+  // link if it never reports.
+  const frame = document.querySelector<HTMLElement>('[data-ts-frame]');
+  const iframe = frame?.querySelector<HTMLIFrameElement>('iframe');
+  const fallback = frame?.querySelector<HTMLElement>('.ts-fallback');
+  if (frame && iframe && fallback) {
+    const origin = new URL(iframe.src).origin;
+    let sized = false;
+
+    window.addEventListener('message', (e) => {
+      if (e.origin !== origin || e.source !== iframe.contentWindow) return;
+      const data = e.data as { type?: string; height?: number } | null;
+      if (data?.type !== 'trakstate:embed-height' || typeof data.height !== 'number') return;
+      if (data.height < 100 || data.height > 10000) return;
+      sized = true;
+      iframe.style.height = `${data.height}px`;
+      frame.classList.add('is-ready');
+    });
+
+    // `load` also fires for a frame the browser refused to show (CSP) — only a
+    // height message proves the demo is really there.
+    iframe.addEventListener('load', () => {
+      window.setTimeout(() => {
+        if (sized) return;
+        iframe.hidden = true;
+        fallback.hidden = false;
+        frame.classList.add('is-ready');
+      }, 6000);
+    });
+  }
+</script>
+
+<style>
+  .ts-section {
+    background: var(--c-hero-bg);
+    color: var(--c-hero-text);
+    padding: 5rem 0 3rem;
+  }
+
+  .ts-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .ts-headline {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .ts-headline .highlight {
+    color: #45B2C6;
+  }
+
+  .ts-subline {
+    font-size: 1rem;
+    color: #8791a1;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .ts-map {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem 0.75rem;
+    margin: 1.75rem auto 0;
+    padding: 0;
+    list-style: none;
+    max-width: 960px;
+  }
+
+  .ts-map li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    font-size: 0.85rem;
+  }
+
+  .ts-map-impact {
+    color: #d6dae0;
+  }
+
+  .ts-map-arrow {
+    color: #4B5F78;
+  }
+
+  .ts-map-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #45B2C6;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.8rem;
+  }
+
+  .ts-map-n {
+    color: #8791a1;
+  }
+
+  .ts-frame {
+    position: relative;
+    min-height: 420px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0e1116;
+  }
+
+  .ts-frame iframe {
+    display: block;
+    width: 100%;
+    /* Until the frame reports its real height. */
+    height: 900px;
+    border: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .ts-frame.is-ready iframe {
+    opacity: 1;
+  }
+
+  .ts-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 420px;
+    padding: 2rem;
+    text-align: center;
+    color: #8791a1;
+  }
+
+  .ts-fallback[hidden] {
+    display: none;
+  }
+
+  .ts-fallback-link {
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    background: #45B2C6;
+    color: #08262c;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ts-frame iframe {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ts-section {
+      padding: 3.5rem 0 2rem;
+    }
+
+    .ts-map li {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      width: 100%;
+      text-align: left;
+    }
+
+    .ts-map-arrow {
+      display: none;
+    }
+
+    .ts-map-tab {
+      justify-self: end;
+      white-space: nowrap;
+    }
+
+    .ts-frame {
+      border-radius: 12px;
+    }
+  }
+</style>

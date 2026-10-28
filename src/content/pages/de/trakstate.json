@@ -2,5 +2,29 @@
   "url": "https://www.trakstate.com/de/#ausprobieren",
   "hint_text": "Messen statt schätzen: unser Shopfloor-Tool TrakState",
   "strip_text": "Dieses Cockpit gibt es als Software.",
-  "strip_cta": "Live ausprobieren"
+  "strip_cta": "Live ausprobieren",
+  "section_headline": "Was nach dem Projekt bleibt: ",
+  "section_accent": "TrakState.",
+  "section_subline": "Die Wirkungen, die wir in 8–12 Wochen aufbauen, laufen danach in TrakState weiter, unserem Werkzeug für Ihren Shopfloor. Probieren Sie es selbst aus, mit Musterdaten und ohne Anmeldung.",
+  "section_mapping": [
+    {
+      "impact": "Zykluszeit-Optimierung",
+      "tab": "Messen"
+    },
+    {
+      "impact": "Lean-Implementierung",
+      "tab": "Stillstand melden"
+    },
+    {
+      "impact": "Datenbasierte Steuerung",
+      "tab": "Maschine angebunden"
+    },
+    {
+      "impact": "Permanente Auditfähigkeit",
+      "tab": "Daten fragen"
+    }
+  ],
+  "embed_url": "https://www.trakstate.com/de/embed/tryout",
+  "embed_title": "TrakState zum Ausprobieren",
+  "embed_fallback": "Die Demo lässt sich hier gerade nicht laden. Auf trakstate.com läuft sie."
 }

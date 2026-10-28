@@ -266,6 +266,55 @@ const trakstateSchema = {
     description: 'Kurzer Handlungsaufruf rechts in der Leiste. Max. 30 Zeichen.',
     validation: reqMax(30),
   }),
+  section_headline: fields.text({
+    label: 'Sektion: Headline',
+    description: 'Überschrift der Sektion „Ausprobieren“ nach den Services. Max. 80 Zeichen.',
+    validation: reqMax(80),
+  }),
+  section_accent: fields.text({
+    label: 'Sektion: farbiger Teil der Headline',
+    description: 'Wird direkt hinter der Headline farbig gesetzt. Max. 40 Zeichen.',
+    validation: reqMax(40),
+  }),
+  section_subline: fields.text({
+    label: 'Sektion: Unterzeile',
+    description: 'Text unter der Headline. Max. 300 Zeichen.',
+    multiline: true,
+    validation: reqMax(300),
+  }),
+  section_mapping: fields.array(
+    fields.object({
+      impact: fields.text({
+        label: 'Wirkung (ASIGHT)',
+        description: 'Eine der Wirkungen aus „Was sich in 8–12 Wochen ändert“.',
+        validation: reqMax(40),
+      }),
+      tab: fields.text({
+        label: 'Beispiel (TrakState)',
+        description: 'Der passende Reiter in der Demo, z.B. „Messen“.',
+        validation: reqMax(30),
+      }),
+    }),
+    {
+      label: 'Sektion: Wirkung → Beispiel',
+      itemLabel: (props) => `${props.fields.impact.value} → ${props.fields.tab.value}`,
+    }
+  ),
+  embed_url: fields.text({
+    label: 'Sektion: Adresse der eingebetteten Demo',
+    description: 'Deutsch: https://www.trakstate.com/de/embed/tryout, Englisch: https://www.trakstate.com/embed/tryout',
+    validation: req,
+  }),
+  embed_title: fields.text({
+    label: 'Sektion: Titel der Demo (Screenreader)',
+    description: 'Wird Screenreadern als Name des eingebetteten Bereichs vorgelesen.',
+    validation: reqMax(80),
+  }),
+  embed_fallback: fields.text({
+    label: 'Sektion: Hinweis, falls die Demo nicht lädt',
+    description: 'Erscheint statt der Demo, wenn sie nicht geladen werden kann. Darunter steht der TrakState-Link.',
+    validation: reqMax(120),
+  }),
 };
 
 const headerSchema = {
