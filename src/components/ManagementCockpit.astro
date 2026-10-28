@@ -1,171 +1,190 @@
 ---
+/**
+ * Hero visual: a TrakState board inside an ASIGHT glass frame (PRODLOG-291).
+ *
+ * The frame (3D tilt, glass edge, shadow) is ASIGHT's; everything on the
+ * screen follows the TrakState board as shown on trakstate.com under
+ * "Ausprobieren" — square tiles with a status edge, mono figures, a bar chart
+ * with a dashed target and an event list. Whoever clicks through finds the
+ * same board again over there. All values are sample data and labelled so.
+ */
 import TrakStateWordmark from "./TrakStateWordmark.astro";
 
 interface Props {
   locale?: string;
-  /** TrakState strip at the bottom; from src/content/pages/<locale>/trakstate.json. */
+  /** CTA strip at the bottom; from src/content/pages/<locale>/trakstate.json. */
   trakstate?: { url: string; strip_text: string; strip_cta: string };
 }
 const { locale = 'de', trakstate } = Astro.props;
+const en = locale === 'en';
 
-// Fixed cockpit labels per language. Marketing copy lives in Keystatic,
-// these are UI labels of the mock-up and change with it.
-const L = {
-  de: {
-    title: 'MANAGEMENT COCKPIT', week: 'KW', sample: 'Beispielwerte', audit: 'Audit-ready',
-    cycle: 'Zykluszeit', scrap: 'Ausschussrate', reporting: 'Reporting', before: 'Vorher',
-    perWeek: 'h/Wo', trend: 'OEE-Entwicklung (12 Wochen)', start: 'Start', now: 'Jetzt', pp: 'PP',
-    events: ['Kurzstopp erkannt · Station 3', 'Rüstzeit unter Soll · Linie 2', 'Schicht B: OEE +4 PP', 'Ausschuss-Grund erfasst · Werker'],
-  },
-  en: {
-    title: 'MANAGEMENT COCKPIT', week: 'CW', sample: 'Sample data', audit: 'Audit-ready',
-    cycle: 'Cycle time', scrap: 'Scrap rate', reporting: 'Reporting', before: 'Before',
-    perWeek: 'h/wk', trend: 'OEE trend (12 weeks)', start: 'Start', now: 'Now', pp: 'pp',
-    events: ['Short stop detected · Station 3', 'Changeover below target · Line 2', 'Shift B: OEE +4 pp', 'Scrap reason logged · Operator'],
-  },
-}[locale === 'en' ? 'en' : 'de'];
+type Tone = 'ok' | 'warn' | 'bad';
 
-// ISO calendar week at build time; the script below refreshes it in the browser.
+// UI labels of the mock-up. Marketing copy lives in Keystatic.
+const L = en
+  ? {
+      eyebrow: 'This is TrakState · sample data',
+      board: 'Management cockpit',
+      site: 'Stuttgart plant',
+      state: 'Running',
+      asOf: 'As of',
+      chart: 'OEE · last 12 weeks',
+      target: 'Target 80 %',
+      events: 'Events',
+      week: 'CW',
+    }
+  : {
+      eyebrow: 'So sieht TrakState aus · Musterdaten',
+      board: 'Management-Cockpit',
+      site: 'Werk Stuttgart',
+      state: 'Läuft',
+      asOf: 'Stand',
+      chart: 'OEE · letzte 12 Wochen',
+      target: 'Ziel 80 %',
+      events: 'Ereignisse',
+      week: 'KW',
+    };
+
+const num = (n: number, digits = 1) => (en ? n.toFixed(digits) : n.toFixed(digits).replace('.', ','));
+
+// `tick` lets the script drift the value a little around its base.
+const tiles: { label: string; value: number; digits: number; unit: string; tone: Tone; lines: string[]; tick?: number }[] = [
+  {
+    label: 'OEE', value: 82.4, digits: 1, unit: '%', tone: 'ok', tick: 0.4,
+    lines: en ? ['before 47.2 %'] : ['vorher 47,2 %'],
+  },
+  {
+    label: en ? 'Actual cycle' : 'Ist-Takt', value: 19.3, digits: 1, unit: 's', tone: 'ok', tick: 0.3,
+    lines: en ? ['before 39.8 s'] : ['vorher 39,8 s'],
+  },
+  {
+    label: en ? 'Scrap' : 'Ausschuss', value: 2.1, digits: 1, unit: '%', tone: 'warn',
+    lines: en ? ['target 2.0 %'] : ['Ziel 2,0 %'],
+  },
+  {
+    label: 'Reporting', value: 2, digits: 0, unit: en ? 'h/wk' : 'h/Wo', tone: 'ok',
+    lines: en ? ['before 8 h/wk'] : ['vorher 8 h/Wo'],
+  },
+];
+
+// OEE per week, oldest first; same story as before (47 % → 82 %).
+const oee = [47, 49, 48, 53, 57, 62, 68, 73, 77, 79, 81, 82];
+const TARGET = 80;
+const MAX = 100;
+
+// Event pool; the first four are rendered, the script keeps adding from the pool.
+const events: { tone: Tone; text: string }[] = en
+  ? [
+      { tone: 'warn', text: 'Short stop · Station 3' },
+      { tone: 'ok', text: 'Shift handover logged' },
+      { tone: 'ok', text: 'Changeover done · Line 2' },
+      { tone: 'bad', text: 'Fault · Press 4 · 3 min' },
+      { tone: 'ok', text: 'Quality check passed' },
+      { tone: 'warn', text: 'Material resupply requested' },
+      { tone: 'ok', text: 'OEE shift B +4 pp' },
+    ]
+  : [
+      { tone: 'warn', text: 'Kurzstopp · Station 3' },
+      { tone: 'ok', text: 'Schichtübergabe erfasst' },
+      { tone: 'ok', text: 'Rüsten beendet · Linie 2' },
+      { tone: 'bad', text: 'Störung · Presse 4 · 3 min' },
+      { tone: 'ok', text: 'Qualitätsprüfung bestanden' },
+      { tone: 'warn', text: 'Material angefordert' },
+      { tone: 'ok', text: 'OEE Schicht B +4 PP' },
+    ];
+
+// Build-time clock; the script replaces it with the visitor's time.
+const now = new Date();
+const hhmm = (d: Date) => `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+const initialEvents = events.slice(0, 4).map((e, i) => ({ ...e, time: hhmm(new Date(now.getTime() - (i * 17 + 3) * 60000)) }));
+
+// ISO calendar week for the chart axis.
 function isoWeek(d: Date) {
   const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  const day = t.getUTCDay() || 7;
-  t.setUTCDate(t.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
-  return { week: Math.ceil(((t.getTime() - yearStart.getTime()) / 86400000 + 1) / 7), year: t.getUTCFullYear() };
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  return Math.ceil(((t.getTime() - Date.UTC(t.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
 }
-const kw = isoWeek(new Date());
-// Trend axis ends in the current week; 52-week wrap is close enough for a mock-up.
-const weekLabel = (offset: number) => String(((kw.week + offset - 1 + 52) % 52) + 1).padStart(2, '0');
-const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replace('.', ','));
+const kw = isoWeek(now);
+const weekLabel = (offset: number) => String(((kw + offset - 1 + 52) % 52) + 1).padStart(2, '0');
+
+// Lucide icons, as used on the TrakState board.
+const ICON: Record<Tone, string> = {
+  ok: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+  bad: '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>',
+  warn: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+};
 ---
 <div class="cockpit-wrapper">
-  <div class="cockpit-panel" data-cockpit data-week-label={L.week} data-locale={locale}>
-    <!-- Glass reflections -->
+  <div
+    class="cockpit-panel"
+    data-cockpit
+    data-locale={locale}
+    data-week-label={L.week}
+    data-events={JSON.stringify(events)}
+  >
+    <!-- Glass edge of the ASIGHT frame -->
     <div class="glass-reflection-top"></div>
-    <div class="glass-reflection-diagonal"></div>
     <div class="ambient-glow-tr"></div>
-    <div class="ambient-glow-bl"></div>
 
-    <!-- Logo Watermark -->
-    <img
-      src="/assets/logos/asight-logo.svg"
-      alt=""
-      aria-hidden="true"
-      class="cockpit-watermark"
-    />
+    <div class="ts-screen">
+      <p class="ts-title">
+        <span class="ts-title-name"><TrakStateWordmark size={22} /><span>{L.board}<span class="ts-site"> · {L.site}</span></span></span>
+        <span class="ts-chip" data-tone="ok">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICON.ok} />
+          {L.state}
+        </span>
+      </p>
 
-    <!-- Header bar -->
-    <div class="cockpit-header">
-      <div class="cockpit-header-left">
-        <div class="status-dot"></div>
-        <span class="cockpit-title">{L.title}</span>
-      </div>
-      <div class="cockpit-header-right">
-        <span class="cockpit-meta"><span data-week>{L.week} {String(kw.week).padStart(2, '0')}/{kw.year}</span> · {L.sample}</span>
-        <span class="audit-badge">{L.audit}</span>
-      </div>
-    </div>
-
-    <!-- KPI Grid -->
-    <div class="kpi-grid">
-      <div class="kpi-card kpi-1">
-        <div class="kpi-header">
-          <span class="kpi-title">OEE</span>
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" data-tick="82.4" data-tick-range="0.4">{fmt(82.4)}</span>
-          <span class="kpi-unit">%</span>
-        </div>
-        <div class="kpi-previous">
-          <span class="trend-arrow up">↑</span>
-          <span>{L.before}: {fmt(47.2)}%</span>
-        </div>
+      <div class="ts-tiles">
+        {tiles.map((t) => (
+          <div class="ts-tile" data-tone={t.tone}>
+            <p class="ts-k">{t.label}</p>
+            <p class="ts-v">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICON[t.tone]} />
+              <span data-tick={t.tick ? t.value : undefined} data-tick-range={t.tick} data-digits={t.digits}>{num(t.value, t.digits)}</span>
+              <small>{t.unit}</small>
+            </p>
+            {t.lines.map((l) => <p class="ts-tg">{l}</p>)}
+            <p class="ts-asof">{L.asOf} <span data-clock>{hhmm(now)}:00</span></p>
+          </div>
+        ))}
       </div>
 
-      <div class="kpi-card kpi-2">
-        <div class="kpi-header">
-          <span class="kpi-title">{L.cycle}</span>
-          <span class="kpi-badge blue">{locale === 'en' ? '2.06x' : '2,06x'}</span>
+      <div class="ts-panels">
+        <div class="ts-panel">
+          <h3>
+            <span>{L.chart}</span>
+            <span class="ts-legend"><i></i>{L.target}</span>
+          </h3>
+          <div class="ts-chart" role="img" aria-label={`${L.chart}: 47 % → 82 %`}>
+            {oee.map((v, i) => (
+              <span class="ts-bar" data-last={i === oee.length - 1 ? '1' : undefined} style={`height:${(v / MAX) * 100}%`}></span>
+            ))}
+            <span class="ts-target" style={`bottom:${(TARGET / MAX) * 100}%`}></span>
+          </div>
+          <div class="ts-axis">
+            <span data-week-offset="-11">{L.week} {weekLabel(-11)}</span>
+            <span data-week-offset="0">{L.week} {weekLabel(0)}</span>
+          </div>
         </div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" data-tick="19.3" data-tick-range="0.3">{fmt(19.3)}</span>
-          <span class="kpi-unit">s</span>
+        <div class="ts-panel">
+          <h3><span>{L.events}</span></h3>
+          <ol class="ts-events" data-event-list aria-hidden="true">
+            {initialEvents.map((e) => (
+              <li data-tone={e.tone}><span class="ts-time">{e.time}</span><i></i><span>{e.text}</span></li>
+            ))}
+          </ol>
         </div>
-        <div class="kpi-previous">
-          <span class="trend-arrow down">↓</span>
-          <span>{L.before}: {fmt(39.8)}s</span>
-        </div>
-      </div>
-
-      <div class="kpi-card kpi-3">
-        <div class="kpi-header">
-          <span class="kpi-title">{L.scrap}</span>
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-value">{fmt(2.1)}</span>
-          <span class="kpi-unit">%</span>
-        </div>
-        <div class="kpi-previous">
-          <span class="trend-arrow down">↓</span>
-          <span>{L.before}: {fmt(8.3)}%</span>
-        </div>
-      </div>
-
-      <div class="kpi-card kpi-4">
-        <div class="kpi-header">
-          <span class="kpi-title">{L.reporting}</span>
-          <span class="kpi-badge green">−75%</span>
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-value">2</span>
-          <span class="kpi-unit">{L.perWeek}</span>
-        </div>
-        <div class="kpi-previous">
-          <span class="trend-arrow down">↓</span>
-          <span>{L.before}: 8{L.perWeek}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Trend Chart -->
-    <div class="trend-chart">
-      <div class="trend-header">
-        <span class="trend-title">{L.trend}</span>
-        <div class="trend-stats">
-          <span class="trend-start">{L.start}: 47%</span>
-          <span class="trend-arrow-icon">→</span>
-          <span class="trend-now">{L.now}: 82%</span>
-          <span class="trend-badge">+35 {L.pp}</span>
-        </div>
-      </div>
-      <!-- Live event, cycled by the script below -->
-      <div class="cockpit-event" data-event data-events={JSON.stringify(L.events)} aria-hidden="true">
-        <span class="cockpit-event-dot"></span><span data-event-text>{L.events[0]}</span>
-      </div>
-      <svg class="sparkline" viewBox="0 0 280 48" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#AFDDE9" stop-opacity="0.15" />
-            <stop offset="100%" stop-color="#AFDDE9" stop-opacity="0" />
-          </linearGradient>
-        </defs>
-        <polygon points="0,45 25.5,43.2 51,44.1 76.4,39.6 101.8,35.1 127.3,28.8 152.7,21.6 178.2,13.5 203.6,7.2 229.1,3.6 254.5,1.8 280,0.9 280,48 0,48" fill="url(#sparkFill)" />
-        <polyline points="0,45 25.5,43.2 51,44.1 76.4,39.6 101.8,35.1 127.3,28.8 152.7,21.6 178.2,13.5 203.6,7.2 229.1,3.6 254.5,1.8 280,0.9" fill="none" stroke="#AFDDE9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-      <div class="x-axis">
-        <span data-week-offset="-11">{L.week} {weekLabel(-11)}</span>
-        <span data-week-offset="-8">{L.week} {weekLabel(-8)}</span>
-        <span data-week-offset="-5">{L.week} {weekLabel(-5)}</span>
-        <span data-week-offset="-2">{L.week} {weekLabel(-2)}</span>
-        <span data-week-offset="0">{L.week} {weekLabel(0)}</span>
       </div>
     </div>
 
     {trakstate && (
-      <a class="ts-strip" href={trakstate.url} target="_blank" rel="noopener" data-ts-click="hero_cockpit">
-        <TrakStateWordmark size={26} class="ts-strip-logo" />
-        <span class="ts-strip-text">{trakstate.strip_text}</span>
-        <span class="ts-strip-cta">{trakstate.strip_cta} <span aria-hidden="true">&rarr;</span></span>
+      <a class="ts-cta" href={trakstate.url} target="_blank" rel="noopener" data-ts-click="hero_cockpit">
+        <span class="ts-cta-text">
+          <span class="ts-eyebrow"><span class="ts-eyebrow-dot" aria-hidden="true"></span>{L.eyebrow}</span>
+          <span>{trakstate.strip_text}</span>
+        </span>
+        <span class="ts-cta-btn">{trakstate.strip_cta} <span aria-hidden="true">&rarr;</span></span>
       </a>
     )}
   </div>
@@ -175,71 +194,93 @@ const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replac
 </div>
 
 <script>
-  // Cockpit "live" feel: refresh the calendar week, let two KPIs drift a
-  // little and cycle shopfloor events. Only while the cockpit is on screen,
-  // and not at all for visitors who asked for reduced motion.
+  // Board "live" feel: visitor's clock and calendar week, two KPIs drifting a
+  // little, and a new event every few seconds. Runs only while the board is on
+  // screen, and the motion parts not at all with reduced motion.
   const panel = document.querySelector<HTMLElement>('[data-cockpit]');
   if (panel) {
-    const locale = panel.dataset.locale === 'en' ? 'en' : 'de';
-    const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replace('.', ','));
+    const en = panel.dataset.locale === 'en';
+    const num = (n: number, digits: number) => (en ? n.toFixed(digits) : n.toFixed(digits).replace('.', ','));
+    const two = (n: number) => String(n).padStart(2, '0');
+    const clocks = [...panel.querySelectorAll<HTMLElement>('[data-clock]')];
+    const setClock = () => {
+      const d = new Date();
+      const text = `${two(d.getHours())}:${two(d.getMinutes())}:${two(d.getSeconds())}`;
+      clocks.forEach((el) => (el.textContent = text));
+    };
+    setClock();
 
-    const week = panel.querySelector<HTMLElement>('[data-week]');
-    if (week) {
-      const now = new Date();
-      const t = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-      t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
-      const kw = Math.ceil(((t.getTime() - Date.UTC(t.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
-      week.textContent = `${panel.dataset.weekLabel} ${String(kw).padStart(2, '0')}/${t.getUTCFullYear()}`;
-      panel.querySelectorAll<HTMLElement>('[data-week-offset]').forEach((el) => {
-        const w = ((kw + Number(el.dataset.weekOffset) - 1 + 52) % 52) + 1;
-        el.textContent = `${panel.dataset.weekLabel} ${String(w).padStart(2, '0')}`;
-      });
-    }
+    const now = new Date();
+    const t = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+    const kw = Math.ceil(((t.getTime() - Date.UTC(t.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
+    panel.querySelectorAll<HTMLElement>('[data-week-offset]').forEach((el) => {
+      const w = ((kw + Number(el.dataset.weekOffset) - 1 + 52) % 52) + 1;
+      el.textContent = `${panel.dataset.weekLabel} ${two(w)}`;
+    });
+
+    // Rendered times come from the build; restamp them relative to now.
+    const list = panel.querySelector<HTMLOListElement>('[data-event-list]');
+    list?.querySelectorAll<HTMLElement>('.ts-time').forEach((el, i) => {
+      const d = new Date(Date.now() - (i * 17 + 3) * 60000);
+      el.textContent = `${two(d.getHours())}:${two(d.getMinutes())}`;
+    });
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduced) {
-      const ticks = [...panel.querySelectorAll<HTMLElement>('[data-tick]')];
-      const event = panel.querySelector<HTMLElement>('[data-event]');
-      const eventText = panel.querySelector<HTMLElement>('[data-event-text]');
-      let events: string[] = [];
-      try {
-        events = JSON.parse(event?.dataset.events ?? '[]');
-      } catch {
-        // The list is rendered by the component itself; without it there is simply no event.
-        events = [];
-      }
+    let pool: { tone: string; text: string }[] = [];
+    try {
+      pool = JSON.parse(panel.dataset.events ?? '[]');
+    } catch {
+      // The pool is rendered by the component itself; without it the list just stays as it is.
+      pool = [];
+    }
+    const ticks = [...panel.querySelectorAll<HTMLElement>('[data-tick]')];
 
-      let n = 0;
-      let timer: number | undefined;
-      const step = () => {
-        n += 1;
+    let n = 0;
+    let next = 4;
+    let timer: number | undefined;
+    const step = () => {
+      n += 1;
+      setClock();
+      if (reduced) return;
+      if (n % 2 === 0) {
         for (const el of ticks) {
           const base = Number(el.dataset.tick);
           const range = Number(el.dataset.tickRange);
-          el.textContent = fmt(base + (Math.random() * 2 - 1) * range);
-          el.classList.add('ticked');
-          window.setTimeout(() => el.classList.remove('ticked'), 700);
+          el.textContent = num(base + (Math.random() * 2 - 1) * range, Number(el.dataset.digits));
         }
-        if (event && eventText && events.length && n % 3 === 0) {
-          eventText.textContent = events[(n / 3) % events.length];
-          event.classList.add('show');
-          window.setTimeout(() => event.classList.remove('show'), 3800);
-        }
-      };
+      }
+      if (list && pool.length && n % 4 === 0) {
+        const e = pool[next % pool.length];
+        next += 1;
+        const d = new Date();
+        const li = document.createElement('li');
+        li.dataset.tone = e.tone;
+        li.className = 'ts-new';
+        const time = document.createElement('span');
+        time.className = 'ts-time';
+        time.textContent = `${two(d.getHours())}:${two(d.getMinutes())}`;
+        const text = document.createElement('span');
+        text.textContent = e.text;
+        li.append(time, document.createElement('i'), text);
+        list.prepend(li);
+        while (list.children.length > 4) list.lastElementChild?.remove();
+      }
+    };
 
-      new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting && timer === undefined) {
-          timer = window.setInterval(step, 2500);
-        } else if (!entry.isIntersecting && timer !== undefined) {
-          window.clearInterval(timer);
-          timer = undefined;
-        }
-      }).observe(panel);
-    }
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && timer === undefined) {
+        timer = window.setInterval(step, 1000);
+      } else if (!entry.isIntersecting && timer !== undefined) {
+        window.clearInterval(timer);
+        timer = undefined;
+      }
+    }).observe(panel);
   }
 </script>
 
 <style>
+  /* ---------- ASIGHT frame ---------- */
   .cockpit-wrapper {
     perspective: 1200px;
     width: 100%;
@@ -247,10 +288,24 @@ const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replac
   }
 
   .cockpit-panel {
+    /* TrakState tokens (copied from the TrakState website, globals.css) */
+    --ts-bg: #0e1116;
+    --ts-screen: #11151b;
+    --ts-card: #151b22;
+    --ts-border: #232b34;
+    --ts-fg: #e7edf3;
+    --ts-muted: #8a98aa;
+    --ts-brand: #45b2c6;
+    --ts-ok: #37b278;
+    --ts-warn: #e0a82a;
+    --ts-bad: #e0605a;
+    --ts-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --ts-sans: "Archivo", "Inter", system-ui, sans-serif;
+
     background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 100%);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 22px;
-    padding: 22px;
+    padding: 16px 16px 14px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
@@ -283,287 +338,14 @@ const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replac
     pointer-events: none;
   }
 
-  .glass-reflection-diagonal {
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 60%;
-    height: 120%;
-    background: linear-gradient(125deg, rgba(255,255,255,0.03) 0%, transparent 40%);
-    pointer-events: none;
-    transform: skewX(-15deg);
-  }
-
   .ambient-glow-tr {
     position: absolute;
     top: -60px;
     right: -60px;
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(175,221,233,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(69,178,198,0.10) 0%, transparent 70%);
     pointer-events: none;
-  }
-
-  .ambient-glow-bl {
-    position: absolute;
-    bottom: -40px;
-    left: -40px;
-    width: 160px;
-    height: 160px;
-    background: radial-gradient(circle, rgba(57,172,115,0.05) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .cockpit-watermark {
-    position: absolute;
-    top: 50%;
-    left: 55%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    height: auto;
-    opacity: 0.085;
-    pointer-events: none;
-    z-index: 0;
-    user-select: none;
-  }
-
-  .cockpit-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .cockpit-header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #39ac73;
-    box-shadow: 0 0 8px rgba(57,172,115,0.5);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(57,172,115,0.5); }
-    50% { opacity: 0.6; box-shadow: 0 0 4px rgba(57,172,115,0.3); }
-  }
-
-  .cockpit-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: #d6dae0;
-    letter-spacing: 0.05em;
-  }
-
-  .cockpit-header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .cockpit-meta {
-    font-size: 10px;
-    color: #4B5F78;
-    font-family: var(--f-mono);
-  }
-
-  .audit-badge {
-    font-size: 9px;
-    color: #39ac73;
-    background: rgba(57,172,115,0.1);
-    border: 1px solid rgba(57,172,115,0.15);
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-  }
-
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  .kpi-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 14px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    opacity: 0;
-    transform: translateY(12px);
-    animation: kpiFadeIn 0.6s cubic-bezier(0.4,0,0.2,1) forwards;
-  }
-
-  .kpi-1 { animation-delay: 0.5s; }
-  .kpi-2 { animation-delay: 0.65s; }
-  .kpi-3 { animation-delay: 0.8s; }
-  .kpi-4 { animation-delay: 0.95s; }
-
-  @keyframes kpiFadeIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .kpi-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .kpi-title {
-    font-size: 11px;
-    font-weight: 500;
-    color: #8791a1;
-    letter-spacing: 0.02em;
-  }
-
-  .kpi-badge {
-    font-size: 9px;
-    font-weight: 600;
-    padding: 2px 7px;
-    border-radius: 20px;
-    letter-spacing: 0.03em;
-  }
-
-  .kpi-badge.blue {
-    color: #AFDDE9;
-    background: rgba(175,221,233,0.1);
-    border: 1px solid rgba(175,221,233,0.2);
-  }
-
-  .kpi-badge.green {
-    color: #39ac73;
-    background: rgba(57,172,115,0.1);
-    border: 1px solid rgba(57,172,115,0.15);
-  }
-
-  .kpi-value-row {
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-  }
-
-  .kpi-value {
-    font-size: 28px;
-    font-weight: 700;
-    color: #f6f7f8;
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
-
-  .kpi-unit {
-    font-size: 12px;
-    font-weight: 500;
-    color: #4B5F78;
-  }
-
-  .kpi-previous {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 2px;
-  }
-
-  .trend-arrow {
-    font-size: 11px;
-    font-weight: 600;
-  }
-
-  .trend-arrow.up { color: #39ac73; }
-  .trend-arrow.down { color: #39ac73; }
-
-  .kpi-previous span:last-child {
-    font-size: 10px;
-    color: #4B5F78;
-  }
-
-  .trend-chart {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 14px 16px;
-    opacity: 0;
-    transform: translateY(12px);
-    animation: kpiFadeIn 0.6s cubic-bezier(0.4,0,0.2,1) 1.1s forwards;
-  }
-
-  .trend-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .trend-title {
-    font-size: 11px;
-    font-weight: 500;
-    color: #8791a1;
-  }
-
-  .trend-stats {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .trend-start {
-    font-size: 10px;
-    color: #4B5F78;
-    font-family: var(--f-mono);
-  }
-
-  .trend-arrow-icon {
-    font-size: 10px;
-    color: #AFDDE9;
-    font-weight: 600;
-  }
-
-  .trend-now {
-    font-size: 10px;
-    color: #39ac73;
-    font-weight: 600;
-    font-family: var(--f-mono);
-  }
-
-  .trend-badge {
-    font-size: 9px;
-    font-weight: 600;
-    color: #39ac73;
-    background: rgba(57,172,115,0.1);
-    border: 1px solid rgba(57,172,115,0.15);
-    padding: 2px 6px;
-    border-radius: 20px;
-  }
-
-  .sparkline {
-    display: block;
-    width: 100%;
-    height: 40px;
-  }
-
-  .x-axis {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 6px;
-    font-size: 9px;
-    color: #334155;
-    font-family: var(--f-mono);
   }
 
   .cockpit-shadow {
@@ -574,139 +356,348 @@ const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replac
     filter: blur(12px);
   }
 
-
-  /* Live event toast */
-  .trend-chart {
-    position: relative;
-  }
-
-  .cockpit-event {
-    position: absolute;
-    top: 52%;
-    left: 50%;
-    z-index: 3;
-    display: inline-flex;
+  /* ---------- TrakState board ---------- */
+  .ts-eyebrow {
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 5px 12px;
+    margin-bottom: 3px;
+    font-family: var(--ts-mono);
     font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: #f6f7f8;
-    white-space: nowrap;
-    background: rgba(17, 22, 29, 0.92);
-    border: 1px solid rgba(217, 151, 38, 0.45);
-    border-radius: 20px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    opacity: 0;
-    transform: translate(-50%, -6px);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    pointer-events: none;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ts-brand);
   }
 
-  .cockpit-event.show {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-
-  .cockpit-event-dot {
+  .ts-eyebrow-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #d99726;
-    box-shadow: 0 0 6px rgba(217, 151, 38, 0.6);
+    background: var(--ts-brand);
+    box-shadow: 0 0 8px rgba(69,178,198,0.7);
   }
 
-  .kpi-value {
-    transition: color 0.6s ease;
-  }
-
-  .kpi-value.ticked {
-    color: #AFDDE9;
-  }
-
-  /* TrakState strip: the bridge from the mock-up to the real product */
-  .ts-strip {
+  .ts-screen {
     position: relative;
-    z-index: 1;
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    background: var(--ts-screen);
+    border: 1px solid var(--ts-border);
+    color: var(--ts-fg);
+    font-family: var(--ts-sans);
+    text-align: left;
+  }
+
+  .ts-screen > * {
+    min-width: 0;
+  }
+
+  .ts-screen p,
+  .ts-screen h3,
+  .ts-screen ol {
+    margin: 0;
+  }
+
+  .ts-title {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-top: 12px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    background: rgba(69, 178, 198, 0.08);
-    border: 1px solid rgba(69, 178, 198, 0.28);
-    text-decoration: none;
-    opacity: 0;
-    transform: translateY(12px);
-    animation: kpiFadeIn 0.6s cubic-bezier(0.4,0,0.2,1) 1.3s forwards;
-    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 9px 12px;
+    background: var(--ts-card);
+    border: 1px solid var(--ts-border);
+    font-size: 14px;
+    font-weight: 700;
   }
 
-  .cockpit-panel:hover .ts-strip,
-  .ts-strip:focus-visible {
-    background: rgba(69, 178, 198, 0.16);
-    border-color: rgba(69, 178, 198, 0.6);
-    box-shadow: 0 0 24px rgba(69, 178, 198, 0.25);
+  .ts-title-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
   }
 
-  .ts-strip:focus-visible {
-    outline: 2px solid #45B2C6;
-    outline-offset: 2px;
-  }
-
-  .ts-strip-logo {
+  .ts-title-name svg {
     flex-shrink: 0;
-    display: block;
   }
 
-  .ts-strip-text {
-    flex: 1;
-    font-size: 12px;
-    color: #d6dae0;
+  .ts-title-name span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .ts-strip-cta {
-    font-size: 12px;
+  .ts-chip {
+    --tone: var(--ts-ok);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border: 1px solid color-mix(in srgb, var(--tone) 55%, transparent);
+    background: color-mix(in srgb, var(--tone) 10%, transparent);
+    color: var(--tone);
+    font-size: 11px;
     font-weight: 600;
-    color: #45B2C6;
     white-space: nowrap;
   }
 
-  .ts-strip-cta span {
+  .ts-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ts-tile {
+    --tone: var(--ts-muted);
+    display: flex;
+    flex-direction: column;
+    padding: 9px 10px;
+    min-width: 0;
+    overflow: hidden;
+    border-top: 3px solid var(--tone);
+    background: linear-gradient(color-mix(in srgb, var(--tone) 9%, transparent), color-mix(in srgb, var(--tone) 9%, transparent)), var(--ts-card);
+  }
+
+  .ts-tile[data-tone='ok'],
+  .ts-events :global(li[data-tone='ok']) { --tone: var(--ts-ok); }
+  .ts-tile[data-tone='warn'],
+  .ts-events :global(li[data-tone='warn']) { --tone: var(--ts-warn); }
+  .ts-tile[data-tone='bad'],
+  .ts-events :global(li[data-tone='bad']) { --tone: var(--ts-bad); }
+
+  .ts-k {
+    font-size: 11px;
+    color: var(--ts-muted);
+  }
+
+  .ts-v {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 4px !important;
+    font-family: var(--ts-mono);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.15;
+    white-space: nowrap;
+    color: var(--tone);
+  }
+
+  .ts-v svg {
+    flex: none;
+  }
+
+  .ts-v small {
+    align-self: flex-end;
+    padding-bottom: 2px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .ts-tg {
+    margin-top: 3px !important;
+    font-family: var(--ts-mono);
+    font-size: 10px;
+    color: var(--ts-muted);
+    white-space: nowrap;
+  }
+
+  .ts-tg + .ts-tg {
+    margin-top: 0 !important;
+  }
+
+  .ts-asof {
+    margin-top: auto !important;
+    padding-top: 6px;
+    font-family: var(--ts-mono);
+    font-size: 9px;
+    color: var(--ts-muted);
+  }
+
+  .ts-panels {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .ts-panel {
+    padding: 9px 10px 10px;
+    border-top: 3px solid var(--ts-border);
+    background: var(--ts-card);
+  }
+
+  .ts-panel h3 {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-family: var(--ts-sans);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ts-muted);
+  }
+
+  .ts-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--ts-mono);
+    font-size: 9px;
+  }
+
+  .ts-legend i {
+    width: 12px;
+    border-top: 1px dashed rgba(231,237,243,0.6);
+  }
+
+  .ts-chart {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 52px;
+    margin-top: 8px;
+    border-bottom: 1px solid var(--ts-border);
+  }
+
+  .ts-bar {
+    flex: 1;
+    min-width: 3px;
+    background: rgba(138,152,170,0.4);
+  }
+
+  .ts-bar[data-last='1'] {
+    background: var(--ts-brand);
+  }
+
+  .ts-target {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed rgba(231,237,243,0.6);
+  }
+
+  .ts-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-family: var(--ts-mono);
+    font-size: 9px;
+    color: var(--ts-muted);
+  }
+
+  .ts-events {
+    display: grid;
+    gap: 4px;
+    margin-top: 8px !important;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+  }
+
+  .ts-events :global(li) {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10.5px;
+    color: var(--ts-fg);
+    white-space: nowrap;
+  }
+
+  .ts-events :global(li > span:last-child) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ts-events :global(li i) {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    background: var(--tone);
+  }
+
+  .ts-events :global(.ts-time),
+  .ts-time {
+    flex: none;
+    font-family: var(--ts-mono);
+    font-size: 9.5px;
+    color: var(--ts-muted);
+  }
+
+  .ts-events :global(li.ts-new) {
+    animation: tsEventIn 0.5s ease;
+  }
+
+  @keyframes tsEventIn {
+    from { opacity: 0; transform: translateY(-6px); background: color-mix(in srgb, var(--tone) 18%, transparent); }
+    to { opacity: 1; transform: none; background: transparent; }
+  }
+
+  /* CTA: square teal button as on trakstate.com */
+  .ts-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 4px 4px 4px 8px;
+    text-decoration: none;
+  }
+
+  .ts-cta-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 12.5px;
+    color: #d6dae0;
+    text-align: left;
+  }
+
+  .ts-cta-btn {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    background: var(--ts-brand);
+    color: #08262c;
+    font-family: var(--ts-sans);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: box-shadow 0.25s ease, background 0.25s ease;
+  }
+
+  .ts-cta-btn span {
     display: inline-block;
     transition: transform 0.25s ease;
   }
 
-  .cockpit-panel:hover .ts-strip-cta span,
-  .ts-strip:focus-visible .ts-strip-cta span {
+  .cockpit-panel:hover .ts-cta-btn,
+  .ts-cta:focus-visible .ts-cta-btn {
+    background: #5cc3d5;
+    box-shadow: 0 0 22px rgba(69,178,198,0.45);
+  }
+
+  .cockpit-panel:hover .ts-cta-btn span,
+  .ts-cta:focus-visible .ts-cta-btn span {
     transform: translateX(3px);
   }
 
+  .ts-cta:focus-visible {
+    outline: 2px solid var(--ts-brand);
+    outline-offset: 2px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .ts-strip {
+    .cockpit-panel {
       animation: none;
       opacity: 1;
-      transform: none;
     }
   }
 
   @media (max-width: 1024px) {
-    .ts-strip {
-      animation: none;
-      opacity: 1;
-      transform: none;
-    }
-
     .cockpit-panel {
       transform: none;
       animation: none;
       opacity: 1;
-    }
-
-    .kpi-grid {
-      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -716,36 +707,48 @@ const fmt = (n: number) => (locale === 'en' ? n.toFixed(1) : n.toFixed(1).replac
     }
 
     .cockpit-panel {
-      padding: 14px;
+      padding: 12px 10px 10px;
+      border-radius: 16px;
     }
 
-    .kpi-card {
-      padding: 12px 10px;
+    .ts-screen {
+      padding: 8px;
     }
 
-    .kpi-value {
-      font-size: 24px;
+    .ts-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .trend-header {
+    .ts-panels {
+      grid-template-columns: 1fr;
+    }
+
+    .ts-title {
+      font-size: 13px;
+    }
+
+    .ts-site {
+      display: none;
+    }
+
+    .ts-eyebrow {
+      justify-content: center;
+    }
+
+    .ts-cta-text {
+      text-align: center;
+    }
+
+    .ts-cta {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch;
+      text-align: center;
+      padding: 4px 0 0;
     }
 
-    .cockpit-header {
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .ts-strip {
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px 12px;
-    }
-
-    .ts-strip-text {
-      order: 3;
-      flex-basis: 100%;
+    .ts-cta-btn {
+      padding: 11px 14px;
+      font-size: 14px;
     }
   }
 </style>
