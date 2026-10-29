@@ -276,30 +276,21 @@ const trakstateSchema = {
     description: 'Wird direkt hinter der Headline farbig gesetzt. Max. 40 Zeichen.',
     validation: reqMax(40),
   }),
-  section_subline: fields.text({
-    label: 'Sektion: Unterzeile',
-    description: 'Text unter der Headline. Max. 300 Zeichen.',
-    multiline: true,
-    validation: reqMax(300),
+  section_kicker: fields.text({
+    label: 'Sektion: Zeile unter der Headline',
+    description: 'Kurze Zeile in Mono-Schrift, z.B. „Selbst ausprobieren · Musterdaten · ohne Anmeldung“. Max. 80 Zeichen.',
+    validation: reqMax(80),
   }),
-  section_mapping: fields.array(
-    fields.object({
-      impact: fields.text({
-        label: 'Wirkung (ASIGHT)',
-        description: 'Eine der Wirkungen aus „Was sich in 8–12 Wochen ändert“.',
-        validation: reqMax(40),
-      }),
-      tab: fields.text({
-        label: 'Beispiel (TrakState)',
-        description: 'Der passende Reiter in der Demo, z.B. „Messen“.',
-        validation: reqMax(30),
-      }),
-    }),
-    {
-      label: 'Sektion: Wirkung → Beispiel',
-      itemLabel: (props) => `${props.fields.impact.value} → ${props.fields.tab.value}`,
-    }
-  ),
+  section_note: fields.text({
+    label: 'Sektion: Abschlusszeile links',
+    description: 'Steht am Ende der Sektion links, z.B. „TrakState · ein Produkt der ASIGHT GmbH“. Max. 80 Zeichen.',
+    validation: reqMax(80),
+  }),
+  section_more: fields.text({
+    label: 'Sektion: Link-Text rechts',
+    description: 'Link auf trakstate.com am Ende der Sektion. Max. 40 Zeichen.',
+    validation: reqMax(40),
+  }),
   embed_url: fields.text({
     label: 'Sektion: Adresse der eingebetteten Demo',
     description: 'Deutsch: https://www.trakstate.com/de/embed/tryout, Englisch: https://www.trakstate.com/embed/tryout',
