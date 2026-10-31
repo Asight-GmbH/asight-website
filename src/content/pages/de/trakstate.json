@@ -2,5 +2,13 @@
   "url": "https://www.trakstate.com/de/#ausprobieren",
   "hint_text": "Messen statt schätzen: unser Shopfloor-Tool TrakState",
   "strip_text": "Dieses Cockpit gibt es als Software.",
-  "strip_cta": "Live ausprobieren"
+  "strip_cta": "Live ausprobieren",
+  "section_headline": "Was nach dem Projekt bleibt: ",
+  "section_accent": "TrakState.",
+  "embed_url": "https://www.trakstate.com/de/embed/tryout",
+  "embed_title": "TrakState zum Ausprobieren",
+  "embed_fallback": "Die Demo lässt sich hier gerade nicht laden. Auf trakstate.com läuft sie.",
+  "section_kicker": "Selbst ausprobieren · Musterdaten · ohne Anmeldung",
+  "section_note": "TrakState · ein Produkt der ASIGHT GmbH",
+  "section_more": "Mehr auf trakstate.com"
 }
