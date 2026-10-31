@@ -1,0 +1,328 @@
+---
+/**
+ * "What stays after the project": TrakState to try out, after the services
+ * (PRODLOG-291).
+ *
+ * The demo itself is not built here. It is the section from trakstate.com,
+ * embedded as an iframe from /embed/tryout, so it has one source and looks
+ * the same on both sites. trakstate.com only allows this site to frame it
+ * (nginx, frame-ancestors).
+ *
+ * Meant to look like part of this page, not like a box from elsewhere: the
+ * frame is transparent and sits on the same grid and glow as the hero, where
+ * the cockpit shows TrakState to look at — here it is to use.
+ *
+ * - The iframe loads lazily, once the visitor scrolls near it.
+ * - Fits one screen: we tell the frame how much height it has below the fixed
+ *   header and the headline (`room` in the ping); the embedded section scales
+ *   itself to that, down to its own lower limit. Stacked on narrow screens it
+ *   stays full size and the page scrolls.
+ * - Its height comes from the frame: the embed page posts its content height,
+ *   we set it here. Messages are only accepted from the iframe's own origin.
+ * - If no height arrives within 10 s of coming into view (blocked, offline,
+ *   TrakState down), the frame is replaced by a short note and the link to
+ *   trakstate.com.
+ *
+ * Texts and URLs: Keystatic, "TrakState-Hinweis".
+ * `PUBLIC_TRAKSTATE_EMBED_BASE` (optional, local development only) swaps the
+ * origin of the embed URL, e.g. for a local build of the TrakState website;
+ * `/` serves it from this site's own origin (files copied into public/).
+ */
+import { getEntry } from 'astro:content';
+
+interface Props { locale?: string; }
+const { locale = 'de' } = Astro.props;
+
+const ts = (await getEntry('pages', `${locale}/trakstate`))?.data;
+
+let embedUrl: string | undefined = ts?.embed_url;
+const base = import.meta.env.PUBLIC_TRAKSTATE_EMBED_BASE;
+if (embedUrl && base) {
+  const u = new URL(embedUrl);
+  // public/ serves no directory index, so name the file.
+  embedUrl = base === '/' ? `${u.pathname.replace(/\/?$/, '/')}index.html` : new URL(u.pathname + u.search, base).href;
+}
+---
+
+{ts && embedUrl && (
+  <section id="trakstate" class="ts-section" data-ts-section>
+    <div class="ts-bg" aria-hidden="true">
+      <div class="ts-glow"></div>
+      <div class="ts-grid"></div>
+    </div>
+
+    <div class="container ts-inner">
+      <div class="ts-header" data-ts-header>
+        <h2 class="ts-headline">{ts.section_headline}<span class="highlight">{ts.section_accent}</span></h2>
+        <p class="ts-kicker"><span class="ts-kicker-dot" aria-hidden="true"></span>{ts.section_kicker}</p>
+      </div>
+
+      <div class="ts-frame" data-ts-frame>
+        <iframe
+          src={embedUrl}
+          title={ts.embed_title}
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+        <div class="ts-fallback" hidden>
+          <p>{ts.embed_fallback}</p>
+          <a class="ts-fallback-link" href={ts.url} target="_blank" rel="noopener" data-ts-click="tryout_fallback">
+            {ts.strip_cta} <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="ts-end">
+        <span class="ts-note">{ts.section_note}</span>
+        <a class="ts-more" href={ts.url} target="_blank" rel="noopener" data-ts-click="tryout_more">
+          {ts.section_more} <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  // Size the iframe to the height the embedded page reports, tell it how much
+  // room it has on screen, and fall back to a link if it never answers.
+  const section = document.querySelector<HTMLElement>('[data-ts-section]');
+  const frame = section?.querySelector<HTMLElement>('[data-ts-frame]');
+  const iframe = frame?.querySelector<HTMLIFrameElement>('iframe');
+  const fallback = frame?.querySelector<HTMLElement>('.ts-fallback');
+  if (section && frame && iframe && fallback) {
+    const origin = new URL(iframe.src).origin;
+    let sized = false;
+
+    // Screen height minus the fixed site header and everything in this
+    // section that is not the demo (padding, headline, closing line) - what
+    // the demo may take so the whole section fits one screen.
+    const room = () => {
+      const siteHeader = document.querySelector<HTMLElement>('.header')?.offsetHeight ?? 0;
+      const rest = section.offsetHeight - frame.offsetHeight;
+      return Math.max(0, window.innerHeight - siteHeader - rest);
+    };
+
+    window.addEventListener('message', (e) => {
+      if (e.origin !== origin || e.source !== iframe.contentWindow) return;
+      const data = e.data as { type?: string; height?: number } | null;
+      if (data?.type !== 'trakstate:embed-height' || typeof data.height !== 'number') return;
+      if (data.height < 100 || data.height > 10000) return;
+      sized = true;
+      iframe.style.height = `${data.height}px`;
+      frame.classList.add('is-ready');
+    });
+
+    // The frame may have reported before this script listened, so ask instead
+    // of only waiting. A frame that never answers - blocked by the browser or
+    // by trakstate.com, offline, down - gives way to the link. The clock starts
+    // once the frame is near the screen, because the iframe loads lazily.
+    const ping = () => iframe.contentWindow?.postMessage({ type: 'trakstate:embed-ping', room: room() }, origin);
+    iframe.addEventListener('load', ping);
+    window.addEventListener('resize', ping);
+    const watch = new IntersectionObserver((entries) => {
+      if (!entries[0]?.isIntersecting) return;
+      watch.disconnect();
+      let tries = 0;
+      const timer = window.setInterval(() => {
+        if (sized) {
+          window.clearInterval(timer);
+          return;
+        }
+        if (++tries > 10) {
+          window.clearInterval(timer);
+          iframe.hidden = true;
+          fallback.hidden = false;
+          frame.classList.add('is-ready');
+          return;
+        }
+        ping();
+      }, 1000);
+    }, { rootMargin: '200px' });
+    watch.observe(frame);
+  }
+</script>
+
+<style>
+  .ts-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--c-hero-bg);
+    color: var(--c-hero-text);
+    padding: 2.25rem 0 0;
+  }
+
+  /* Same backdrop as the hero */
+  .ts-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .ts-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 45% at 50% 55%, rgba(58,166,185,0.12) 0%, transparent 65%);
+  }
+
+  .ts-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .ts-inner {
+    position: relative;
+  }
+
+  .ts-header {
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .ts-headline {
+    font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin-bottom: 0.35rem;
+  }
+
+  .ts-headline .highlight {
+    color: #45B2C6;
+  }
+
+  .ts-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #45B2C6;
+  }
+
+  .ts-kicker-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #45B2C6;
+    box-shadow: 0 0 8px rgba(69,178,198,0.7);
+  }
+
+  /* No box: the embedded section is transparent and sits on the grid. */
+  .ts-frame {
+    position: relative;
+    min-height: 420px;
+  }
+
+  .ts-frame iframe {
+    display: block;
+    width: 100%;
+    /* Until the frame reports its real height. */
+    height: 700px;
+    border: 0;
+    background: transparent;
+    /* Same scheme as the embedded page - otherwise the browser paints an
+       opaque canvas behind it instead of letting the grid show through. */
+    color-scheme: dark;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .ts-frame.is-ready iframe {
+    opacity: 1;
+  }
+
+  .ts-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 420px;
+    padding: 2rem;
+    text-align: center;
+    color: #8791a1;
+  }
+
+  .ts-fallback[hidden] {
+    display: none;
+  }
+
+  .ts-fallback-link {
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    background: #45B2C6;
+    color: #08262c;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  /* Visible end of the section, so the next one starts on its own. */
+  .ts-end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.25rem;
+    padding: 0.7rem 0 0.9rem;
+    border-top: 1px solid transparent;
+    border-image: linear-gradient(90deg, transparent, rgba(69,178,198,0.55), transparent) 1;
+    font-size: 0.85rem;
+  }
+
+  .ts-note {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    color: #8791a1;
+  }
+
+  .ts-more {
+    color: #45B2C6;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .ts-more:hover,
+  .ts-more:focus-visible {
+    color: #fff;
+  }
+
+  .ts-more span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .ts-more:hover span {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ts-frame iframe,
+    .ts-more span {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ts-section {
+      padding-top: 2.75rem;
+    }
+
+    .ts-kicker {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+    }
+
+    .ts-end {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+</style>

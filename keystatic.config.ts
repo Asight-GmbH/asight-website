@@ -245,6 +245,69 @@ const contactSchema = {
   }),
 };
 
+const trakstateSchema = {
+  url: fields.text({
+    label: 'TrakState-Link',
+    description: 'Ziel aller TrakState-Links auf der Seite. Deutsch: https://www.trakstate.com/de/#ausprobieren, Englisch: https://www.trakstate.com/#try-it',
+    validation: req,
+  }),
+  hint_text: fields.text({
+    label: 'Hinweis unter dem Hero-Button',
+    description: 'Kleine Zeile unter dem Hero-Button, verlinkt auf TrakState. Max. 90 Zeichen.',
+    validation: reqMax(90),
+  }),
+  strip_text: fields.text({
+    label: 'Cockpit: Satz in der TrakState-Leiste',
+    description: 'Steht unten im Management-Cockpit neben dem TrakState-Logo. Max. 70 Zeichen.',
+    validation: reqMax(70),
+  }),
+  strip_cta: fields.text({
+    label: 'Cockpit: Link-Text in der TrakState-Leiste',
+    description: 'Kurzer Handlungsaufruf rechts in der Leiste. Max. 30 Zeichen.',
+    validation: reqMax(30),
+  }),
+  section_headline: fields.text({
+    label: 'Sektion: Headline',
+    description: 'Überschrift der Sektion „Ausprobieren“ nach den Services. Max. 80 Zeichen.',
+    validation: reqMax(80),
+  }),
+  section_accent: fields.text({
+    label: 'Sektion: farbiger Teil der Headline',
+    description: 'Wird direkt hinter der Headline farbig gesetzt. Max. 40 Zeichen.',
+    validation: reqMax(40),
+  }),
+  section_kicker: fields.text({
+    label: 'Sektion: Zeile unter der Headline',
+    description: 'Kurze Zeile in Mono-Schrift, z.B. „Selbst ausprobieren · Musterdaten · ohne Anmeldung“. Max. 80 Zeichen.',
+    validation: reqMax(80),
+  }),
+  section_note: fields.text({
+    label: 'Sektion: Abschlusszeile links',
+    description: 'Steht am Ende der Sektion links, z.B. „TrakState · ein Produkt der ASIGHT GmbH“. Max. 80 Zeichen.',
+    validation: reqMax(80),
+  }),
+  section_more: fields.text({
+    label: 'Sektion: Link-Text rechts',
+    description: 'Link auf trakstate.com am Ende der Sektion. Max. 40 Zeichen.',
+    validation: reqMax(40),
+  }),
+  embed_url: fields.text({
+    label: 'Sektion: Adresse der eingebetteten Demo',
+    description: 'Deutsch: https://www.trakstate.com/de/embed/tryout, Englisch: https://www.trakstate.com/embed/tryout',
+    validation: req,
+  }),
+  embed_title: fields.text({
+    label: 'Sektion: Titel der Demo (Screenreader)',
+    description: 'Wird Screenreadern als Name des eingebetteten Bereichs vorgelesen.',
+    validation: reqMax(80),
+  }),
+  embed_fallback: fields.text({
+    label: 'Sektion: Hinweis, falls die Demo nicht lädt',
+    description: 'Erscheint statt der Demo, wenn sie nicht geladen werden kann. Darunter steht der TrakState-Link.',
+    validation: reqMax(120),
+  }),
+};
+
 const headerSchema = {
   nav_items: fields.array(
     fields.object({
@@ -435,11 +498,11 @@ export default config({
     navigation: {
       'Deutsch': [
         'hero_de', 'impact_de', 'socialproof_de', 'globalreach_de', 'services_de',
-        'founders_de', 'testimonials_headline_de', 'contact_de', 'header_de', 'cookie_banner_de',
+        'founders_de', 'testimonials_headline_de', 'contact_de', 'header_de', 'cookie_banner_de', 'trakstate_de',
       ],
       'English': [
         'hero_en', 'impact_en', 'socialproof_en', 'globalreach_en', 'services_en',
-        'founders_en', 'testimonials_headline_en', 'contact_en', 'header_en', 'cookie_banner_en',
+        'founders_en', 'testimonials_headline_en', 'contact_en', 'header_en', 'cookie_banner_en', 'trakstate_en',
       ],
       'Einträge': ['testimonials', 'blog', 'team'],
     },
@@ -456,6 +519,7 @@ export default config({
     contact_de: localeSingleton('Kontakt', 'contact', 'de', contactSchema),
     header_de: localeSingleton('Header', 'header', 'de', headerSchema),
     cookie_banner_de: localeSingleton('Cookie-Banner', 'cookie-banner', 'de', cookieBannerSchema),
+    trakstate_de: localeSingleton('TrakState-Hinweis', 'trakstate', 'de', trakstateSchema),
 
     // English
     hero_en: localeSingleton('Hero', 'hero', 'en', heroSchema),
@@ -468,6 +532,7 @@ export default config({
     contact_en: localeSingleton('Contact', 'contact', 'en', contactSchema),
     header_en: localeSingleton('Header', 'header', 'en', headerSchema),
     cookie_banner_en: localeSingleton('Cookie Banner', 'cookie-banner', 'en', cookieBannerSchema),
+    trakstate_en: localeSingleton('TrakState Teaser', 'trakstate', 'en', trakstateSchema),
   },
   collections: {
     testimonials: collection({
